@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOCUS · Checklist Tomas de Apoyo · Reels 11-20</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FOCUS · Tomas de Apoyo · Reels 11-20</h1>
+  <div class="sub">Rodaje — Entrega 1 · Creatina en gomitas</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="steven">Steven Vargas</div>
+    <div class="chip" data-filter="sebas">Sebas Timarán</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<!-- STEVEN VARGAS -->
+<div class="creator-block" data-creator="steven">
+  <div class="creator-title">
+    <h2>Steven Vargas</h2>
+    <span class="count">Reels 11–15</span>
+  </div>
+
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"Si estás flaco y por más que comes no ganas músculo…" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@suplementosparaguay/video/7496225669588765958" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215141647337171" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto flotante del creador <strong>bien delgado</strong> (para el hook)</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto <strong>antes y después</strong> del creador</div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Pedir varias fotos del creador delgado (para usar como B-roll del cuerpo)</div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas haciendo <strong>ejercicio</strong> (al hablar de la creatina y energía muscular)</div></div>
+      <div class="shot" data-id="11-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>preparando creatina en polvo</strong>, ve los grumos y la deja tirada</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"Si eres flaco y vas a empezar el gym, estos consejos…" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@marcelossegura/video/7457240831917853958" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215141647337173" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto flotante del <strong>antes y después</strong> del creador</div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>comiendo</strong> (al hablar de calorías y comer un montón)</div></div>
+      <div class="shot" data-id="12-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador haciendo <strong>ejercicios compuestos</strong>: sentadilla, peso muerto, press de banca, dominadas (clips separados)</div></div>
+      <div class="shot" data-id="12-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador haciendo ejercicio (B-roll al mencionar la creatina)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"Un volumen no puede cambiarte tanto" — POV</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@camposgym/video/7494695874455473430" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215141647337175" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Varios clips del creador <strong>delgado</strong> (pasar por IA en post)</div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>mostrando los músculos</strong></div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>comiendo las gomas</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"Estas gomitas pueden ser tu porción de creatina del día…" — POV</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@unreviewmas/video/7516406333801778433" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215141647337177" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma de la mano con las gomitas</strong> (replicar la referencia)</div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong> (tarro Focus)</div></div>
+      <div class="shot" data-id="14-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto <strong>antes y después</strong> del creador</div></div>
+      <div class="shot" data-id="14-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma de <strong>creatina en polvo con grumos</strong></div></div>
+      <div class="shot" data-id="14-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma de creatina en termo con <strong>gesto de "no"</strong></div></div>
+      <div class="shot" data-id="14-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>comiendo las gomitas</strong></div></div>
+      <div class="shot" data-id="14-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>posando</strong> (mostrando físico)</div></div>
+      <div class="shot" data-id="14-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma <strong>músculos del creador</strong></div></div>
+      <div class="shot" data-id="14-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>haciendo ejercicio</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">"Si todavía tomas polvo, necesitas Focus" — Comercial</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Comercial</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@beastbitesmexico/video/7488795964442955014" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215141647337179" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="15-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hook estilo referencia: <strong>termo de creatina que se lo tiran/lanzan</strong></div></div>
+      <div class="shot" data-id="15-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mostrar <strong>grumos de la creatina</strong> a cámara y romperlos</div></div>
+      <div class="shot" data-id="15-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>comiendo las gomitas</strong></div></div>
+      <div class="shot" data-id="15-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>entrenando</strong> (antes/después de tomarlas)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEBAS TIMARAN -->
+<div class="creator-block" data-creator="sebas">
+  <div class="creator-title">
+    <h2>Sebas Timarán</h2>
+    <span class="count">Reels 16–20</span>
+  </div>
+
+  <!-- REEL 16 -->
+  <div class="reel" data-reel="16">
+    <div class="reel-head">
+      <span class="reel-num">REEL 16</span>
+      <span class="reel-title">"¿Llevas meses en el gym y no ves resultados?" — Talking head</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Talking head</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(16)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@marketerohispano/video/7637990740794068255" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215152403915767" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="16">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="16-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>mostrando resultados</strong> (físico, brazo, definición)</div></div>
+      <div class="shot" data-id="16-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>habla directo a cámara</strong> contando con los dedos, expresión de frustración natural</div></div>
+      <div class="shot" data-id="16-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el <strong>tarro de Focus</strong>, abre la tapa, muestra gomitas en palma, se las come natural</div></div>
+      <div class="shot" data-id="16-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma cerrada del tarro</strong> bien iluminado, etiqueta visible</div></div>
+      <div class="shot" data-id="16-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Sostiene el tarro hacia cámara, <strong>señala hacia abajo</strong> (CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 17 -->
+  <div class="reel" data-reel="17">
+    <div class="reel-head">
+      <span class="reel-num">REEL 17</span>
+      <span class="reel-title">"Mi novia me preguntó qué estaba haciendo diferente" — Talking head</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Talking head</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(17)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@alessandraville/video/7626140369381543198" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215152403915769" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="17">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="17-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador frente a cámara <strong>plano medio</strong>, expresión íntima, tono no comercial</div></div>
+      <div class="shot" data-id="17-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Gesto natural <strong>mostrando brazo u hombro</strong> sin exagerar</div></div>
+      <div class="shot" data-id="17-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca <strong>tarro de Focus</strong> natural, lo sostiene, abre tapa, muestra gomitas en palma</div></div>
+      <div class="shot" data-id="17-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma cerrada del <strong>producto bien iluminado</strong></div></div>
+      <div class="shot" data-id="17-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mira a cámara con tarro, <strong>señala arriba</strong>, sonrisa leve tono cómplice</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 18 -->
+  <div class="reel" data-reel="18">
+    <div class="reel-head">
+      <span class="reel-num">REEL 18</span>
+      <span class="reel-title">"¿Llevas meses sin sacar una dominada limpia?" — Roleplay doctor</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Roleplay</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(18)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@createwithrylee/video/7637965308875033869" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215152403915771" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="18">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="18-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador <strong>en rol doctor</strong>, plano medio, señala directo a cámara</div></div>
+      <div class="shot" data-id="18-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Asiente, anota, se inclina</strong> hacia cámara (tono cómplice)</div></div>
+      <div class="shot" data-id="18-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el tarro, muestra gomitas en palma, se las come natural</div></div>
+      <div class="shot" data-id="18-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma cerrada del producto</strong></div></div>
+      <div class="shot" data-id="18-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Sostiene tarro, <strong>señala arriba</strong> (CTA directo)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 19 -->
+  <div class="reel" data-reel="19">
+    <div class="reel-head">
+      <span class="reel-num">REEL 19</span>
+      <span class="reel-title">"El man que yo admiraba me preguntó qué estaba haciendo" — Historia</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Talking head</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(19)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@maxdealsforu/video/7631749792275746079" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215152403915773" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="19">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="19-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creador solo, <strong>plano medio</strong>, expresión genuina sin poses</div></div>
+      <div class="shot" data-id="19-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el <strong>tarro de Focus</strong> de forma natural (tono conversacional)</div></div>
+      <div class="shot" data-id="19-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma cerrada del tarro</strong> bien iluminado</div></div>
+      <div class="shot" data-id="19-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Abre la tapa, muestra gomitas en palma, se las come natural</div></div>
+      <div class="shot" data-id="19-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Sostiene tarro, <strong>señala arriba</strong>, sonrisa leve</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 20 -->
+  <div class="reel" data-reel="20">
+    <div class="reel-head">
+      <span class="reel-num">REEL 20</span>
+      <span class="reel-title">Aspiracional estilo Jacob Elordi + unboxing — POV</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(20)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@dealz4_you/video/7637625046231469326" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209312184471412/1215152403915775" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="20">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="20-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma estilo <strong>Jacob Elordi</strong> aspiracional (replicar primer plano de la referencia)</div></div>
+      <div class="shot" data-id="20-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Unboxing del producto</strong> (estilo POV)</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FOCUS Supplements · Entrega 1</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'focus_broll_checklist_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter === 'steven' && creator !== 'steven') block.style.display = 'none';
+      else if (currentFilter === 'sebas' && creator !== 'sebas') block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  document.querySelector('.reel').classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+    11: {
+      title: 'REEL 11 — Steven Vargas',
+      sub: 'TOF · UGC · "Si estás flaco y por más que comes…"',
+      rows: [
+        ['hook', 'Hook', '"Si estás flaco y por más que comes no ganas músculo, escuchame bien."'],
+        ['body', 'Cuerpo', 'Pana, yo pasé de esto a esto y solo te diré una cosa.'],
+        ['body', 'Cuerpo', 'Cuando eres flaco, para ganar músculo necesitas más calorías, más proteína y los nutrientes correctos todos los días. El problema es que llegar a eso solo con comida es difícil — y la mayoría no lo sostiene.'],
+        ['body', 'Cuerpo', 'Y ahí entra la creatina. Es el suplemento más estudiado que existe para ganar fuerza y músculo. Lo que hace es aumentar la energía de tus músculos para que entrenes más duro, levantes más peso y te recuperes más rápido.'],
+        ['body', 'Cuerpo', '¿El problema? Es que no todos tienen la disciplina de tomarla. Bro, seamos honestos: tener que preparar eso todos los días da mucha mamera, a mí siempre se me olvidaba.'],
+        ['body', 'Cuerpo', 'Por eso existen las gomitas de creatina de Focus. Es la misma creatina monohidratada, pero en formato de gomas.'],
+        ['cta', 'CTA', 'Desde que las empecé a usar, los cambios los noté. Así que si quieres tener cambios como yo, cómpralas ya.']
+      ]
+    },
+    12: {
+      title: 'REEL 12 — Steven Vargas',
+      sub: 'TOF · UGC · "Si eres flaco y vas a empezar el gym…"',
+      rows: [
+        ['hook', 'Hook', '"Si eres flaco y vas a empezar el gym, estos consejos me hubieran ahorrado años de no ver resultados."'],
+        ['body', 'Cuerpo', 'Primer consejo y el más importante: no le tengas miedo a la comida. Tienes que comer un montón — eso significa consumir más calorías de las que tu cuerpo quema al día.'],
+        ['body', 'Cuerpo', 'Segundo consejo: prioriza los ejercicios compuestos. Sentadilla, peso muerto, press de banca, dominadas. Estos ejercicios trabajan varios músculos al mismo tiempo y te van a construir una base sólida de fuerza y músculo más rápido que cualquier otra cosa.'],
+        ['body', 'Cuerpo', 'Y el consejo que más diferencia hizo en mis resultados: dale a tu cuerpo creatina todos los días. La creatina monohidratada es el suplemento más estudiado que existe — aumenta tu energía muscular, te permite entrenar más duro y te ayuda a recuperarte más rápido.'],
+        ['body', 'Cuerpo', 'Yo tomo las gomitas de creatina de Focus, solo como 2 al día, en cualquier momento.'],
+        ['body', 'Cuerpo', 'Y el último: sé paciente. Ganar músculo siendo flaco toma tiempo — no vas a ver resultados de la noche a la mañana. Disfruta el proceso, sé disciplinado, y los cambios van a llegar.'],
+        ['cta', 'CTA', 'Si quieres saber más sobre las gomitas, el link está aquí abajo.']
+      ]
+    },
+    13: {
+      title: 'REEL 13 — Steven Vargas',
+      sub: 'TOF · POV · "Un volumen no puede cambiarte tanto"',
+      rows: [
+        ['hook', 'Texto overlay', 'Un volumen no puede cambiarte tanto.'],
+        ['body', 'B-roll', 'Toma creador mostrando los músculos.'],
+        ['body', 'B-roll', 'Toma creador comiendo las gomas.'],
+        ['cta', 'Texto overlay', 'Desde que empecé a comer la creatina de Focus, así se ven mis resultados.']
+      ]
+    },
+    14: {
+      title: 'REEL 14 — Steven Vargas',
+      sub: 'MOF · POV · "Estas gomitas pueden ser tu porción del día"',
+      rows: [
+        ['hook', 'Hook', '"Estas gomitas pueden ser tu porción de creatina del día para que pases de esto… a esto."'],
+        ['body', 'Cuerpo', 'Deja de comer estos teteros con polvo. Olvídate del shaker y los grumos.'],
+        ['body', 'Cuerpo', 'Estas gomitas de creatina de Focus son fáciles de llevar, tienen buen sabor, y con solo dos al día tienes los 5 gramos de creatina que tu cuerpo necesita.'],
+        ['body', 'Cuerpo', 'Y no es solo el músculo — la creatina también te va a dar más energía durante el día y apoya tu función cerebral. O sea que no solo rindes más en el gym sino también fuera de él.'],
+        ['cta', 'CTA', 'Si te interesa probarlas, el link está aquí abajo. Están con 40% de descuento.']
+      ]
+    },
+    15: {
+      title: 'REEL 15 — Steven Vargas',
+      sub: 'BOF · Comercial · "Si todavía tomas polvo, necesitas Focus"',
+      rows: [
+        ['hook', 'Hook', 'Si todavía tomas polvo, necesitas Focus.'],
+        ['body', 'Cuerpo', '¿Mezclar, medir, ensuciar? Olvídate de eso.'],
+        ['body', 'Cuerpo', 'Mejor come Focus, la mejor creatina monohidratada en gomitas.'],
+        ['body', 'Cuerpo', 'Solo dos gomitas al día y estás listo. Las comes en cualquier momento, antes o después de entrenar, donde sea.'],
+        ['body', 'Cuerpo', 'Más práctico, más efectivo. Con dos gomitas al día tienes los 5 gramos de creatina que tu cuerpo necesita para ganar fuerza, mejorar la resistencia y crecer músculo.'],
+        ['cta', 'CTA', 'Deja atrás los polvos y dale clic aquí abajo. Están con 40% de descuento.']
+      ]
+    },
+    16: {
+      title: 'REEL 16 — Sebas Timarán',
+      sub: 'TOF · Talking head · "¿Llevas meses sin resultados?"',
+      rows: [
+        ['hook', 'Hook', '¿Llevas meses en el gym y no ves los resultados que esperabas? Mira esto.'],
+        ['body', 'Cuerpo 1 — Reencuadre', 'El problema no es que no entrenas suficiente. Es que probablemente no estás siendo constante con la creatina, y si eres como yo, simplemente se te olvida tomarla. La creatina solo funciona cuando la tomas todos los días, sin saltarte. Un día que fallas, pierdes el nivel en sangre que necesitas para ver el cambio.'],
+        ['body', 'Cuerpo 2 — Producto', 'Por eso empecé a tomar estas. Creatina monohidratada pura, 1.5 gramos por gomita, sin azúcar. Las tienes en el tarro, te las comes como un dulce y listo. No hay nada que medir, nada que mezclar, nada complejo en el proceso.'],
+        ['cta', 'CTA', 'Gracias a esto, lo que antes no lograba ser un hábito, ahora es el ritual de todos los días. Yo de vos iría abajo por las tuyas.']
+      ]
+    },
+    17: {
+      title: 'REEL 17 — Sebas Timarán',
+      sub: 'TOF · Talking head · "Mi novia me preguntó qué cambié"',
+      rows: [
+        ['hook', 'Hook', 'Mi novia me preguntó qué estaba haciendo diferente. Y yo no sabía qué responderle.'],
+        ['body', 'Cuerpo 1 — Historia', 'Llevaba meses entrenando igual. Mismos días, mismos ejercicios. Pero algo sí había cambiado: empecé a verme más definido, más lleno. Me sentía más fuerte. Estaba sacando ejercicios que hace un año ni en sueños podía.'],
+        ['body', 'Cuerpo 2 — Producto', 'Lo único diferente era esto. Por primera vez fui constante de verdad y eso fue lo que cambió todo.'],
+        ['cta', 'CTA', 'Te lo dejo arriba. Están en promo ahorita. Dales 60 días y cuéntame.']
+      ]
+    },
+    18: {
+      title: 'REEL 18 — Sebas Timarán',
+      sub: 'MOF · Roleplay doctor · "¿Meses sin sacar una dominada limpia?"',
+      rows: [
+        ['hook', 'Hook', '¿Llevas meses en el gym sin poder sacar una dominada limpia?'],
+        ['body', 'Cuerpo 1 — Causa', 'Eres el quinto man que escucho decir eso. Y no, no es tu rutina. Es que tu músculo no tiene la energía para rendir. Yo no te voy a decir que duermas más ni que cambies el split. Tengo algo mejor.'],
+        ['body', 'Cuerpo 2 — Producto', 'Esto es lo que le falta a tu músculo.'],
+        ['cta', 'CTA', 'Al mes y medio saqué mi primera dominada limpia. Te lo dejo abajo, están en promo.']
+      ]
+    },
+    19: {
+      title: 'REEL 19 — Sebas Timarán',
+      sub: 'MOF · Historia · "El man que yo admiraba me preguntó qué hacía"',
+      rows: [
+        ['hook', 'Hook', 'Había un man en el gym al que yo admiraba un montón. Llevaba años entrenando, levantaba brutal. Y un día me paró y me preguntó qué estaba haciendo yo para tener tanta fuerza.'],
+        ['body', 'Cuerpo 1 — Revelación', 'Y la verdad es que lo único que había cambiado era esto. Dejé la creatina en polvo y empecé con las gomitas de Focus. Un cambio tan simple que yo mismo no lo creía al principio.'],
+        ['body', 'Cuerpo 2 — Mecanismo', 'Las tomas en cualquier momento como snack, sin mezclar, sin medir. Por primera vez fui constante de verdad, y eso fue lo que cambió todo.'],
+        ['cta', 'CTA', 'Están en promo ahorita. El link está arriba. Dale 60 días y vas a ver los resultados.']
+      ]
+    },
+    20: {
+      title: 'REEL 20 — Sebas Timarán',
+      sub: 'MOF · POV · Aspiracional + unboxing',
+      rows: [
+        ['hook', 'Concepto', 'Igual que la referencia: primer plano aspiracional estilo Jacob Elordi, y luego unboxing del producto.'],
+        ['body', 'B-roll', 'Toma estilo Jacob Elordi aspiracional (replicar primer plano de la referencia).'],
+        ['cta', 'B-roll', 'Unboxing del producto (estilo POV).']
+      ]
+    }
+  };
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text]) =>
+      `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}</div></div>`
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
