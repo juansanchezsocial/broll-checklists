@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEM · Tomas de Apoyo · Reels 6-15</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .nobroll { padding: 14px 4px; font-size: 14px; color: var(--muted); font-style: italic; }
+  .edit-note { margin-top: 10px; padding: 10px 12px; background: var(--mof-bg); border: 1px solid #f5d98a; border-radius: 8px; font-size: 13px; color: var(--mof); line-height: 1.5; }
+  .edit-note strong { color: var(--mof); }
+
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FEM · Tomas de Apoyo · Reels 6-15</h1>
+  <div class="sub">Rodaje — Entrega 1 · FEM Probiotics (Masticable + Soda Prebiótica) · Dayana &amp; Alejandra</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="dayana">Dayana</div>
+    <div class="chip" data-filter="alejandra">Alejandra</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div id="content"></div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FEM Probiotics · Entrega 1 · Reels 6–15</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_fem_masticable_6_15_v1';
+  const PROJECT_GID = '1210559174208038';
+
+  // === DATA ===
+  const REELS = [
+    {
+      num: 6, creator: 'dayana', level: 'tof', format: 'UGC',
+      title: '"¿Cómo es posible que no sabías que tu puchaina puede saber rico?" — mal olor',
+      asana: '1215216749336584',
+      ref: 'https://www.tiktok.com/@isabellaargoty/video/7585611564510743826',
+      shots: [
+        'Creadora <strong>bajándose los pantalones</strong> y haciendo como si le huele rico',
+        'Creadora en toalla como si se fuera a <strong>aplicar jabón</strong> y gesto de "no"',
+        'Creadora con una <strong>barra de chocolate</strong> y gesto de "no"',
+        'Creadora <strong>tomando agua</strong>',
+        'Creadora <strong>comiendo la pastilla</strong>',
+        'Creadora <strong>oliendo</strong> y que huela rico',
+        '<strong>POV de los probióticos</strong> (cápsulas)',
+        'Toma desde otro ángulo haciendo como si le <strong>oliera rico</strong>'
+      ],
+      editNote: 'Editar como la referencia: mismos sonidos, mismos emojis.',
+      guion: {
+        sub: 'TOF · UGC · ángulo mal olor',
+        rows: [
+          ['hook', 'Hook', '"¿Cómo es posible que no sabías que tu puchaina puede saber rico?"'],
+          ['body', 'Cuerpo', 'Sí, tu panocha tiene un sabor y tú puedes hacer que sepa delicioso.'],
+          ['body', 'Cuerpo', 'Primero — la puchaina no necesita jabón. Se lava sola. Lo único que tienes que hacer es lavarla con bastante agua porque los jabones alteran el pH.'],
+          ['body', 'Cuerpo', 'Segundo — bájale al azúcar y a la grasa. Los azúcares alimentan los hongos y pueden darte candidiasis — y eso sí afecta el olor y el sabor ahí abajo.'],
+          ['body', 'Cuerpo', 'Tercero — toma bastante agua. Y cuando termines de hacer el delicioso, haz chichí. Así evitas las infecciones.'],
+          ['body', 'Cuerpo', 'Y lo que a mí más me ha funcionado para que todo ahí abajo esté bien son estos probióticos. Desde que los tomo, mi puchaina huele delicioso — porque cuando tu flora está sana, el cuerpo responde.'],
+          ['body', 'Cuerpo', 'Además, si quieres que esa puchaina te sepa a fresa, la Soda Prebiótica se va a volver tu mejor amiga.'],
+          ['cta', 'CTA', 'Esos dos productos son de FEM Probiotics, les dejo el link para que los consigan.']
+        ]
+      }
+    },
+    {
+      num: 7, creator: 'dayana', level: 'tof', format: 'UGC',
+      title: '"Estoy obsesionada con que mi puchaina huela rico" — sexual',
+      asana: '1215216749336586',
+      ref: 'https://www.tiktok.com/@karensevillano7/video/7472430650553879814',
+      shots: [
+        'Pose rara <strong>pasándose la mano</strong> como si le oliera rico (replicar ref: vt.tiktok.com/ZSxb75S5P)',
+        'Creadora <strong>pasándose la mano</strong> y que le huela rico',
+        '<strong>POV producto</strong> (cápsulas)',
+        'Creadora <strong>tomando / mostrando</strong> el producto'
+      ],
+      guion: {
+        sub: 'TOF · UGC · ángulo sexual',
+        rows: [
+          ['hook', 'Hook', 'Muchachas, yo no sé ustedes, pero lo que soy yo — estoy obsesionada con que mi puchaina huela rico.'],
+          ['body', 'Cuerpo', 'O sea, que cuando él baje ahí diga "uff, qué rico el sabor de mi mujer". Para mí eso es prioridad.'],
+          ['body', 'Cuerpo', 'Entonces yo siempre estoy buscando cosas que le favorezcan a ella. Y entre el busque y busque me encontré con que hay una línea de productos para la puchaina.'],
+          ['body', 'Cuerpo', '1. Primero estos probióticos. Son unas pastillas que cuidan tu panochita desde adentro. Desde que las tomo me huele delicioso y el sabor… uff, solo les diré que él no se quiere despegar de ahí.'],
+          ['body', 'Cuerpo', 'Y también está esto — la Soda Prebiótica. Una bebida súper deli que también cuida tu zona íntima por dentro. Además no tiene azúcar, así que cero drama con eso.'],
+          ['cta', 'CTA', 'Las dos actúan desde adentro para que cuando él baje ahí no te olvide jamás. Y como entre lindas no tenemos secretos, les dejo el link abajo.']
+        ]
+      }
+    },
+    {
+      num: 8, creator: 'dayana', level: 'tof', format: 'Pantalla verde',
+      title: '"Si tienes flujo raro, te pica o te huele diferente — quédate" — infecciones',
+      asana: '1215216749336588',
+      ref: 'https://www.tiktok.com/@saharyvielma/video/7372021529028119814',
+      shots: [
+        '<strong>POV calzón con flujo</strong>',
+        'Creadora con <strong>picazón</strong> (sin que se le vea la cara)',
+        'Creadora <strong>bajándose los calzones</strong> con flujo',
+        'Creadora <strong>oliendo un calzón</strong> con cara de asco',
+        '<strong>Foto antes y después</strong> de un calzón con flujo',
+        'Creadora <strong>mostrando un calzón</strong> con flujo, cara de aterrada',
+        'Creadora <strong>comiendo la pastilla</strong>',
+        'Creadora <strong>tomando la soda</strong>',
+        '<strong>Paneo de la soda</strong>',
+        'Creadora haciendo que le <strong>huele rico</strong>'
+      ],
+      guion: {
+        sub: 'TOF · Pantalla verde · infecciones',
+        rows: [
+          ['hook', 'Hook', 'Si tienes flujo raro, te pica ahí abajo o te huele diferente — quédate a ver.'],
+          ['body', 'Cuerpo', 'Yo sé que te has llegado a acomplejar por eso. Dígame: cuando uno quiere hacer el delicioso y tiene ese olorcito abajo, cualquier plan se cancela.'],
+          ['body', 'Cuerpo', 'Si te pasa esto — reina, te traigo el hack del año. Porque yo también sé lo que es pasar por eso y te entiendo.'],
+          ['body', 'Cuerpo', '¡Tarán! Son estos probióticos que actúan desde adentro — y en menos de dos semanas tu flujo se normaliza, la picazón desaparece y el olor a pescado también.'],
+          ['body', 'Cuerpo', 'Amiga, esto funciona porque actúa desde adentro.'],
+          ['cta', 'CTA', 'Además, el complemento perfecto es esta Soda Prebiótica FEM. Es una soda de fresa-sandía sin azúcar que también sirve para cuidar tu zona íntima por dentro.'],
+          ['cta', 'CTA', 'Mi amor, la puchaina soñada sí es posible. Te dejo el link aquí para que los consigas.']
+        ]
+      }
+    },
+    {
+      num: 9, creator: 'dayana', level: 'mof', format: 'POV',
+      title: '"Los mejores probióticos vaginales que vas a encontrar"',
+      asana: '1215216749336590',
+      ref: 'https://www.tiktok.com/@alnatural_co/video/7495821568694701317',
+      shots: [
+        '<strong>POV de producto</strong> (cápsulas)',
+        'Creadora <strong>dándole un beso</strong> al producto',
+        '<strong>Foto antes y después</strong> de los calzones',
+        'Creadora haciendo como que le <strong>huele rico</strong>',
+        'En el baño: <strong>calzón con flujo vs. sin flujo</strong> (pantalla dividida — sucio en B/N, limpio normal)',
+        'Creadora <strong>comiendo la pastilla</strong>',
+        '<strong>POV soda</strong>',
+        'Creadora <strong>tomando la soda</strong>',
+        '<strong>Paneo soda</strong>'
+      ],
+      guion: {
+        sub: 'MOF · POV',
+        rows: [
+          ['hook', 'Hook', 'Estos son los mejores probióticos vaginales que vas a poder encontrar — y te voy a explicar por qué.'],
+          ['body', 'Cuerpo', 'Primero — van a ayudar con tu pH vaginal, así tu panochita va a estar equilibrada y oliendo a delicioso todo el día.'],
+          ['body', 'Cuerpo', 'Segundo — te va a eliminar o disminuir diferentes infecciones.'],
+          ['body', 'Cuerpo', 'Y tercero — al tener el pH y la flora balanceados, vas a notar una mejor lubricación. Cuando hagas el delicioso, vas a notar la diferencia. Eso te lo garantizo.'],
+          ['body', 'Cuerpo', 'Y mira, yo además de las cápsulas me tomo una de estas — la Soda Prebiótica FEM. Está deliciosa, es de fresa-sandía y también sirve para cuidarte la puchaina.'],
+          ['cta', 'CTA', 'Si quieres conseguirlos, dale clic al link de abajo.']
+        ]
+      }
+    },
+    {
+      num: 10, creator: 'dayana', level: 'bof', format: 'Pantalla dividida',
+      title: '"¿Por qué seguir con infecciones y mal olor cuando puedes tomar FEM?"',
+      asana: '1215216749336592',
+      ref: 'https://www.tiktok.com/@gianni_potente/video/7438392609212714286',
+      shots: [
+        'POV calzón con flujo → gesto de "no" → <strong>calzón limpio + las pastillas</strong>',
+        '<strong>POV producto</strong> / tomándolo',
+        'Creadora <strong>mostrando dos calzones</strong> (uno con flujo, uno sin)',
+        'Creadora haciendo como si le <strong>huele rico</strong>',
+        '<strong>Close-up</strong> pasándose los dedos por la zona V mostrando crema',
+        'Mostrar una <strong>toalla y tirarla</strong>',
+        '<strong>POV de las pastillas</strong>',
+        'Creadora <strong>tomando la soda</strong>',
+        '<strong>Paneo de la soda</strong>'
+      ],
+      editNote: 'Formato pantalla dividida: arriba creadora hablando, abajo las tomas de apoyo.',
+      guion: {
+        sub: 'BOF · Pantalla dividida · combo',
+        rows: [
+          ['hook', 'Hook', '"¿Por qué seguir con infecciones y mal olor ahí abajo cuando puedes tomar FEM Probiotics?"'],
+          ['body', 'Cuerpo', 'Estas son las cápsulas de FEM Probiotics. Te tomas dos al día — y eso es todo lo que necesitas para equilibrar tu flora vaginal, eliminar el mal olor y acabar con las infecciones recurrentes.'],
+          ['body', 'Cuerpo', 'Sin cremas, sin óvulos, sin toallitas que solo tapan el problema. Con FEM actúas desde adentro.'],
+          ['body', 'Cuerpo', 'Y yo, además de las cápsulas, me tomo una de estas — la Soda Prebiótica FEM. Que está deliciosa.'],
+          ['cta', 'CTA', 'Así de simple: consigue ahora los probióticos con la soda en combo a un súper precio.']
+        ]
+      }
+    },
+    {
+      num: 11, creator: 'alejandra', level: 'tof', format: 'UGC',
+      title: '"Si el flujo que te sale ahí abajo es así, lo que tienes es cándida"',
+      asana: '1215251604953278',
+      ref: 'https://vt.tiktok.com/ZSxsYfBgA/',
+      shots: [
+        '<strong>Mano con crema en los dedos</strong> + sonido de mal olor (replicar ref — "¿te sale esto por la puchaina?")',
+        'Mostrar un <strong>calzón con crema</strong>',
+        'Toma con <strong>picazón</strong>',
+        '<strong>Abriéndose de piernas</strong> como si sintiera mal olor',
+        'Toma en el baño <strong>mostrando el flujo</strong>',
+        'Haciéndose como si se <strong>aplicara vinagre</strong> abajo',
+        '<strong>Lavándose</strong> abajo y pasarse la mano como si aún oliera mal',
+        'Mostrar a cámara el <strong>flujo entre los dedos</strong>',
+        '<strong>POV producto</strong> + paneo producto (cápsulas)',
+        'Creadora <strong>tomando la soda</strong>'
+      ],
+      guion: {
+        sub: 'TOF · UGC · cándida',
+        rows: [
+          ['hook', 'Hook', '(En pantalla) "¿Te sale esto por la puchaina?" — toma sin voz, solo el sonido de que huele mal, como la referencia.'],
+          ['body', 'Cuerpo', 'Si el flujo que te sale ahí abajo es así — lo que tienes es cándida.'],
+          ['body', 'Cuerpo', 'Un hongo que todas tenemos pero que, cuando se descontrola, nos da esa picazón, ese ardor y ese olor a pescado insoportable.'],
+          ['body', 'Cuerpo', 'A mí me pasaba que literalmente estaba en el médico cada mes y siempre me mandaban antibióticos que ya no me servían.'],
+          ['body', 'Cuerpo', 'Yo la verdad no sabía qué más hacer porque me dijeron que me lavara la cuca con vinagre, con bicarbonato y hasta con agua tibia, y nada de eso me funcionaba.'],
+          ['body', 'Cuerpo', 'Pero hace como dos semanas me encontré con una amiga que es ginecóloga y me recomendó estas pastas que tengo aquí.'],
+          ['body', 'Cuerpo', 'Oigan, yo no les sé explicar, pero desde que comencé a probar esas pastas soy la mujer más feliz del mundo: el flujo ya no me sale verde, y ya no tiene ese olor a pescado insoportable.'],
+          ['body', 'Cuerpo', 'Estas que ves aquí se llaman FEM Probiotics. Además lo empecé a complementar con esta soda que tiene prebióticos y uff, me ha encantado.'],
+          ['cta', 'CTA', 'Si llevas tiempo probando de todo, en serio dales la oportunidad.']
+        ]
+      }
+    },
+    {
+      num: 12, creator: 'alejandra', level: 'tof', format: 'UGC',
+      title: '"Amiga, si estás viendo esto en tu panti — quédate" — infecciones vaginales',
+      asana: '1215251604953280',
+      ref: 'https://www.tiktok.com/@trendyshop011/video/7561303686123736332',
+      shots: [
+        'Creadora con <strong>calzón en la mano</strong> (hook)',
+        '<strong>POV de una toalla con crema</strong>',
+        'Creadora haciendo que <strong>huele feo</strong>',
+        'Creadora <strong>pasándose los dedos</strong> y mostrando una crema',
+        'Creadora <strong>tomando la soda</strong>',
+        '<strong>POV de la soda</strong>',
+        'Creadora haciendo como que le <strong>huele rico</strong>'
+      ],
+      editNote: 'Banco de imágenes: foto de referencia de cándida (share.google) como apoyo visual / overlay.',
+      guion: {
+        sub: 'TOF · UGC · infecciones vaginales',
+        rows: [
+          ['hook', 'Hook', 'Amiga, si estás viendo esto en tu panti — quédate a escuchar.'],
+          ['body', 'Cuerpo', 'Eso se llama cándida. Un honguito que te está saliendo en la puchaina y que hace que botes ese flujito blanco.'],
+          ['body', 'Cuerpo', 'Y sí, yo sé que te pica, te mancha y huele feo. Lo sé porque yo también pasé por eso.'],
+          ['body', 'Cuerpo', 'Yo lo solucioné con FEM Probiotics — unas cápsulas que cuidan tu zona íntima desde adentro, equilibran tu flora y eliminan ese honguito de raíz.'],
+          ['body', 'Cuerpo', 'Y como el azúcar alimenta la cándida — cambié mis bebidas azucaradas por la Soda Prebiótica FEM, que aparte de deliciosa es el dúo perfecto para la salud de mi puchaina.'],
+          ['cta', 'CTA', 'Si quieres sentirte más cómoda y dejar de manchar esa panti — el link está abajo.']
+        ]
+      }
+    },
+    {
+      num: 13, creator: 'alejandra', level: 'tof', format: 'Pantalla verde',
+      title: '"¿Flujo blanco grumoso? Eso es candidiasis" — flujo anormal',
+      asana: '1215251604953282',
+      ref: 'https://www.tiktok.com/@tumejorversionl/video/7585151897909120270',
+      shots: [
+        '<strong>Bajarse el calzón</strong> y mostrarlo a cámara (replicar ref)',
+        'Tomas de un <strong>calzón con flujo</strong>',
+        'Bajándose los calzones en el baño con <strong>cara de aterrada</strong>',
+        '<strong>Pasarle el dedo al calzón</strong> como si supiera raro',
+        'Toma donde le <strong>pica</strong>',
+        'Creadora <strong>incómoda en el baño</strong>',
+        'Como si le <strong>oliera mal</strong>',
+        '<strong>Abriéndose de piernas</strong> con muy mal olor',
+        '<strong>POV producto</strong> / mostrando las pastillas a cámara',
+        '<strong>Mostrando la soda</strong>',
+        '<strong>Tomando la soda</strong> mientras trabaja'
+      ],
+      editNote: 'Banco/overlay: imágenes de tipos de flujo anormal (share.google) para "así, así o así". Banco de otras creadoras con malestar para el dato del 75%.',
+      guion: {
+        sub: 'TOF · Pantalla verde · flujo anormal',
+        rows: [
+          ['hook', 'Hook', '¿Flujo blanco grumoso? La candidiasis es un hongo que todas las mujeres tienen en el cuerpo, por ende es algo normal.'],
+          ['body', 'Cuerpo', 'Solo se vuelve anormal cuando tu flujo comienza a verse así, así o así;'],
+          ['body', 'Cuerpo', 'o comienzas a presentar picazón, ardor, incomodidad para ir al baño y ese mal olor tan insoportable que, cuando abres las piernas, literal, te llega aquí.'],
+          ['body', 'Cuerpo', 'Y no te sientas mal — el 75% de las mujeres en el mundo ha tenido candidiasis por lo menos una vez. Yo hice parte de eso.'],
+          ['body', 'Cuerpo', 'A mí siempre me mandaban lo mismo — antibióticos, óvulos genéricos. Me funcionaban 10, 15 días y volvía. Estaba tan desesperada que ya ni mi pareja quería andar conmigo.'],
+          ['body', 'Cuerpo', 'Hasta que fui donde un experto y me dijo que tenía que dejar los azúcares y las harinas — y empezar a consumir probióticos y prebióticos.'],
+          ['body', 'Cuerpo', 'Y mis elegidos fueron estos — FEM Probiotics. Los que me funcionaron a mí después de haberlo intentado todo.'],
+          ['body', 'Cuerpo', 'Y para los prebióticos — me tomo una de estas. Es una Soda Prebiótica que junto a las pastillitas hacen el dúo perfecto para la salud puchainal.'],
+          ['cta', 'CTA', 'Si llevas tiempo probando de todo y nada te ha funcionado — te dejo el link de los originales aquí abajo, porque hay muchas réplicas en el mercado.']
+        ]
+      }
+    },
+    {
+      num: 14, creator: 'alejandra', level: 'mof', format: 'Pantalla dividida',
+      title: '"Semana dos tomando estas cápsulas para que mi panocha me sepa rico"',
+      asana: '1215251604953284',
+      ref: 'https://www.tiktok.com/@itsangiebeaute/video/7496129407304731950',
+      shots: [
+        'Creadora como si le <strong>oliera rico</strong> (pantalla dividida)',
+        '<strong>POV de las pastillas</strong> en las manos',
+        'Creadora <strong>tomándolo</strong> (cápsulas)',
+        '<strong>Paneo de las pastillas</strong>',
+        'Creadora con <strong>mal olor</strong>',
+        '<strong>POV de flujo</strong> en los dedos',
+        'Creadora haciendo que le <strong>pica</strong>'
+      ],
+      editNote: 'Pantalla dividida: arriba tomas de apoyo, abajo creadora. Overlay: "Así es como mi panocha huele siempre deli".',
+      guion: {
+        sub: 'MOF · Pantalla dividida',
+        rows: [
+          ['hook', 'Hook', 'Semana dos tomando estas cápsulas para que mi panocha me sepa rico — así como le gusta a mi hombre.'],
+          ['body', 'Cuerpo', 'Sí amiga — esto sirve para equilibrar todo ahí abajo. Yo tomo dos pastillitas de estas todos los días.'],
+          ['body', 'Cuerpo', 'Amiga, con esto te olvidas del mal olor, de la irritación, de la picazón, del flujo raro.'],
+          ['body', 'Cuerpo', 'Aparte de eso me tomo esta Soda Prebiótica. Esta sodita alimenta las bacterias buenas que tienes ahí abajo. Mejor dicho, es el kit puchainal que cualquiera necesita.'],
+          ['cta', 'CTA', 'El link se los dejo abajo para que lo consigan en combo.']
+        ]
+      }
+    },
+    {
+      num: 15, creator: 'alejandra', level: 'bof', format: 'Comercial',
+      title: '"¿Por qué seguir con la panocha oliendo a pescado cuando existe FEM?"',
+      asana: '1215251604953286',
+      ref: 'https://www.tiktok.com/@gianni_potente/video/7438392609212714286',
+      shots: [
+        'Creadora <strong>oliéndose</strong> con mal olor → le pasan el producto → <strong>cara de confundida</strong>',
+        '<strong>POV producto</strong>',
+        'Creadora <strong>comiendo el producto</strong>',
+        'Creadora haciendo de que le <strong>huele rico</strong>',
+        'Creadora <strong>tomando las pastillas</strong>',
+        'Creadora <strong>dándole un beso</strong> al producto',
+        'Creadora <strong>tomando la bebida</strong>',
+        '<strong>Paneo de los dos productos</strong>'
+      ],
+      editNote: 'Overlay: reseñas de la página (femprobiotics.co) en pantalla completa para "miles de mujeres las están usando".',
+      guion: {
+        sub: 'BOF · Comercial · combo',
+        rows: [
+          ['hook', 'Hook', '"¿Por qué seguir con la panocha oliendo a pescado y que tu novio no se quiera ni acercar — cuando existe FEM Probiotics?"'],
+          ['body', 'Cuerpo', 'Estas son las cápsulas de FEM Probiotics. Te tomas dos al día y listo. Actúan desde adentro y los resultados se sienten en menos de dos semanas.'],
+          ['body', 'Cuerpo', 'Miles de mujeres las están usando, y sus reseñas lo demuestran.'],
+          ['body', 'Cuerpo', 'Con FEM Probiotics olvídate del mal olor y la picazón.'],
+          ['cta', 'CTA', 'Consíguelas ahora en el link de abajo antes de que se agoten — y de paso llévate la Soda Prebiótica FEM para que tu panochita esté feliz por dentro y por fuera.']
+        ]
+      }
+    }
+  ];
+
+  const CREATORS = [
+    { key: 'dayana', name: 'Dayana', range: 'Reels 6–10' },
+    { key: 'alejandra', name: 'Alejandra', range: 'Reels 11–15' }
+  ];
+
+  const CHECK_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // === RENDER ===
+  const content = document.getElementById('content');
+  CREATORS.forEach(c => {
+    const reels = REELS.filter(r => r.creator === c.key);
+    const block = document.createElement('div');
+    block.className = 'creator-block';
+    block.dataset.creator = c.key;
+    let html = `<div class="creator-title"><h2>${c.name}</h2><span class="count">${c.range}</span></div>`;
+    reels.forEach(r => {
+      const n = r.shots.length;
+      const shotsHtml = r.shots.map((s, i) =>
+        `<div class="shot" data-id="${r.num}-${i+1}"><div class="checkbox">${CHECK_SVG}</div><div class="shot-text">${s}</div></div>`
+      ).join('');
+      const editHtml = r.editNote ? `<div class="edit-note"><strong>Nota edición:</strong> ${r.editNote}</div>` : '';
+      html += `
+      <div class="reel" data-reel="${r.num}">
+        <div class="reel-head">
+          <span class="reel-num">REEL ${r.num}</span>
+          <span class="reel-title">${r.title}</span>
+          <div class="reel-meta">
+            <span class="tag ${r.level}">${r.level.toUpperCase()}</span>
+            <span class="tag">${r.format}</span>
+            <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(${r.num})">📝 Guión</button>
+            <a class="ref-btn" href="${r.ref}" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+            <a class="ref-btn asana-btn" href="https://app.asana.com/0/${PROJECT_GID}/${r.asana}" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+          </div>
+          <span class="reel-progress" data-reel-progress="${r.num}">0/${n}</span>
+          <span class="caret">›</span>
+        </div>
+        <div class="reel-body">${shotsHtml}${editHtml}</div>
+      </div>`;
+    });
+    block.innerHTML = html;
+    content.appendChild(block);
+  });
+
+  const GUIONES = {};
+  REELS.forEach(r => {
+    GUIONES[r.num] = {
+      title: `REEL ${r.num} — ${CREATORS.find(c => c.key === r.creator).name}`,
+      sub: r.guion.sub,
+      rows: r.guion.rows
+    };
+  });
+
+  // === STATE / LOGIC ===
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) el.classList.add('done');
+      else el.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => { head.parentElement.classList.toggle('open'); });
+  });
+
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if ((currentFilter === 'dayana' || currentFilter === 'alejandra') && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  document.querySelector('.reel').classList.add('open');
+  updateProgress();
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    document.getElementById('modalBody').innerHTML = data.rows.map(([cls, label, text]) =>
+      `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}</div></div>`
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGuion() {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGuion(); });
+</script>
+</body>
+</html>
