@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO BOOSTERS · Tomas de Apoyo · Reels 51-55</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .note-banner { background: var(--mof-bg); border: 1px solid #f6dd9a; border-radius: 10px; padding: 12px 16px; font-size: 13.5px; color: #7c4a05; margin-top: 14px; line-height: 1.5; }
+  .note-banner strong { color: #5c3704; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; border: 1px solid transparent; }
+  .guion-fmt.camara { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+  .guion-fmt.vozoff { background: #ede9fe; color: #6d28d9; border-color: #ddd6fe; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; border-color: #fed7aa; }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>BIO BOOSTERS · Tomas de Apoyo · Reels 51-55</h1>
+  <div class="sub">Rodaje Entrega 4 — Founder con Valentina · Focus Booster · Laboratorio / fábrica</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<!-- VALENTINA · FUNDADORA -->
+<div class="creator-block" data-creator="valentina">
+  <div class="creator-title">
+    <h2>Valentina · Fundadora</h2>
+    <span class="count">Reels 51–55 · Copy Luisa</span>
+  </div>
+
+  <div class="note-banner">
+    <strong>Día de rodaje en el laboratorio/fábrica:</strong> los reels 52, 53, 54 y 55 viven del b-roll de laboratorio (Valentina trabajando, equipo, Melena de León, paneos de producto). Conviene capturar ese banco una sola vez y reutilizarlo entre reels. Los clips de Shark Tank y de Pinterest son inserts de edición — no se graban en set.
+  </div>
+
+  <!-- REEL 51 -->
+  <div class="reel" data-reel="51">
+    <div class="reel-head">
+      <span class="reel-num">REEL 51</span>
+      <span class="reel-title">"Soy Valentina, la fundadora de Bioboosters — la que viste en Shark Tank" — Founder</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Founder</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(51)">📝 Guión</button>
+        <a class="ref-btn" href="https://app.foreplay.co/share/ads/IntDlDNV6zlXRrm9bDCL?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1215535419892444" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="51">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="51-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Valentina a cámara</strong> (pantalla verde) presentándose como fundadora — base del reel</div></div>
+      <div class="shot" data-id="51-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong> (toma de apoyo del cierre)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 52 -->
+  <div class="reel" data-reel="52">
+    <div class="reel-head">
+      <span class="reel-num">REEL 52</span>
+      <span class="reel-title">"Hola, soy Valentina… hoy te cuento por qué lo creé" — Founder origin</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Founder</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(52)">📝 Guión</button>
+        <a class="ref-btn" href="https://vt.tiktok.com/ZSQBBDRf2/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1215535419892446" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="52">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="52-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Valentina a cámara</strong> (presentación + cierre)</div></div>
+      <div class="shot" data-id="52-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de <strong>Valentina trabajando en el laboratorio</strong></div></div>
+      <div class="shot" data-id="52-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de <strong>Valentina trabajando en equipo</strong> (con el equipo del laboratorio)</div></div>
+      <div class="shot" data-id="52-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de la <strong>Melena de León</strong> (si la tienen en el laboratorio)</div></div>
+      <div class="shot" data-id="52-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 53 -->
+  <div class="reel" data-reel="53">
+    <div class="reel-head">
+      <span class="reel-num">REEL 53</span>
+      <span class="reel-title">"Soy ingeniera química y hoy te cuento qué son los nootrópicos naturales" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(53)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@dr.patricio_ochoa/video/7423921781532134662" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1215535419892450" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="53">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="53-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Valentina a cámara</strong> (hook "soy ingeniera química") con tomas de apoyo</div></div>
+      <div class="shot" data-id="53-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>en el laboratorio</strong></div></div>
+      <div class="shot" data-id="53-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas del <strong>equipo de trabajo</strong></div></div>
+      <div class="shot" data-id="53-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+      <div class="shot" data-id="53-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips de <strong>creadoras agotadas / con cansancio y estrés</strong> (b-roll negativo de apoyo)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 54 -->
+  <div class="reel" data-reel="54">
+    <div class="reel-head">
+      <span class="reel-num">REEL 54</span>
+      <span class="reel-title">"¿Cómo nace un producto como Focus Booster? Así lo hacemos" — Behind the scenes</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(54)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@paranice_/video/7632373840294743304" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1215535419892448" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="54">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="54-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Diferentes tomas del laboratorio</strong> (fijarse en la referencia para el estilo y las transiciones)</div></div>
+      <div class="shot" data-id="54-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de <strong>Valentina trabajando</strong></div></div>
+      <div class="shot" data-id="54-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas del <strong>equipo de trabajo</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 55 -->
+  <div class="reel" data-reel="55">
+    <div class="reel-head">
+      <span class="reel-num">REEL 55</span>
+      <span class="reel-title">"Esto es la bomba… algo diferente a todo lo que hay en Colombia" — Podcast</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Podcast</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(55)">📝 Guión</button>
+        <a class="ref-btn" href="https://www.tiktok.com/@zzenlabs/video/7494740069090069782" target="_blank" onclick="event.stopPropagation()">▶ Ref</a>
+        <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1215535419892452" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="55">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="55-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Valentina en formato podcast con el producto en la mano</strong> (como la referencia)</div></div>
+      <div class="shot" data-id="55-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>en el laboratorio</strong> (apoyo)</div></div>
+      <div class="shot" data-id="55-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+      <div class="shot" data-id="55-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips de <strong>creadoras tomando el producto</strong> (b-roll de apoyo)</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · BIO BOOSTERS · Entrega 4 · Reels 51–55</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_bioboosters_51_55_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  document.querySelector('.reel').classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+    51: {
+      title: 'REEL 51 — Valentina (Fundadora)',
+      sub: 'TOF · Founder · "Soy Valentina, la que viste en Shark Tank"',
+      rows: [
+        ['hook', 'Hook', '"Soy Valentina, la fundadora de Bioboosters — la marca que viste en Shark Tank Colombia."', 'Pantalla verde'],
+        ['body', 'Cuerpo', 'Quizás me recuerdas como la que les preguntó a los tiburones si alguna vez habían querido tener superpoderes para hacer las cosas diez veces más rápido.', 'A cámara'],
+        ['body', 'Cuerpo', 'Creé Bioboosters porque vi que muchas personas mantienen con la mente saturada — y no existía nada natural que realmente le diera al cerebro lo que necesitaba para rendir.', 'A cámara'],
+        ['body', 'Cuerpo', 'Así que como ingeniera química me puse a formular junto con un médico funcional y un neuroterapeuta lo que es ahora Focus Booster: un nootrópico con 1500mg de Melena de León, tres veces más que otros productos, más Magnesio y vitaminas B.', 'A cámara'],
+        ['body', 'Cuerpo', 'Llevamos Bioboosters al Shark Tank Colombia — y los tiburones no pudieron ignorarlo.', 'A cámara'],
+        ['body', 'Cuerpo', 'Estoy muy orgullosa de haber apostado por esto. Y el mercado colombiano nos lo confirmó.', 'A cámara'],
+        ['cta', 'CTA', 'Si estás buscando algo que realmente apoye tu cerebro — esto es para ti.', 'A cámara con toma de apoyo']
+      ]
+    },
+    52: {
+      title: 'REEL 52 — Valentina (Fundadora)',
+      sub: 'TOF · Founder · "Hoy te cuento por qué lo creé"',
+      rows: [
+        ['hook', 'Hook', '"Hola, soy Valentina. Y si estás viendo esto…"', 'A cámara'],
+        ['body', 'Cuerpo', 'Seguramente me has visto en Shark Tank. Pero hoy no te voy a hablar del producto — te voy a contar por qué lo creé.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Soy ingeniera química. Y desde esa perspectiva empecé a hacerme una pregunta,', 'A cámara'],
+        ['body', 'Cuerpo', 'y es que todos vivimos en un mundo con una sobreproducción de estímulos, de información, de decisiones.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Y en definitiva el cerebro humano no fue diseñado para procesar todo eso. Y nadie estaba haciendo nada al respecto.', 'A cámara'],
+        ['body', 'Cuerpo', '¿Por qué seguimos funcionando a medias cuando hay ingredientes naturales con siglos de uso y estudios científicos reales que pueden ayudar al cerebro a rendir de verdad?', 'A cámara con apoyos'],
+        ['body', 'Cuerpo', 'Empecé a investigar. Encontré el mundo de los nootrópicos y la Melena de León — un hongo con más de mil años de uso en la medicina tradicional china y con estudios reales que respaldan sus beneficios para el rendimiento mental.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Así que junto con un médico funcional y un neuroterapeuta con más de 10 años de experiencia — creamos Focus Booster. Un alimento funcional formulado para darle al cerebro exactamente lo que necesita para rendir en un mundo así de saturado.', 'Voz en off'],
+        ['body', 'Cuerpo', 'No es un energizante. No es un suplemento genérico. Es lo que el cerebro necesitaba desde hace mucho — y que nadie había formulado bien hasta ahora.', 'A cámara'],
+        ['cta', 'CTA', 'Si sientes que tu cerebro no está rindiendo como debería en este mundo — esto es para ti.', 'A cámara']
+      ]
+    },
+    53: {
+      title: 'REEL 53 — Valentina (Fundadora)',
+      sub: 'TOF · Autoridad · "¿Qué son los nootrópicos naturales?"',
+      rows: [
+        ['hook', 'Hook', '"Soy ingeniera química y hoy te voy a contar qué son los nootrópicos naturales — porque sé que el término suena raro pero es más simple de lo que crees."', 'A cámara con tomas de apoyo'],
+        ['body', 'Cuerpo', 'Básicamente son ingredientes naturales que llevan siglos usándose para ayudar al cerebro a funcionar mejor. No son medicamentos. No te van a poner eufórico ni ansioso. Son más como darle al cerebro lo que necesita para que rinda al máximo.', 'A cámara'],
+        ['body', 'Cuerpo', 'El problema es que la mayoría de productos que los usan traen tan poco del ingrediente que el cerebro no lo nota. Y por eso la gente dice que no funcionan. Pero no es el ingrediente — es la dosis.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Uno de los más estudiados es el hongo Melena de León. Lo llevan usando más de mil años en Asia y hoy tiene estudios reales que muestran que ayuda a apoyar la concentración y reducir el ruido mental.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Y seré honesta — esto no es magia. Si no duermes, no haces ejercicio y comes mal, no hay nootrópico que lo solucione. Pero si ya estás haciendo las cosas bien y sientes que el cerebro no rinde como debería — esto puede ser lo que le falta.', 'Voz en off'],
+        ['cta', 'CTA', 'Si quieres probarlo, consíguelo ahora en el link de abajo.', 'A cámara']
+      ]
+    },
+    54: {
+      title: 'REEL 54 — Valentina (Fundadora)',
+      sub: 'MOF · Autoridad · "¿Cómo nace Focus Booster?"',
+      rows: [
+        ['hook', 'Hook', '"¿Alguna vez te has preguntado cómo nace un producto como Focus Booster? Así lo hacemos."', 'Voz en off'],
+        ['body', 'Cuerpo', 'Soy Valentina, ingeniera química. Y para desarrollar la fórmula de Focus Booster trabajamos en equipo con científicos que llevan más de 10 años estudiando cómo funciona el cerebro.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Y tenemos tres reglas que no se negocian. Primera: solo ingredientes que realmente funcionen. La Melena de León que usamos tiene estudios reales detrás — y la ponemos en la dosis más alta del mercado: 1500mg.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Segunda: la fórmula completa. No es solo el hongo — también Magnesio, Omega 3 y vitaminas B. Todo para que el cerebro lo absorba bien y el efecto dure todo el día.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Tercera: que sepa bien. Porque si no sabe bien, no lo tomas todos los días. Y si no lo tomas todos los días, no te va a servir de nada.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Con esto claro empiezan las pruebas, analizamos que todo esté perfecto.', 'Voz en off'],
+        ['cta', 'CTA', 'Y cuando todo eso cuadra — ahí sale Focus Booster. Para que tu cerebro tenga lo que necesita para concentrarse y aguantar el día sin caerse a las 3pm.', 'Voz en off']
+      ]
+    },
+    55: {
+      title: 'REEL 55 — Valentina (Fundadora)',
+      sub: 'BOF · Podcast · "Esto es la bomba"',
+      rows: [
+        ['hook', 'Hook', '"Esto es la bomba. Y no lo digo porque lo haya creado yo — lo digo porque realmente es algo diferente a todo lo que hay en el mercado colombiano."', 'Podcast'],
+        ['body', 'Cuerpo', 'Los nootrópicos son potenciadores cognitivos — básicamente ingredientes que ayudan a que el cerebro funcione mejor. Los hay sintéticos y los hay naturales. En Focus Booster usamos solo naturales. Nada que te vaya a hacer daño. Nada raro.', 'Podcast con apoyos'],
+        ['body', 'Cuerpo', '¿Qué hacen? Ayudan a mejorar la concentración, reducir el estrés mental y el cansancio.', 'Voz en off'],
+        ['body', 'Cuerpo', 'En Bioboosters seleccionamos los mejores ingredientes — Melena de León con 1500mg, tres veces más que otros productos, más Magnesio, Omega 3 y vitaminas B.', 'Voz en off'],
+        ['body', 'Cuerpo', 'Ahora miles de personas en Colombia ya lo están tomando a diario.', 'Voz en off'],
+        ['cta', 'CTA', 'Si ya lo conoces y estás pensando en comprarlo — este es el momento.', 'Podcast']
+      ]
+    }
+  };
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      const f = (fmt || '').toLowerCase();
+      let fc = 'camara';
+      if (f.includes('voz')) fc = 'vozoff';
+      else if (f.includes('verde')) fc = 'verde';
+      else if (f.includes('podcast')) fc = 'podcast';
+      const fmtBadge = fmt ? `<div class="guion-fmt ${fc}">${fmt}</div>` : '';
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}${fmtBadge}</div></div>`;
+    }).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
