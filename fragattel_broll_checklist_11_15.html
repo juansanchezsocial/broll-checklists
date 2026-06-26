@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRAGATTEL · Tomas de Apoyo · Reels 11–15</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FRAGATTEL · Tomas de Apoyo · Reels 11–15</h1>
+  <div class="sub">Rodaje — Pareja Isa y Sebastián · Perfume O66Y</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="isa-sebastian">
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"Un pedido para Isa…" — Sketch repartidor</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@mimiilovi/video/7569994580687441174?_r=1&_t=ZS-97Vy00jfoNk" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1215614922382479/1216050672432952" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Insert del repartidor <strong>mostrando el perfume O66Y</strong> ("yo siempre lo cargo, mira")</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Momento <strong>coqueta</strong>: ella le agarra la mano al hombre al decir lo de "mi futuro novio" (la indirecta)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"La reacción de mi novia…" — Sketch espejo</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@itsceyandjai/video/7525502465794510094?_r=1&_t=ZS-97Vy5FaTMjQ" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1215614922382479/1216050672432954" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hombre frente al espejo <strong>aplicándose el perfume</strong>, como terminando de alistarse (hook)</div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Reacción <strong>natural</strong> de ella al "darse cuenta" de la cámara (que no parezca que vio el celular)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"Si un hombre huele a ESTO…" — UGC reseña</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC reseña</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@alejadeals/video/7509917812417121579?_r=1&_t=ZS-97VyFLfdpVx" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1215614922382479/1216050672432956" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Reseña en <strong>selfie</strong> grabada en la <strong>piscina</strong></div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cierre: ella <strong>esconde/guarda el perfume con cara coqueta</strong> cuando él pregunta en off "amor, ¿qué haces con mi perfume?"</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"¿Qué es ese olor?…" — Sketch piscina</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">📝 Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZSC2WcMDu/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1215614922382479/1216050672432958" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Escena grabada en la <strong>piscina</strong></div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella con el <strong>perfume en la mano mientras lo huele</strong> (reencuadre)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">"Si tu novio no huele a esto…" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/dRZMO3aeEvbux83fYePL?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1215614922382479/1216050672432960" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="15-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>al espejo en vestido de baño</strong> (o blusa escotada) oliendo el perfume</div></div>
+      <div class="shot" data-id="15-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del perfume</strong> (varias tomas: hook y reencuadre)</div></div>
+      <div class="shot" data-id="15-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip de la creadora <strong>oliendo el perfume</strong></div></div>
+      <div class="shot" data-id="15-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en <strong>POV haciendo como si le oliera el brazo al novio</strong></div></div>
+      <div class="shot" data-id="15-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del perfume</strong></div></div>
+      <div class="shot" data-id="15-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>oliendo al novio</strong></div></div>
+      <div class="shot" data-id="15-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del <strong>creador aplicándose el perfume</strong> y ella oliéndolo</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FRAGATTEL · Entrega 1</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_fragattel_11_15_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "11": {
+    "title": "REEL 11 — Pareja Isa y Sebastián",
+    "sub": "TOF · Sketch · Ángulo: el perfume que usan los famosos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<strong>Repartidor:</strong> ¡Buenas! ¿Un pedido para Isa? — <strong>Chica:</strong> Hola, sí, soy yo."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "<strong>Chica:</strong> (olfatea) Uy… ¿y eso? Huele buenísimo, ¿qué es ese olor? — <strong>Repartidor:</strong> Ah, debe ser el perfume que tengo puesto."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "<strong>Chica:</strong> No, en serio, huele deli, me encanta. ¿Cuál es? — <strong>Repartidor:</strong> Yo siempre lo cargo, mira."
+      ],
+      [
+        "body",
+        "Reencuadre",
+        "<strong>Chica:</strong> Ay no… huele demasiado rico. ¿Cuál es? — <strong>Repartidor:</strong> El O66Y. Hoy ya me han preguntado como tres veces por lo mismo."
+      ],
+      [
+        "body",
+        "Producto",
+        "<strong>Repartidor:</strong> Es el que usan WestCol, Blessd, Cosculluela… toda esa gente. — <strong>Chica:</strong> ¿El que usan ELLOS? — <strong>Repartidor:</strong> Sí, es una edición exclusiva, no es imitación de nada."
+      ],
+      [
+        "cta",
+        "Beneficio / CTA",
+        "<strong>Chica:</strong> ¿Y dónde lo pido? Se lo voy a regalar a mi futuro novio. — <strong>Repartidor:</strong> Jaja, en el link de abajo."
+      ]
+    ]
+  },
+  "12": {
+    "title": "REEL 12 — Pareja Isa y Sebastián",
+    "sub": "TOF · Sketch · Texto en pantalla: \"La reacción de mi novia al usar este perfume\"",
+    "rows": [
+      [
+        "hook",
+        "Hook (visual)",
+        "Hombre en el espejo aplicándose el perfume como si se estuviera terminando de alistar. Overlay: \"La reacción de mi novia al usar este perfume\"."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "<strong>Ella:</strong> (entrando) Uy… ¿a qué hueles? — <strong>Él:</strong> ¿Ah? — <strong>Ella:</strong> No, en serio, ¿qué te echaste?"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "<strong>Ella:</strong> Déjame oler. (se acerca al cuello) Ay no… mmm, ¿qué es eso? — <strong>Él:</strong> Es el O66Y, un perfume nuevo que me compré."
+      ],
+      [
+        "body",
+        "Reencuadre",
+        "<strong>Ella:</strong> Mmm… pues te queda buenísimo. Hueles delicioso, en serio. — <strong>Él:</strong> ¿Sí?"
+      ],
+      [
+        "cta",
+        "Producto / Cierre",
+        "<strong>Ella:</strong> Sí… no te despegues de mí en toda la noche 😏. (nota cámara) Ay, ¿estás grabando? Jaja qué pena. Me toca esconderlo… o todas lo van a querer oler 😏"
+      ]
+    ]
+  },
+  "13": {
+    "title": "REEL 13 — Pareja Isa y Sebastián",
+    "sub": "TOF · UGC reseña (selfie en piscina)",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "O sea… si un hombre huele a ESTO, yo me le pego al cuello todo el día. ¡Ay, qué cosa tan deliciosa!"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "Chicas, se lo saqué a mi novio del bolso porque tenía que mostrárselos. Este es el O66Y."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "Un perfume nuevo; se lo echa y a mí me toca aguantarme las ganas de no soltarlo. Sabe que me gusta tanto que lo trae hasta a la piscina, jaja."
+      ],
+      [
+        "body",
+        "Reencuadre",
+        "En serio, huele espectacular… huele a hombre tatuado, ¿sí me entiendes? De esos que entran a un lado y todo el mundo voltea."
+      ],
+      [
+        "body",
+        "Producto",
+        "Y lo mejor: le dura todo el día. Se lo echa en la mañana y en la noche todavía huele."
+      ],
+      [
+        "cta",
+        "Beneficio / CTA",
+        "Si quieres que tu novio huela así de rico, este es. Cómpraselo, hazme caso. — <strong>Él (off):</strong> Amor, ¿qué haces con mi perfume? — <strong>Ella:</strong> Nada, nada (coqueta, lo guarda). Te dejo el link abajo."
+      ]
+    ]
+  },
+  "14": {
+    "title": "REEL 14 — Pareja Isa y Sebastián",
+    "sub": "TOF · Sketch · Ángulo: duración del perfume",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<strong>Ella:</strong> Amor… ¿qué es ese olor? Ven, ven acá."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "<strong>Ella:</strong> Pero ¿qué te echaste? Esto huele increíble. Déjame oler. — <strong>Él:</strong> Mi perfume nuevo."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "<strong>Ella:</strong> ¿Y lo trajiste aquí a la piscina? ¿Dónde lo tienes? — <strong>Él:</strong> Sí, este es el O66Y, me lo compré hace poco."
+      ],
+      [
+        "body",
+        "Reencuadre",
+        "<strong>Ella:</strong> Yo no soy de andarte diciendo en qué gastar… pero este sí valió la pena. ¡Huele demasiado bien! — <strong>Él:</strong> Jaja, sí, es el que usa Cosculluela, WestCol… yo tenía que ir a la fija."
+      ],
+      [
+        "body",
+        "Producto",
+        "<strong>Ella:</strong> ¿Y dura o se va de una? — <strong>Él:</strong> Amor, estamos en la piscina y no se me ha quitado el olor. Eso dura todo el día."
+      ],
+      [
+        "cta",
+        "Beneficio / CTA",
+        "<strong>Ella:</strong> Uff, qué rico, me encanta. ¿Dónde lo conseguiste? — <strong>Él:</strong> En el link de abajo."
+      ]
+    ]
+  },
+  "15": {
+    "title": "REEL 15 — Pareja Isa y Sebastián",
+    "sub": "TOF · Pantalla verde · Ángulo: el perfume que usan los famosos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Si tu novio todavía no huele a esto, déjame decirte que este perfume es una locura."
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "Se llama O66Y y es el perfume que usan WestCol, Blessd y Cosculluela… por algo será. Huele tan rico que no vas a poder despegarte de él. (Edición: imágenes flotantes de los famosos recortadas sin fondo)"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "Y lo mejor es que dura todo el día. Mi novio se lo echa en la mañana y en la noche todavía huele delicioso."
+      ],
+      [
+        "body",
+        "Reencuadre",
+        "Y ojo, no es copia de ningún perfume caro… es una edición exclusiva, una firma propia."
+      ],
+      [
+        "cta",
+        "Producto / CTA",
+        "Regálale el O66Y a tu novio y agradéceme después. Lo pides en Fragattel y llega gratis a toda Colombia."
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text]) =>
+      `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}</div></div>`
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
