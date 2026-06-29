@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEM · Tomas de Apoyo · Combo Verano (Reels 156–165)</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FEM · Tomas de Apoyo · Combo Verano (Reels 156–165)</h1>
+  <div class="sub">Rodaje 29 jun · KAREN TORRES (156–160) + NATHALY GUZMAN (161–165) · Combo Verano FEM</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="karen">Karen Torres</div>
+    <div class="chip" data-filter="nathaly">Nathaly Guzmán</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="karen">
+  <div class="creator-title">
+    <h2>Karen Torres</h2>
+    <span class="count">Reels 156–160</span>
+  </div>
+  <!-- REEL 156 -->
+  <div class="reel" data-reel="156">
+    <div class="reel-head">
+      <span class="reel-num">REEL 156</span>
+      <span class="reel-title">"Esenciales para las vacaciones que nunca se me pueden quedar…" — UGC · Review</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · Review</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(156)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@laurenedrexel/video/7623860229796580639" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216076067306124" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="156">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="156-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Sentada en el carro o el apartamento, con un <strong>tote bag al lado</strong>, en vestido de baño + bottom playero</div></div>
+      <div class="shot" data-id="156-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca las <strong>gafas</strong>, se las pone, sonríe y las guarda en el tote</div></div>
+      <div class="shot" data-id="156-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el <strong>jabón íntimo FEM</strong>, lo muestra mientras habla y lo guarda</div></div>
+      <div class="shot" data-id="156-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Se aplica <strong>bloqueador</strong> en la cara y lo guarda</div></div>
+      <div class="shot" data-id="156-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el frasco de <strong>gomitas PMS</strong>, se come una y lo guarda</div></div>
+      <div class="shot" data-id="156-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca los <strong>probióticos masticables</strong>, se come uno y lo guarda</div></div>
+      <div class="shot" data-id="156-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Abre la <strong>soda prebiótica</strong>, toma un sorbo y la guarda</div></div>
+      <div class="shot" data-id="156-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mete el <strong>cargador</strong> al bolso mientras se ríe</div></div>
+      <div class="shot" data-id="156-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Levanta el <strong>tote bag</strong> para mostrarlo completo, se lo pone al hombro y sale caminando hacia la piscina</div></div>
+      <div class="shot" data-id="156-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Plano detalle</strong> del tote con todos los productos adentro</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 157 -->
+  <div class="reel" data-reel="157">
+    <div class="reel-head">
+      <span class="reel-num">REEL 157</span>
+      <span class="reel-title">"POV: Te vas de vacaciones con tu amiga mamá 😂" — Sketch</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(157)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@gadejo.oficial/video/7629125772162305300" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216076067306128" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="157">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="157-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Le pone la <strong>soda prebiótica</strong> en la mano y espera hasta que la otra tome un sorbo</div></div>
+      <div class="shot" data-id="157-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Le destapa el frasco y le pone un <strong>masticable en la boca</strong> (la otra persona no se ve, solo el sonido del "aaaa")</div></div>
+      <div class="shot" data-id="157-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Escucha mirando a cámara, busca en el bolso y entrega el <strong>paquete de gomitas PMS</strong></div></div>
+      <div class="shot" data-id="157-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Le muestra el <strong>jabón íntimo</strong> y señala el vestido de baño con cara de advertencia</div></div>
+      <div class="shot" data-id="157-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cierra el <strong>tote bag</strong>, se lo entrega y le da una palmadita en el hombro antes de seguir hacia la piscina</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 158 -->
+  <div class="reel" data-reel="158">
+    <div class="reel-head">
+      <span class="reel-num">REEL 158</span>
+      <span class="reel-title">"Mi secreto para que las vacaciones no me pasen factura ☀️" — UGC · Sin voz</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC · Sin voz</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(158)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@thankulexx/video/7652135579735379213" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216076067306130" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="158">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="158-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Primer plano en vestido de baño; acerca la <strong>soda</strong> al lente y la destapa frente al micrófono</div></div>
+      <div class="shot" data-id="158-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla dividida</strong>: arriba soda sirviéndose con hielo, abajo ella tomándola en la piscina</div></div>
+      <div class="shot" data-id="158-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Abre el frasco, se come un <strong>masticable</strong> y sonríe</div></div>
+      <div class="shot" data-id="158-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tira el <strong>jabón sobre la cama</strong> (organizada estéticamente con vestido de baño, gafas y tote bag)</div></div>
+      <div class="shot" data-id="158-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla dividida</strong>: frasco de gomitas a un lado, ella comiéndose una al otro</div></div>
+      <div class="shot" data-id="158-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Guarda todo en el <strong>tote bag</strong>, se lo pone al hombro y sale caminando hacia la piscina</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 159 -->
+  <div class="reel" data-reel="159">
+    <div class="reel-head">
+      <span class="reel-num">REEL 159</span>
+      <span class="reel-title">"Por eso mismo no me voy de vacaciones sin mi Combo Verano" — Respondiendo a comentario</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Resp. comentario · A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(159)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/MOvw8JOj7vYyBKqgoZpJ" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216076067306132" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="159">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="159-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Entra al baño quitándose la salida de baño; se quita el vestido de baño y muestra discretamente que el <strong>panty quedó húmedo</strong>; mira a cámara con cara de "exacto"</div></div>
+      <div class="shot" data-id="159-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Va <strong>mostrando cada producto</strong> mientras lo menciona</div></div>
+      <div class="shot" data-id="159-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cierra el <strong>tote bag</strong>, sonríe y señala hacia abajo con el kit en la mano</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 160 -->
+  <div class="reel" data-reel="160">
+    <div class="reel-head">
+      <span class="reel-num">REEL 160</span>
+      <span class="reel-title">"El combo de verano de FEM está en preventa" — VSL · Voz en off</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">VSL · Voz en off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(160)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/zRdkgZNcXDVh7zMlCmCi" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216076067306134" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="160">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="160-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Empaca el <strong>Combo Verano</strong> dentro del tote bag junto al vestido de baño, gafas y bloqueador</div></div>
+      <div class="shot" data-id="160-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de ella <strong>rascándose</strong> sobre el vestido de baño</div></div>
+      <div class="shot" data-id="160-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella <strong>usando cada producto</strong> durante el viaje (tomas de apoyo)</div></div>
+      <div class="shot" data-id="160-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cierra el <strong>tote bag</strong>, se lo pone al hombro y camina hacia la piscina</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="nathaly">
+  <div class="creator-title">
+    <h2>Nathaly Guzmán</h2>
+    <span class="count">Reels 161–165</span>
+  </div>
+  <!-- REEL 161 -->
+  <div class="reel" data-reel="161">
+    <div class="reel-head">
+      <span class="reel-num">REEL 161</span>
+      <span class="reel-title">"Doctora, ando con un olor raro ahí abajo…" — Sketch</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(161)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@mjvillafradez/video/7560180352765938999" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216080808814079" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="161">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="161-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">La paciente <strong>muestra los calzones con flujo</strong> (como si se los acabara de quitar)</div></div>
+      <div class="shot" data-id="161-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">La doctora <strong>toma los calzones y prueba la crema</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 162 -->
+  <div class="reel" data-reel="162">
+    <div class="reel-head">
+      <span class="reel-num">REEL 162</span>
+      <span class="reel-title">"De las cosas más frustrantes de ser mujer…" — UGC reseña</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC reseña</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(162)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@nathaliarivera/video/7368995516580924714" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216080808814083" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="162">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="162-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora agachada se huele abajo, huele tan mal que pone <strong>cara de aterrada</strong> y mira a la cámara</div></div>
+      <div class="shot" data-id="162-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en toalla <strong>intentando limpiarse con agua</strong> en la zona V</div></div>
+      <div class="shot" data-id="162-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora oliéndose y sintiendo mal olor</div></div>
+      <div class="shot" data-id="162-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en la cama con <strong>cara de apenada</strong></div></div>
+      <div class="shot" data-id="162-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong> (probióticos)</div></div>
+      <div class="shot" data-id="162-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del combo</strong> en la piscina</div></div>
+      <div class="shot" data-id="162-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiendo las pastillas</strong></div></div>
+      <div class="shot" data-id="162-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tomándose la soda</strong></div></div>
+      <div class="shot" data-id="162-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo del producto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 163 -->
+  <div class="reel" data-reel="163">
+    <div class="reel-head">
+      <span class="reel-num">REEL 163</span>
+      <span class="reel-title">"Yo pensando que era normal…" — Mímica</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Mímica</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(163)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@natysol677/video/7646989269981990164" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216080808814081" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="163">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="163-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Replicar <strong>las mismas tomas de la referencia</strong>, incluido el POV de producto</div></div>
+      <div class="shot" data-id="163-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV producto</strong> (FEM Probiotics)</div></div>
+      <div class="shot" data-id="163-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiendo pastillas en la piscina</strong> con vestido de baño</div></div>
+      <div class="shot" data-id="163-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Mostrando el combo a cámara</strong> en la piscina</div></div>
+      <div class="shot" data-id="163-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo producto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 164 -->
+  <div class="reel" data-reel="164">
+    <div class="reel-head">
+      <span class="reel-num">REEL 164</span>
+      <span class="reel-title">"Este es el combo para cuidar tu panochita en verano" — UGC reseña</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC reseña</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(164)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@noa.marz/video/7521811852393729302" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216080808814085" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="164">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="164-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Con todo el <strong>combo en la mesa</strong></div></div>
+      <div class="shot" data-id="164-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo probióticos</strong></div></div>
+      <div class="shot" data-id="164-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo jabón</strong> íntimo</div></div>
+      <div class="shot" data-id="164-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo gomitas</strong> PMS</div></div>
+      <div class="shot" data-id="164-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tomando la soda</strong></div></div>
+      <div class="shot" data-id="164-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>guardando todo el combo en la tote bag</strong> y saliendo del plano (con vestido de baño)</div></div>
+      <div class="shot" data-id="164-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del combo</strong> en la piscina</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 165 -->
+  <div class="reel" data-reel="165">
+    <div class="reel-head">
+      <span class="reel-num">REEL 165</span>
+      <span class="reel-title">"Empiezas el Combo Verano de FEM y tu puchaina huele bien…" — POV</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(165)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@almendra.ore/video/7591930913685097736" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1216080808814087" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="165">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="165-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="165-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo producto</strong> en la piscina</div></div>
+      <div class="shot" data-id="165-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en vestido de baño <strong>comiendo pastillas</strong></div></div>
+      <div class="shot" data-id="165-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tomando la soda</strong></div></div>
+      <div class="shot" data-id="165-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando todo el combo</strong> y señalando abajo</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FEM Masticable e Infecciones · Combo Verano / Entrega Junio 2</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_fem_156_165_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "156": {
+    "title": "REEL 156 — Karen Torres",
+    "sub": "TOF · UGC Review · Esenciales para vacaciones",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[A cámara]</b> \"Esenciales para las vacaciones que nunca se me pueden quedar…\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Unas gafitas… porque con este sol, imposible.\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Mi jaboncito íntimo… porque quedarse con el vestido de baño mojado todo el día después pasa factura, amiga.\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Bloqueador… el que ustedes usen, pero no se les puede olvidar.\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Las gomitas PMS… porque justo me llegó el período y yo no vine a dañarme el paseo por unos cólicos. 😭\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Los masticables con probióticos… porque vine con mi novio y… tú sabes, una también se cuida en vacaciones. 🤭\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Y una sodita prebiótica para refrescarme… además es sin azúcar y me encanta.\""
+      ],
+      [
+        "body",
+        "Esencial",
+        "<b>[A cámara]</b> \"Ah… el cargador, porque sin batería no existo.\""
+      ],
+      [
+        "cta",
+        "Remate",
+        "<b>[A cámara]</b> \"Y ya… eso fue todo lo que eché. Ah, y todo esto venía en el Combo Verano… hasta el tote. Ahora sí… oficialmente empezaron las vacaciones. ☀️✈️\""
+      ]
+    ]
+  },
+  "157": {
+    "title": "REEL 157 — Karen Torres",
+    "sub": "TOF · Sketch · POV amiga mamá",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[Sketch]</b> \"Yo nunca la veo tomando líquido… Venga, tómese esta sodita mejor, tiene fibra y con todo lo que uno come en vacaciones eso le cae buenísimo.\""
+      ],
+      [
+        "body",
+        "Probióticos",
+        "<b>[Sketch]</b> \"¿Y los probióticos?… No me diga que otra vez se le olvidaron. Venga, abra la boca.\""
+      ],
+      [
+        "body",
+        "Gomitas PMS",
+        "<b>[Sketch]</b> Extra (fuera de cámara): \"Ay no amiga, me va a llegar el período\" — Principal: \"Cómase estas gomitas de una vez y después me da las gracias.\""
+      ],
+      [
+        "body",
+        "Jabón íntimo",
+        "<b>[Sketch]</b> \"Y cuando salgamos de la piscina se me baña con este jaboncito… no se me vaya a quedar toda la tarde con el vestido de baño mojado.\""
+      ],
+      [
+        "cta",
+        "Remate",
+        "<b>[Sketch]</b> \"Si es que yo tengo que pensar por las dos, por eso compré este combo.\""
+      ]
+    ]
+  },
+  "158": {
+    "title": "REEL 158 — Karen Torres",
+    "sub": "MOF · UGC sin voz · Texto en pantalla",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[En pantalla]</b> \"Mi secreto para que las vacaciones no me pasen factura. ☀️🤭\""
+      ],
+      [
+        "body",
+        "Producto 1",
+        "<b>[En pantalla]</b> \"Cuando cambio toda mi alimentación… esto nunca me falta. 🍹\""
+      ],
+      [
+        "body",
+        "Producto 2",
+        "<b>[En pantalla]</b> \"Y mis probióticos… porque piscina, playa y humedad ya sabemos cómo son. 🌸\""
+      ],
+      [
+        "body",
+        "Producto 3",
+        "<b>[En pantalla]</b> \"Mi jaboncito íntimo para después de piscina o playa. 🫧\""
+      ],
+      [
+        "body",
+        "Producto 4",
+        "<b>[En pantalla]</b> \"Y por si el período decide aparecer en pleno viaje… estas me salvan. 🤍\""
+      ],
+      [
+        "cta",
+        "CTA MID",
+        "<b>[En pantalla]</b> \"Todo esto viene en mi Combo Verano. ☀️ Conócelo aquí abajo.\""
+      ]
+    ]
+  },
+  "159": {
+    "title": "REEL 159 — Karen Torres",
+    "sub": "BOF · Respondiendo a comentario",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[A cámara]</b> Comentario en pantalla: \"¿Y no te has enfermado con tanta piscina y playa? 👀\" — \"Por eso mismo no me voy de vacaciones sin mi Combo Verano.\""
+      ],
+      [
+        "body",
+        "Producto",
+        "<b>[A cámara]</b> \"Trae mi jabón íntimo para después de piscina, los probióticos masticables, la soda prebiótica y las gomitas PMS. Ya tengo todo en un solo kit.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "<b>[A cámara]</b> \"Si este verano también te vas de viaje, asegúrate de llevar el tuyo.\" (Texto: Preventa • Unidades limitadas 👇)"
+      ]
+    ]
+  },
+  "160": {
+    "title": "REEL 160 — Karen Torres",
+    "sub": "BOF · VSL voz en off · Preventa",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[Voz en off]</b> \"El combo de verano de FEM está en preventa.\""
+      ],
+      [
+        "body",
+        "Validación",
+        "<b>[Voz en off]</b> \"Si cada viaje termina igual… con molestias allá abajo, esto será tu indispensable.\""
+      ],
+      [
+        "body",
+        "Beneficio",
+        "<b>[Voz en off]</b> \"Literalmente trae todo lo que necesitas para tus vacaciones.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "<b>[Voz en off]</b> \"Pídelo ya antes de que se agote.\" (Texto final: Conoce el Combo Verano 👇)"
+      ]
+    ]
+  },
+  "161": {
+    "title": "REEL 161 — Nathaly Guzmán",
+    "sub": "TOF · Sketch · Flujo anormal (doctora)",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[Sketch]</b> Doctora: \"Cuéntame qué te trae por aquí hoy.\" — Paciente: \"Doctora, ando con un olor raro ahí abajo y un flujo que no para.\""
+      ],
+      [
+        "body",
+        "Problema",
+        "<b>[Sketch]</b> Doctora: \"Mmmm, déjame probar. Ay sí, sabe mal. Eso significa que tu flora vaginal está desbalanceada. Te voy a mandar unos probióticos.\""
+      ],
+      [
+        "body",
+        "Escalada",
+        "<b>[Sketch]</b> Paciente: \"Y también ando con cólicos terribles antes del periodo, me hincho y me cambia muchísimo el humor.\" — Doctora: \"Para eso vamos a agregar algo para el síndrome premenstrual.\""
+      ],
+      [
+        "body",
+        "Problema #2",
+        "<b>[Sketch]</b> Paciente: \"Y se me irrita todo si me lavo con cualquier jabón.\" — Doctora: \"Necesitas un jabón íntimo de pH neutro.\""
+      ],
+      [
+        "cta",
+        "Alineación",
+        "<b>[Sketch]</b> Paciente: \"Entonces necesito como tres cosas distintas — eso me va a salir carísimo.\" — Doctora: \"Todo eso lo encuentras junto en el Combo Verano de FEM: jabón íntimo, probióticos masticables, gomitas PMS y soda prebiótica. Y trae de regalo una tote bag.\" — Paciente: \"¿Y dónde lo consigo?\" — Doctora: \"En el link de abajo — aprovecha antes que se agote.\""
+      ]
+    ]
+  },
+  "162": {
+    "title": "REEL 162 — Nathaly Guzmán",
+    "sub": "TOF · UGC reseña · Mal olor / flujo",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[Voz off]</b> \"De las cosas más frustrantes de ser mujer es tener algún problema en la puchaina.\""
+      ],
+      [
+        "body",
+        "Confesión",
+        "<b>[A cámara]</b> \"No puedo creer que voy a contar esto, pero lo voy a decir sin filtro: me olía a pescado ahí abajo.\""
+      ],
+      [
+        "body",
+        "Problema",
+        "<b>[A cámara]</b> \"Me da pena aceptarlo, pero estoy segura que a más de una le ha pasado. Yo soy súper limpia, pero esa situación se me salió de las manos.\""
+      ],
+      [
+        "body",
+        "Escalada",
+        "<b>[Voz off]</b> \"Sufría tanto que antes de estar con alguien corría al baño a lavarme como fuera, evitando al máximo que oliera feo. A mí me tocaba hacer mis maniobras, mamita.\""
+      ],
+      [
+        "body",
+        "Solución",
+        "<b>[A cámara]</b> \"Hasta que una amiga me habló de los probióticos. Empecé a tomar estos todas las noches.\""
+      ],
+      [
+        "body",
+        "Validación",
+        "<b>[A cámara]</b> \"Le mostré los ingredientes a mi ginecóloga y me dijo que estaban perfectos, que podía tomarlos sin problema.\""
+      ],
+      [
+        "body",
+        "Educación",
+        "<b>[A cámara + apoyo]</b> \"Los probióticos son muy buenos para que las bacterias vivas que tiene la puchaina estén saludables y puedan hacer su trabajo.\""
+      ],
+      [
+        "body",
+        "Combo",
+        "<b>[Voz off]</b> \"Y justo en estos días de verano, donde la puchainita estará expuesta al cloro de la piscina y la sal del mar, FEM sacó un combo especial: jabón íntimo, probióticos, gomitas PMS, la soda y de regalo una tote bag bien playera.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "<b>[Voz off]</b> \"Yo de ti corro a conseguirlo antes que se agote.\""
+      ]
+    ]
+  },
+  "163": {
+    "title": "REEL 163 — Nathaly Guzmán",
+    "sub": "MOF · Mímica · Frases en pantalla (como la ref)",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[Voz off]</b> \"Yo pensando que era normal… 😅 Pensaba que era por el calor o porque sudaba mucho, pero empezó a pasarme demasiado seguido. 😟\""
+      ],
+      [
+        "body",
+        "Problema",
+        "<b>[Voz off]</b> \"Y fue cuando entendí que muchas veces no es higiene. 👀\""
+      ],
+      [
+        "body",
+        "Escalada",
+        "<b>[Voz off]</b> \"Hasta que encontré FEM Probiotics. 💊\""
+      ],
+      [
+        "body",
+        "Problema #2",
+        "<b>[Voz off]</b> \"Ayudan con el olor 🌸, el equilibrio del pH ⚖️ y la flora vaginal ✅. Y solo tomo dos pastillas al día — ya son parte de mi rutina. 💚\""
+      ],
+      [
+        "body",
+        "Alineación",
+        "<b>[Voz off]</b> \"Y como ahora con el calor del verano ☀️ todo se complica más: piscina 🏖️, ropa mojada, sudoración 🥵…\""
+      ],
+      [
+        "body",
+        "Combo",
+        "<b>[Voz off]</b> \"Encontré que FEM tiene un Combo Verano: jabón íntimo, probióticos masticables, gomitas PMS y soda prebiótica, con una tote bag playera de regalo. 🎁👜\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "<b>[Voz off]</b> \"Honestamente ya me siento mucho más tranquila. 💚 Lo encontré aquí en el link de abajo. 🔗\""
+      ]
+    ]
+  },
+  "164": {
+    "title": "REEL 164 — Nathaly Guzmán",
+    "sub": "BOF · UGC reseña · Combo para la playa",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[A cámara]</b> \"Chicas, este es el combo para cuidar su panochita en verano. Les prometo que las hará sentirse frescas y seguras todo el día. Además trae regalo incluido.\""
+      ],
+      [
+        "body",
+        "Probióticos",
+        "<b>[A cámara + apoyo]</b> \"FEM Probiotics equilibra el pH y cuida tu flora vaginal.\""
+      ],
+      [
+        "body",
+        "Jabón",
+        "<b>[A cámara + apoyo]</b> \"El jabón íntimo con pH neutro es perfecto después de la piscina o el mar.\""
+      ],
+      [
+        "body",
+        "Gomitas + soda",
+        "<b>[A cámara + apoyo]</b> \"Las gomitas PMS — porque el verano no se detiene ni con el periodo. Y la soda prebiótica — para refrescarte mientras cuidas tu bienestar.\""
+      ],
+      [
+        "body",
+        "Regalo",
+        "<b>[Voz off]</b> \"Y de regalo, una tote bag bien playera para llevarlo todo.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "<b>[Voz off]</b> \"Ya saben cuáles son sus esenciales para este verano, aprovechen antes que se agoten.\""
+      ]
+    ]
+  },
+  "165": {
+    "title": "REEL 165 — Nathaly Guzmán",
+    "sub": "BOF · POV · Solo texto en pantalla",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "<b>[En pantalla]</b> \"Empiezas el Combo Verano de FEM y tu puchaina huele bien, tus cólicos bajan, tu piel mejora y ya no te sientes tan hinchada. 🌸💖🧴🍬\""
+      ],
+      [
+        "body",
+        "Combo",
+        "<b>[En pantalla]</b> \"Combo Verano FEM 🧴💊🍬🥤 + tote bag de regalo 🎁👜\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "<b>[En pantalla]</b> \"⚠️ Pocas unidades. Compra antes que se agoten.\" (Nota edición: usar la canción indicada en el brief)"
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text]) =>
+      `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}</div></div>`
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
