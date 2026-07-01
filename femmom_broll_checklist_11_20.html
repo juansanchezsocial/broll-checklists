@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEM MOM · Tomas de Apoyo · Reels 11–20</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FEM MOM · Tomas de Apoyo · Reels 11–20</h1>
+  <div class="sub">Rodaje — Entrega 1 Julio · Fem Mom (pastillas masticables para lactancia)</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="sharon">Sharon</div>
+    <div class="chip" data-filter="andrea-puerta">Andrea Puerta</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="sharon">
+  <div class="creator-title">
+    <h2>Sharon</h2>
+    <span class="count">Reels 11–15</span>
+  </div>
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"El hack de lactancia que me salvó la cordura" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/VtjcRq7kGFzotePaNalh?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216176825666734" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>llenando un tetero con leche</strong> (lado abundante)</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá agotada mostrando a cámara un <strong>tetero medio vacío</strong></div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá frustrada porque <strong>no le sale leche</strong></div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV de un <strong>tetero con muy poca leche</strong></div></div>
+      <div class="shot" data-id="11-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiéndose las pastillas</strong></div></div>
+      <div class="shot" data-id="11-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>llenando un tetero completo</strong></div></div>
+      <div class="shot" data-id="11-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>dándole de lactar al bebé</strong></div></div>
+      <div class="shot" data-id="11-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"Si lo has intentado todo y nada te funcionó" — Método TikTok</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Tutorial / voz TikTok</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@saritaespinosalopez/video/7639144839447186708?_r=1&_t=ZS-97eSlSNXeFd" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216176825666736" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Igual a la referencia: creadora <strong>extrayéndose leche</strong> y mostrando, luego <strong>tetero lleno</strong> a cámara</div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora deja el tetero con leche en el mesón, muestra Fem Mom, lo abre y <strong>se toma una pastilla</strong></div></div>
+      <div class="shot" data-id="12-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="12-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>dándole leche al bebé</strong></div></div>
+      <div class="shot" data-id="12-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>haciendo mímica</strong> del cierre</div></div>
+      <div class="shot" data-id="12-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><em>Edición:</em> emojis tipo vaquitas/estrellas con sonidos (como en la ref, seg. 2 y 4)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"Nadie te dice lo difícil que es la lactancia exclusiva" — Unboxing</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Unboxing</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/RfkwPqLBEbhiHfd3SvBp?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216176825666738" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>mostrando un tetero con poca leche</strong></div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>frustrada porque no le sale leche</strong></div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiendo la pastilla</strong></div></div>
+      <div class="shot" data-id="13-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>llenando un tetero con leche</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"Día 6 tomando Fem Mom" — POV llenando el tetero</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/53t4mjGk52oriDqft0fB?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216176825666740" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Igual a la referencia: <strong>llenando un tetero</strong>; al final <strong>poner el producto al lado del tetero</strong></div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><em>Edición:</em> overlay "Día 6 tomando Fem Mom para aumentar mi producción de leche 🍼✅" + misma música de la ref</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">"Con mi primer bebé casi no producía leche" — UGC testimonio</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/aR1SLM2PeMvX86prfUF0?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216176825666742" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="15-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tomando Fem</strong></div></div>
+      <div class="shot" data-id="15-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>lactando</strong></div></div>
+      <div class="shot" data-id="15-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="15-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><em>Edición:</em> diferentes clips de creadoras tomando Fem</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="andrea-puerta">
+  <div class="creator-title">
+    <h2>Andrea Puerta</h2>
+    <span class="count">Reels 16–20</span>
+  </div>
+  <!-- REEL 16 -->
+  <div class="reel" data-reel="16">
+    <div class="reel-head">
+      <span class="reel-num">REEL 16</span>
+      <span class="reel-title">"Lo que nadie te dice de dar pecho" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(16)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@.crismiranda/video/7613881377456442654?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216182996935647" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="16">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="16-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá entra al baño/habitación, se levanta un poco la camiseta (sin mostrar pecho), se <strong>aplica crema/compresa en el pezón con cara de dolor</strong></div></div>
+      <div class="shot" data-id="16-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>intentando acomodar al bebé una y otra vez</strong> mientras el bebé sigue buscando alimentarse</div></div>
+      <div class="shot" data-id="16-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>mueca de dolor</strong> cuando el bebé vuelve a prenderse al pecho</div></div>
+      <div class="shot" data-id="16-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: mamá respira profundo, deja de intentar acomodarse y <strong>aparece el producto sobre una mesa</strong></div></div>
+      <div class="shot" data-id="16-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>toma una cápsula</strong> y vuelve a cargar al bebé más tranquila</div></div>
+      <div class="shot" data-id="16-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: mamá <strong>sonríe mientras el bebé toma pecho</strong> con tranquilidad</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 17 -->
+  <div class="reel" data-reel="17">
+    <div class="reel-head">
+      <span class="reel-num">REEL 17</span>
+      <span class="reel-title">"¿Todavía le das pecho?" — Sketch doble personaje</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(17)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@niunapalmadita/video/6978941721467981062?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216182996935649" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="17">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="17-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Personaje <strong>opinando</strong> (la actriz interpreta a la persona entrometida)</div></div>
+      <div class="shot" data-id="17-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá dando pecho / simulando lactancia y luego <strong>saca un vaso con leche y lo muestra</strong></div></div>
+      <div class="shot" data-id="17-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cambio de personaje, <strong>tono convencido</strong></div></div>
+      <div class="shot" data-id="17-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá responde con tranquilidad, sin pelear</div></div>
+      <div class="shot" data-id="17-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Saca FEM de manera natural</strong></div></div>
+      <div class="shot" data-id="17-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Sonríe, <strong>abraza al bebé</strong> y vuelve a concentrarse en él</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 18 -->
+  <div class="reel" data-reel="18">
+    <div class="reel-head">
+      <span class="reel-num">REEL 18</span>
+      <span class="reel-title">"Mi bebé tomó leche de otra mamá" — Storytelling</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Storytelling</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(18)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@issamellark/video/7637655234931690773?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216182996935651" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="18">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="18-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">A cámara contando la historia con cara de incredulidad — <strong>sostiene al bebé todo el video</strong></div></div>
+      <div class="shot" data-id="18-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Apoyo: mamá <strong>preparando un tetero</strong></div></div>
+      <div class="shot" data-id="18-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Apoyo: el <strong>celular sonando</strong> y ella preocupada</div></div>
+      <div class="shot" data-id="18-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Saca FEM de manera natural</strong>, muestra el producto y sonríe con tranquilidad</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 19 -->
+  <div class="reel" data-reel="19">
+    <div class="reel-head">
+      <span class="reel-num">REEL 19</span>
+      <span class="reel-title">"¿Cómo haces para tener leche siendo mamá de dos?" — Respuesta a comentario</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Respuesta a comentario + UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(19)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@dianiskitchen/video/7657272222914006303?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216182996935655" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="19">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="19-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Muestra el <strong>comentario en pantalla</strong>, sonríe y lo señala</div></div>
+      <div class="shot" data-id="19-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Apoyo: <strong>cargando al bebé</strong></div></div>
+      <div class="shot" data-id="19-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Apoyo: <strong>preparando un tetero</strong></div></div>
+      <div class="shot" data-id="19-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Apoyo: <strong>intentando darle pecho</strong></div></div>
+      <div class="shot" data-id="19-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Saca FEM y lo muestra</strong> a cámara</div></div>
+      <div class="shot" data-id="19-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Se toma una pastilla</strong> y sonríe mirando al bebé</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 20 -->
+  <div class="reel" data-reel="20">
+    <div class="reel-head">
+      <span class="reel-num">REEL 20</span>
+      <span class="reel-title">"Me tocó venir al baño a extraerme leche" — Vlog + testimonio</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Vlog + Testimonio</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(20)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@almamorales116/video/7629381757447589138?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210463706543692/1216182996935657" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="20">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="20-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Entra al baño con el <strong>extractor en la mano</strong>, habla como momento espontáneo</div></div>
+      <div class="shot" data-id="20-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Saca FEM del bolso</strong> y sonríe a cámara</div></div>
+      <div class="shot" data-id="20-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Vierte la leche del extractor en un recipiente transparente</strong> y lo acerca a cámara</div></div>
+      <div class="shot" data-id="20-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Señala hacia abajo</strong> sosteniendo el producto</div></div>
+      <div class="shot" data-id="20-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Guarda el producto en el bolso</strong> y sale del baño</div></div>
+      <div class="shot" data-id="20-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><em>Edición:</em> superponer testimonios reales / reseñas ⭐⭐⭐⭐⭐ del website</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FEM MOM · Entrega 1 Julio</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_femmom_11_20_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "11": {
+    "title": "REEL 11 — Sharon",
+    "sub": "TOF · Pantalla dividida · Ángulo: lactar más",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Este es el hack de lactancia que me salvó horas y la cordura."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Si estás constantemente haciendo malabares con el bebé y no te sale casi leche, esto te va a cambiar la vida."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Llevo semanas tomando Fem Mom, me como dos pastillas al día que tienen ingredientes como avena y fenogreco. Honestamente no sé cómo lacté antes sin esto."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Mis tomas son más abundantes, tengo más energía para el día y me siento más tranquila sabiendo que estoy haciendo todo lo posible por mi bebé."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Si ya tienes tu rutina de lactancia, Fem Mom es el complemento perfecto para hacerlo todo más fácil."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Te dejo el link abajo para que lo consigas ya."
+      ]
+    ]
+  },
+  "12": {
+    "title": "REEL 12 — Sharon",
+    "sub": "TOF · Voz TikTok · Ángulo: han hecho de todo y no producen más leche",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Si lo has intentado todo para tener más leche y nada te ha funcionado, te muestro mi método."
+      ],
+      [
+        "body",
+        "Paso 1",
+        "Primero, estimula la producción. Te extraes 20 minutos, descansas 10, te extraes 10 más, descansas 10 y vuelves a extraerte 10 minutos. En total una hora, una vez al día."
+      ],
+      [
+        "body",
+        "Paso 2",
+        "Y segundo, Fem Mom. Te comes dos pastillas masticables al día para que tu cuerpo tenga los nutrientes que necesita para producir más leche. Sin esto, la técnica sola no es suficiente."
+      ],
+      [
+        "body",
+        "Remate",
+        "Y prepárate, mija, porque lo que se viene es leche."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Sígueme si quieres más tips de lactancia, y si quieres probar Fem Mom, el link está abajo."
+      ]
+    ]
+  },
+  "13": {
+    "title": "REEL 13 — Sharon",
+    "sub": "TOF · Unboxing · Ángulo: mantener la lactancia exclusiva",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Nadie te dice lo difícil que es mantener la lactancia exclusiva cuando la producción baja."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y yo lo viví. Hubo un momento en que pensé que tendría que dejar la lactancia exclusiva, hasta que encontré esto."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Acabo de comprar otro tarrito y se los voy a mostrar, porque si no los conocen, necesitan saberlo."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Son pastillas masticables con vitaminas e ingredientes que me ayudan a que la leche salga más rápido y en mayor cantidad."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Desde que las tomo mi producción se mantuvo y pude seguir con la lactancia exclusiva."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Se llaman Fem Mom y los encuentras en el link de abajo."
+      ]
+    ]
+  },
+  "14": {
+    "title": "REEL 14 — Sharon",
+    "sub": "MOF · POV · Ángulo: producción de leche",
+    "rows": [
+      [
+        "hook",
+        "Overlay",
+        "Día 6 tomando Fem Mom para aumentar mi producción de leche 🍼✅"
+      ],
+      [
+        "body",
+        "Nota",
+        "Brief tipo trend silencioso: replicar toma + música de la referencia. Sin locución."
+      ]
+    ]
+  },
+  "15": {
+    "title": "REEL 15 — Sharon",
+    "sub": "BOF · UGC · Ángulo: producir más leche que en la primera lactancia",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Con mi primer bebé casi no producía leche y tuve que complementar con fórmula."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Fem Mom fue la diferencia para empezar mi segunda lactancia con el pie derecho. Empecé a tomarlo antes de dar a luz y desde el primer día tuve producción abundante."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Absolutamente imprescindible para cualquier mamá en lactancia."
+      ],
+      [
+        "body",
+        "Prueba social",
+        "Por eso muchas lo están usando y han mostrado sus resultados."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Consíguelo ahora antes de que se agoten."
+      ]
+    ]
+  },
+  "16": {
+    "title": "REEL 16 — Andrea Puerta",
+    "sub": "TOF (Problem Aware) · Pantalla verde · Ángulo: problemas de producción",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¡Juemadre... tengo esto re sensible!\" — Overlay: Lo que nadie te dice de dar pecho..."
+      ],
+      [
+        "body",
+        "Dolor",
+        "Es el dolor tan berraco que queda cuando el bebé lleva pegado al pecho un montón de tiempo... y la leche no baja."
+      ],
+      [
+        "body",
+        "Identificación",
+        "Uno termina con los pezones súper sensibles y pensando que el bebé sigue con hambre."
+      ],
+      [
+        "body",
+        "Giro",
+        "Yo también pasé por eso hasta que decidí apoyar mi producción de leche."
+      ],
+      [
+        "body",
+        "Solución",
+        "Por eso empecé a tomar estas pastillitas con fenogreco, avena y vitaminas."
+      ],
+      [
+        "cta",
+        "Cierre",
+        "Y créeme... cuando empieza a bajar mejor la leche, también cambia por completo cómo se siente la lactancia. ❤️ Más leche, más tranquilidad."
+      ]
+    ]
+  },
+  "17": {
+    "title": "REEL 17 — Andrea Puerta",
+    "sub": "TOF · Sketch doble personaje · Ángulo: beneficios de la lactancia",
+    "rows": [
+      [
+        "hook",
+        "Hook (opina)",
+        "¿Todavía le das pecho? Si eso después del año ya es pura agua."
+      ],
+      [
+        "body",
+        "Mamá",
+        "¿Agua? ¿Quién te dijo eso? Mira mi leche. (saca un vaso con leche)"
+      ],
+      [
+        "body",
+        "Opina",
+        "Ay no... eso ya no alimenta. Ya deberías destetarlo."
+      ],
+      [
+        "body",
+        "Mamá",
+        "Pues te informaron mal. Después del año la leche materna sigue aportando nutrientes importantes para el bebé."
+      ],
+      [
+        "body",
+        "Opina",
+        "Bueno... entonces ¿por qué hay mamás que dicen que casi no les baja leche?"
+      ],
+      [
+        "body",
+        "Remate",
+        "Ah, si a ti no te baja leche, prueba estas pastillitas de Fem, que te ayudan con la producción de leche..."
+      ],
+      [
+        "cta",
+        "Cierre",
+        "...pero si lo que no se te baja es la necesidad de opinar sobre la crianza ajena, para eso todavía no existe remedio."
+      ]
+    ]
+  },
+  "18": {
+    "title": "REEL 18 — Andrea Puerta",
+    "sub": "TOF · Storytelling · Ángulo: producción de leche",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Imagínense que a mi bebé le tocó tomar leche materna de otra mamá en la guardería... ¡o sea, otra mamita se lo tuvo que pegar al pecho!"
+      ],
+      [
+        "body",
+        "Chisme / Dolor",
+        "La profesora me llamó y me dijo que la leche que le dejé en el tetero no le había alcanzado y que se puso a llorar inconsolable. Niñas, cuando escuché eso me dieron unos celos horribles... pero por dentro me dio fue culpa, porque a veces sentía que no me estaba alcanzando la leche y me daba pánico que mi gordo pasara hambre."
+      ],
+      [
+        "cta",
+        "Venta / Cierre",
+        "Le agradecí a la otra mamita por salvarme el día, pero apenas llegué a casa busqué cómo apoyar mi producción de leche y encontré estas pastillitas. Desde entonces vivo mucho más tranquila preparando sus teteritos. Si a ustedes también les ha pasado... las leo en los comentarios."
+      ]
+    ]
+  },
+  "19": {
+    "title": "REEL 19 — Andrea Puerta",
+    "sub": "MOF (Solution Aware) · Respuesta a comentario + UGC · Ángulo: producción de leche",
+    "rows": [
+      [
+        "hook",
+        "Comentario",
+        "¿Cómo haces para tener leche siendo mamá de dos?"
+      ],
+      [
+        "body",
+        "Respuesta",
+        "La verdad, no siempre fue así."
+      ],
+      [
+        "body",
+        "Contexto",
+        "Con mi segundo bebé sentía que no me estaba bajando suficiente leche y eso me tenía muy preocupada."
+      ],
+      [
+        "body",
+        "Solución",
+        "Mi asesora de lactancia me recomendó apoyar mi producción con ingredientes como fenogreco, avena y vitaminas C y D... y por eso empecé a tomar estas pastillitas de Fem Mom."
+      ],
+      [
+        "cta",
+        "Cierre",
+        "Obviamente cada mamá es diferente, pero a mí me ayudaron muchísimo. ❤️ Link aquí abajo."
+      ]
+    ]
+  },
+  "20": {
+    "title": "REEL 20 — Andrea Puerta",
+    "sub": "BOF (Product Aware) · Vlog + Testimonio · Ángulo: alta producción de leche",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Estoy en el trabajo y me tocó venir al baño a extraerme leche, para el banco de mi baby."
+      ],
+      [
+        "body",
+        "Prueba social",
+        "Mamitas... ustedes y yo sabemos quiénes son las responsables... mis pastillitas favoritas. ❤️"
+      ],
+      [
+        "body",
+        "Prueba",
+        "Vean... solo me extraje de un lado. Y todavía me falta el otro."
+      ],
+      [
+        "body",
+        "Oferta",
+        "Aprovechen que ahorita tienen descuento y además el envío es gratis desde la página."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Les dejo el link aquí abajo para que aprovechen la promoción."
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text]) =>
+      `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}</div></div>`
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
