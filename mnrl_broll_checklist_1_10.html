@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNRL · Tomas de Apoyo · Reels 1-10</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>MNRL · Tomas de Apoyo · Reels 1-10</h1>
+  <div class="sub">Rodaje martes 14 de julio · MNRL (BIO BOOSTERS) · Creadoras: Curly & Isa Aguirre</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="curly">Curly</div>
+    <div class="chip" data-filter="isa">Isa Aguirre</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="curly">
+  <div class="creator-title">
+    <h2>Curly</h2>
+    <span class="count">Reels 1–5</span>
+  </div>
+  <!-- REEL 1 -->
+  <div class="reel" data-reel="1">
+    <div class="reel-head">
+      <span class="reel-num">REEL 1</span>
+      <span class="reel-title">"¿Pa' qué te voy a decir que no?" — Respondiendo comentario</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(1)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/or3PkCattcDTZT04Yi6V?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216428642254639" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="1">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="1-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Lee el comentario <strong>caminando con botella o vaso de alcohol</strong> en la mano (sin marca visible, sin zoom al trago)</div></div>
+      <div class="shot" data-id="1-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cara de <strong>tristeza falsa y exagerada</strong> (velorio de la hormiga)</div></div>
+      <div class="shot" data-id="1-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Camina <strong>hacia la cocina</strong> mientras habla</div></div>
+      <div class="shot" data-id="1-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">En la cocina: <strong>saca el sachet de MNRL, lo prepara en agua fría y se lo toma</strong></div></div>
+      <div class="shot" data-id="1-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close-ups de la preparación</strong>: polvo cayendo, agua mezclándose</div></div>
+      <div class="shot" data-id="1-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Muestra el <strong>producto a cámara</strong></div></div>
+      <div class="shot" data-id="1-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hace <strong>salud a cámara</strong> tomándose el producto, MNRL visible</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 2 -->
+  <div class="reel" data-reel="2">
+    <div class="reel-head">
+      <span class="reel-num">REEL 2</span>
+      <span class="reel-title">"Amanecí al lado de uno... bien rico" — Storytime</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Storytime</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(2)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/OBYMkZS5hhoh8JDOZczD?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216428642254641" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="2">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="2-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Desde la cama, recién levantada</strong>, sonriendo con cara de "les tengo un chisme"</div></div>
+      <div class="shot" data-id="2-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cortes rápidos manteniendo el misterio, <strong>sin enseñar el producto todavía</strong></div></div>
+      <div class="shot" data-id="2-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Se levanta de la cama</strong> — reveal del sachet con zoom</div></div>
+      <div class="shot" data-id="2-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Prepara el sachet en agua fría</strong>, lo mezcla y da un sorbo mientras trabaja</div></div>
+      <div class="shot" data-id="2-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close-ups</strong> del sachet, el agua y la preparación</div></div>
+      <div class="shot" data-id="2-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Trabajando <strong>frente al computador o en reunión</strong> con naturalidad</div></div>
+      <div class="shot" data-id="2-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Levanta el vaso, sonríe</strong> y sigue con su día</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 3 -->
+  <div class="reel" data-reel="3">
+    <div class="reel-head">
+      <span class="reel-num">REEL 3</span>
+      <span class="reel-title">"Día de cardio hay que tomárselo en serio" — Fitness UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Fitness UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(3)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/dMz6ZfiX5jBCHX8IOPaN?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216428642254643" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="3">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="3-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Saltando la cuerda</strong> o en plena rutina de cardio</div></div>
+      <div class="shot" data-id="3-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Para y <strong>muestra el sudor a cámara</strong> (camiseta/top y cara)</div></div>
+      <div class="shot" data-id="3-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Tomando agua de forma exagerada</strong>, incluso regándose un poco encima</div></div>
+      <div class="shot" data-id="3-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma negativa: <strong>tirada en el suelo, muy sudada y roja</strong> (si hace falta, rubor y agua en la cara)</div></div>
+      <div class="shot" data-id="3-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Preparando MNRL</strong> mostrando el producto a cámara</div></div>
+      <div class="shot" data-id="3-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close-ups</strong>: sachet, polvo cayendo, agua mezclándose</div></div>
+      <div class="shot" data-id="3-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Se hidrata mientras <strong>recupera el aire y guarda sus cosas</strong> del entrenamiento</div></div>
+      <div class="shot" data-id="3-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mira a cámara, <strong>levanta el vaso y sonríe</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 4 -->
+  <div class="reel" data-reel="4">
+    <div class="reel-head">
+      <span class="reel-num">REEL 4</span>
+      <span class="reel-title">"Este fin de semana yo no salgo" — POV Comedy</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">POV Comedy</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(4)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@waterboyshop/video/7589344457997159710" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216428642254645" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="4">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="4-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Set: <strong>algo de alcohol visible al fondo</strong> (cocina o pared), ella habla con total seriedad</div></div>
+      <div class="shot" data-id="4-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Al decir "agüita": <strong>toma un vaso de agua de la mesa</strong> y lo muestra a cámara</div></div>
+      <div class="shot" data-id="4-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Mira el celular sorprendida</strong> y saca discretamente un sachet de MNRL — <strong>logo visible sin mencionarlo</strong></div></div>
+      <div class="shot" data-id="4-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close-up de las manos abriendo el sachet</strong></div></div>
+      <div class="shot" data-id="4-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ojos abiertos cómicos mientras <strong>vacía el sachet en el vaso</strong></div></div>
+      <div class="shot" data-id="4-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Gestos de convencerse (manos, hombros, cara) y <strong>revuelve el vaso</strong></div></div>
+      <div class="shot" data-id="4-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Caja de MNRL visible en la mesa</strong> mientras levanta el vaso · close-up zoom in/out rápido del producto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 5 -->
+  <div class="reel" data-reel="5">
+    <div class="reel-head">
+      <span class="reel-num">REEL 5</span>
+      <span class="reel-title">"¿Listos para estas vacaciones?" — Vlog / Mom Lifestyle</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Mom Vlog</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(5)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/ynfNhrgaPbTct1HOvSNu?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216428642254647" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="5">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="5-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Set: <strong>mesa de comedor con termo y maletas al fondo</strong>, hablando a cámara como ultimando detalles</div></div>
+      <div class="shot" data-id="5-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pone agua en el termo</strong></div></div>
+      <div class="shot" data-id="5-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Vierte el sachet en agua fría y lo mezcla</strong></div></div>
+      <div class="shot" data-id="5-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Guarda varios sachets</strong> dentro del bolso de viaje</div></div>
+      <div class="shot" data-id="5-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma un poquito — <strong>más termos visibles en la mesa</strong> para servir</div></div>
+      <div class="shot" data-id="5-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Deja de tomar y <strong>pone el termo en la mesa (que suene)</strong></div></div>
+      <div class="shot" data-id="5-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Abre los ojos a cámara, <strong>se ríe y se despide con las manos</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="isa">
+  <div class="creator-title">
+    <h2>Isa Aguirre</h2>
+    <span class="count">Reels 6–10</span>
+  </div>
+  <!-- REEL 6 -->
+  <div class="reel" data-reel="6">
+    <div class="reel-head">
+      <span class="reel-num">REEL 6</span>
+      <span class="reel-title">"El secreto para hidratarse en entrenos pesados" — Lifestyle Deportivo</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Lifestyle</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(6)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@sophiathain/video/7478372172902321430?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216474482940199" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="6">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="6-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">A cámara <strong>en la cocina con ropa deportiva</strong></div></div>
+      <div class="shot" data-id="6-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>haciendo cycling</strong></div></div>
+      <div class="shot" data-id="6-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>haciendo running</strong></div></div>
+      <div class="shot" data-id="6-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Comiendo algo, sudada y cansada</strong> (toma de apoyo)</div></div>
+      <div class="shot" data-id="6-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Al terminar el entreno (muy sudada): <strong>prepara MNRL en una botella con agua fría</strong>, mostrando claramente el sachet al verter</div></div>
+      <div class="shot" data-id="6-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Mezcla el sachet con sonido ASMR</strong>, mirándose muy sedienta</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 7 -->
+  <div class="reel" data-reel="7">
+    <div class="reel-head">
+      <span class="reel-num">REEL 7</span>
+      <span class="reel-title">"Remedio para el guayabo" — Pantalla verde (reaction)</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(7)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/cPuHWcfWIuC0w50emVpl?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216474482940201" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="7">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="7-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella <strong>hablando a cámara</strong> (clip superpuesto para toda la pantalla verde)</div></div>
+      <div class="shot" data-id="7-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>rompe un huevo crudo dentro de un vaso</strong></div></div>
+      <div class="shot" data-id="7-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>exprime un limón</strong> dentro del vaso</div></div>
+      <div class="shot" data-id="7-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>agrega salsa negra y sal</strong> — con cara de asco</div></div>
+      <div class="shot" data-id="7-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>huele el vaso y hace gesto de querer vomitar</strong></div></div>
+      <div class="shot" data-id="7-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>revuelve el vaso con asco</strong></div></div>
+      <div class="shot" data-id="7-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Saca el sachet de MNRL</strong> mientras mueve el vaso del remedio a un lado</div></div>
+      <div class="shot" data-id="7-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Prepara MNRL en un vaso con agua fría</strong> (a cámara)</div></div>
+      <div class="shot" data-id="7-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo: <strong>muestra la caja de MNRL</strong> sobre la mesa</div></div>
+      <div class="shot" data-id="7-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Bebe del producto</strong> y cierra tipo chistosa mirando de lado "al esposo"</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 8 -->
+  <div class="reel" data-reel="8">
+    <div class="reel-head">
+      <span class="reel-num">REEL 8</span>
+      <span class="reel-title">"Un hábito que marca la diferencia en el periodo" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">P. dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(8)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/AirLU3BsGxQAeLJMfsPy?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216474482940203" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="8">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="8-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella <strong>hablando a cámara</strong> (mitad superior durante todo el video)</div></div>
+      <div class="shot" data-id="8-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Tomando líquido con muchísima sed</strong> (toma negativa)</div></div>
+      <div class="shot" data-id="8-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dejando caer el polvo desde arriba en un vaso</strong> — sin que se vea la marca aún</div></div>
+      <div class="shot" data-id="8-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Muestra el sachet y la caja a cámara</strong> + close-ups del producto y la caja</div></div>
+      <div class="shot" data-id="8-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Clips entrenando</strong></div></div>
+      <div class="shot" data-id="8-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Preparación completa de MNRL</strong>: vaso, revolviendo, y toma del producto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 9 -->
+  <div class="reel" data-reel="9">
+    <div class="reel-head">
+      <span class="reel-num">REEL 9</span>
+      <span class="reel-title">"¿Cuánto tardas en quemar 140 calorías?" — Respondiendo comentario</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(9)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@loganpaul/video/7534373961581317431?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216474482940205" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="9">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="9-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Muestra una <strong>bebida deportiva SIN etiqueta</strong> mientras se la toma</div></div>
+      <div class="shot" data-id="9-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Time lapse</strong>: caminadora, bicicleta u otra máquina/actividad de cardio (video acelerado con cronómetro 00:00→12:00)</div></div>
+      <div class="shot" data-id="9-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">A cámara <strong>súper sudada y un poco roja</strong> tras el ejercicio</div></div>
+      <div class="shot" data-id="9-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Habla con <strong>cara de preocupación</strong> y luego <strong>muestra MNRL a cámara</strong></div></div>
+      <div class="shot" data-id="9-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close-up de la caja y el sachet</strong></div></div>
+      <div class="shot" data-id="9-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Prepara MNRL en agua fría y le da un sorbo</strong></div></div>
+      <div class="shot" data-id="9-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Levanta el vaso, sonríe</strong> y termina el video</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 10 -->
+  <div class="reel" data-reel="10">
+    <div class="reel-head">
+      <span class="reel-num">REEL 10</span>
+      <span class="reel-title">"Baja un dedo" — Pantalla verde (reto)</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(10)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/qK12fYHEv47wFePoDbad?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1216474482940207" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="10">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="10-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella <strong>hablando a cámara superpuesta</strong> (todo el reto en pantalla verde)</div></div>
+      <div class="shot" data-id="10-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Señala hacia un lado</strong> (para el gráfico del color de orina)</div></div>
+      <div class="shot" data-id="10-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Agarra un vaso, lo desliza por la mesa</strong> y agarra una jarra con agua</div></div>
+      <div class="shot" data-id="10-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Le agrega agua</strong> — mantener sonidos tipo ASMR</div></div>
+      <div class="shot" data-id="10-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Muestra un sachet de MNRL a cámara</strong></div></div>
+      <div class="shot" data-id="10-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Preparando MNRL en un vaso con el mezclador</strong> (clip de fondo)</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · MNRL (BIO BOOSTERS) · Reels 1-10</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_mnrl_1_10_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "1": {
+    "title": "REEL MNRL 1 — Curly",
+    "sub": "TOF · Respondiendo comentario · Hangover",
+    "rows": [
+      [
+        "hook",
+        "Aceptación",
+        "💬 \"Vos mantenés es de fiesta en fiesta 😂🍻\" → \"¿Pa' qué te voy a decir que no?... Si sí. JAJAJA.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Contexto",
+        "\"Es que ayer se murió una hormiga y tocó hacerle el velorio... ni modo. 😔😂\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Conflicto",
+        "\"Uy no... pero lo que sí te tengo que aceptar es que antes yo juraba que con agua no me iba a dar más guayabo. Tú sabes... una que es una borracha funcional. 😂\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Aprendizaje",
+        "\"Pero una aprende de los errores... empecé a tomar mis electrolitos como debe ser.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Estado actual",
+        "\"Y ya es automático, no hay guaro que me tumbe.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Soldado avisado, no muere en guerra, salud.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "2": {
+    "title": "REEL MNRL 2 — Curly",
+    "sub": "TOF · Storytime · Energía estable sin el bajón del café",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Esta mañana amanecí al lado de uno... bien rico, y necesito que todas lo conozcan. 😂\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Es chiquito... pero eficiente… Me levanta durisimo.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Revelación",
+        "\"En vez de quitarme energia… me la da. 😂\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Beneficio",
+        "\"Estoy es hablando de esto, cochinas, jajajja, antes sobrevivía a punta de café. Me daba el empujón... y después el bajonazo. Ahora prefiero preparar esto en agua y seguir con energía mucho más pareja durante el día.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Respaldo",
+        "\"Tiene electrolitos y vitaminas del complejo B\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"No, no reemplaza dormir bien... pero si también estás cansado de vivir entre el subidón y el bajón del café, tambien te va a levantar como a mi, jajaja.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "3": {
+    "title": "REEL MNRL 3 — Curly",
+    "sub": "TOF · Fitness UGC · Hidratación para deportistas",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Las que hacemos deporte sabemos que el día de cardio... hay que tomárselo en serio.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Dia de Cardio\" (muestra la camiseta o top muy sudado, y la cara)",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Tengo una sed tenaz y dolor de cabeza horrible\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Conflicto",
+        "\"El agua no sirve tan rapido para hidratar.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Ya ese babeado no me vuelve a dar, ahora si me hidrato antes de entrenar.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Beneficio",
+        "\"Tiene electrolitos, vitaminas y además sabe muy rico… y me hidrata mas rapido que el agua.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Si de verdad te tomas en serio tu rendimiento... cada detalle cuenta. Y no, no es solo entrenar.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "4": {
+    "title": "REEL MNRL 4 — Curly",
+    "sub": "TOF · POV Comedy · Fiestas — \"esa amiga que dice que no vuelve a tomar\"",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"No, no... este fin de semana yo no salgo. Ya yo soy una mujer nueva.\" (POV: Esa amiga que todos los domingos dice que no vuelve a tomar 😂)",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Es más... estoy en mi etapa de bienestar. Agüita, dormir temprano... esas cosas.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"¿Qué? ¿Que hay cumpleaños el jueves?\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Bueno... pero un ratico.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"¿Qué el viernes también salen?\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Ay... bueno... pero ya el viernes sí es diferente.\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Bueno... ni modo. Ahora sí estoy blindada. 😂\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "5": {
+    "title": "REEL MNRL 5 — Curly",
+    "sub": "MOF · Vlog / Mom Lifestyle · Hidratación en viajes",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Listos para estas vacaciones?... porque yo todavía no. 😂\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Nos esperan vuelos, aeropuertos, maletas... y dos niños con energía infinita.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Así que antes de salir de la casa... esto nunca falta.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Porque estos pelados no son tarea facil.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Además tiene zinc, así que ya hace parte de mi rutina cuando sé que vienen días movidos.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Bueno... ahora sí nos vamos\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Deséenme suerte. 😂✈️\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "6": {
+    "title": "REEL MNRL 6 — Isa Aguirre",
+    "sub": "TOF · Lifestyle Deportivo · Hidratación pre y post entreno",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Si ustedes viven sufriendo con dudas de cómo hidratarse para un entreno súper pesado o una carrera larga, no busquen más, aquí les tengo el secreto.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Yo empiezo con la comida, unos 90 minutos antes de arrancar me preparo un desayuno con proteína y carbohidratos.\" (texto superpuesto: Antes)",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Durante el entreno, la regla de oro es meterle 60 gramos de carbohidratos por hora, lo que básicamente es consumir 30 gramos cada media hora.\" (texto superpuesto: Durante)",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Ya después, suelo tomarme una buena dosis de electrolitos.\" (texto superpuesto: Despues)",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Esto es sagrado si no quieren 'chocar contra el muro' o quedar fundidas y sin un poquitico de energía al final de la sesión, y estos son súper ricos y cumplen con todo.\"",
+        "Voz en off"
+      ]
+    ]
+  },
+  "7": {
+    "title": "REEL MNRL 7 — Isa Aguirre",
+    "sub": "TOF · Pantalla verde · Remedios caseros para el guayabo vs. MNRL",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Vamos a preparar un remedio para el guayabo: un huevo crudo entero...\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"...limón para el sabor... un chorrito de salsa negra... y sal.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Literalmente eso sabe a mierda.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Te puede dar salmonela... y hasta diarrea.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Yo soy más simple... este sachet de MNRL.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Beneficio",
+        "\"Que sí tiene electrolitos, sin azúcar... y con un sabor rico.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Los pedí hace como un mes... bueno, en realidad los pidió mi marido...\"",
+        "Pantalla verde"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"...Los pidió mi marido para mí, porque... ya sabes amiga, las salidas de niñas la dejan a una destruida. 😂 Entonces ahora siempre tengo mis MINERAL por ahí, y lista para la siguiente rumba. (Mentiras, mi amor... no).\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "8": {
+    "title": "REEL MNRL 8 — Isa Aguirre",
+    "sub": "TOF · Pantalla dividida · Hábito para el periodo",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Un pequeño hábito que realmente marca una gran diferencia durante el periodo.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"La hidratación... si, LIT, la hidratacion\"",
+        "Pantalla dividida"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Los electrolitos en general, te ayudan a reponer energía.\"",
+        "Pantalla dividida"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Y otra cosa es bajarle a los azúcares procesados, no consumirlos ayuda con los bajones y la hinchazón.\"",
+        "Pantalla dividida"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Estos electrolitos son súper buenos con stevia y tienen un plus: Reishi, que es un hongo asiático.\"",
+        "Pantalla dividida"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Lo mejor es que lo puedes tomar para hacer deporte, para el periodo o para el día a día.\"",
+        "Pantalla dividida"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Es una forma muy sencilla... de sentirte un poco más humana en esos días difíciles.\"",
+        "Pantalla dividida"
+      ]
+    ]
+  },
+  "9": {
+    "title": "REEL MNRL 9 — Isa Aguirre",
+    "sub": "TOF · Respondiendo comentario · Calorías ocultas de las bebidas deportivas",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "💬 \"¿Cuánto tiempo hay que hacer ejercicio para quemar 140 calorias?\" → \"Hay bebidas que mucha gente toma para hidratarse y fácilmente pueden tener alrededor de 140 calorías. Vamos a ver cuánto se demora uno en quemarlas.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Demostración",
+        "(Sin diálogo — time lapse en la caminadora con cronómetro y contador de calorías hasta 140 kcal)",
+        "Time lapse"
+      ],
+      [
+        "body",
+        "Conclusión",
+        "\"Me demoré unos 12 minutos dándole bastante duro.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Es bastante tiempo para unas calorías que ni siquiera estaba buscando consumir. Por eso yo prefiero tomar electrolitos.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Beneficio",
+        "\"Este tiene electrolitos, no tiene azúcar y tiene muy pocas calorías, así que hace mucho más sentido para mí.\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Al final, cada quien decide cómo invertir sus calorías... y también su tiempo.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "10": {
+    "title": "REEL MNRL 10 — Isa Aguirre",
+    "sub": "TOF · Pantalla verde (reto \"baja un dedo\") · Color de la orina / deshidratación",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Si fuiste al baño esta mañana... baja un dedo.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Si revisaste el color de tu chichí después de ir al baño... baja otro dedo.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Y si este es el color de tu orina... baja otro dedo.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Lo siento... pero no haces parte del club. Probablemente te está faltando hidratarte mejor.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Desarrollo",
+        "\"Entre el 60 y el 70% de nuestro cuerpo es agua... mantenernos bien hidratadas sí hace una diferencia.\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Por eso hoy ya no solo pienso en tomar agua... también en los electrolitos. Te dejo los que yo uso aquí abajo.\"",
+        "Pantalla verde"
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
