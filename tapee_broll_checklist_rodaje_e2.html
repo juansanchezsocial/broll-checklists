@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAPEE · Tomas de Apoyo · Reels 16–20 y 26–30</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>TAPEE · Tomas de Apoyo · Reels 16–20 y 26–30</h1>
+  <div class="sub">Rodaje Entrega 2 — Tapete sanitario para perros</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="lau">Lau London</div>
+    <div class="chip" data-filter="paola">Paola</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="lau">
+  <div class="creator-title">
+    <h2>Lau London</h2>
+    <span class="count">Reels 16–20</span>
+  </div>
+  <!-- REEL 16 -->
+  <div class="reel" data-reel="16">
+    <div class="reel-head">
+      <span class="reel-num">REEL 16</span>
+      <span class="reel-title">"Tu casa huele a chichi de perro y todo el mundo lo nota" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(16)">📝 Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7655496464080112926&language=en-US&currency=USD&region=US&dateRange=%5B%222026-06-06%22%2C%222026-07-05%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216602197011443" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="16">0/13</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="16-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en la sala <strong>simulando mal olor</strong></div></div>
+      <div class="shot" data-id="16-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora sentada en el sofá <strong>avergonzada, oliendo disimuladamente</strong></div></div>
+      <div class="shot" data-id="16-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>limpiando chichi de perro</strong></div></div>
+      <div class="shot" data-id="16-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>echando ambientador de manera disimulada</strong></div></div>
+      <div class="shot" data-id="16-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>oliendo el piso</strong> donde acaba de limpiar</div></div>
+      <div class="shot" data-id="16-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV de la <strong>página del tapete en el PC</strong></div></div>
+      <div class="shot" data-id="16-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>recibiendo el paquete</strong> en la puerta de la casa</div></div>
+      <div class="shot" data-id="16-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>armando el tapete</strong> en casa</div></div>
+      <div class="shot" data-id="16-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>organizándolo en el balcón</strong> o lugar idóneo</div></div>
+      <div class="shot" data-id="16-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Perro usando el tapete</strong></div></div>
+      <div class="shot" data-id="16-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro <strong>interactuando con el tapete</strong></div></div>
+      <div class="shot" data-id="16-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>interactuando con el perro</strong></div></div>
+      <div class="shot" data-id="16-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del tapete</strong> (para el CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 17 -->
+  <div class="reel" data-reel="17">
+    <div class="reel-head">
+      <span class="reel-num">REEL 17</span>
+      <span class="reel-title">"Llevo meses pisando charcos de chichi" — Unboxing</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Unboxing</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(17)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@kellyclaireth/video/7288150705448373509?_r=1&_t=ZS-983bXONweXM" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216602197011445" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="17">0/13</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="17-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>pisando chichi</strong></div></div>
+      <div class="shot" data-id="17-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>limpiando chichi de perro</strong></div></div>
+      <div class="shot" data-id="17-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tocándose la cabeza, estresada</strong></div></div>
+      <div class="shot" data-id="17-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrándole el tapete al perro</strong></div></div>
+      <div class="shot" data-id="17-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con el tapete</div></div>
+      <div class="shot" data-id="17-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Tomas detalle de la textura</strong> del tapete</div></div>
+      <div class="shot" data-id="17-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro interactuando con el tapete</div></div>
+      <div class="shot" data-id="17-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro <strong>con chichi en el piso</strong></div></div>
+      <div class="shot" data-id="17-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>llamando al perro hacia el pasto</strong></div></div>
+      <div class="shot" data-id="17-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro <strong>olfateando el tapete</strong></div></div>
+      <div class="shot" data-id="17-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>acariciando y abrazando al perro</strong></div></div>
+      <div class="shot" data-id="17-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro sentado o <strong>simulando orinar en el tapete</strong></div></div>
+      <div class="shot" data-id="17-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips del perro con el tapete (para el CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 18 -->
+  <div class="reel" data-reel="18">
+    <div class="reel-head">
+      <span class="reel-num">REEL 18</span>
+      <span class="reel-title">"No es que sea maloso ni sucio, es estrés" — A cámara</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(18)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/EOVs5FYXTkdVdRx2IFBg?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216602197011447" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="18">0/14</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="18-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora hablando a cámara <strong>señalando el video flotante</strong></div></div>
+      <div class="shot" data-id="18-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma donde <strong>se vea chichi en el piso</strong></div></div>
+      <div class="shot" data-id="18-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora viendo un chichi en el piso con <strong>cara de estrés</strong></div></div>
+      <div class="shot" data-id="18-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perro (mejor si está <strong>acostado, aburrido</strong>)</div></div>
+      <div class="shot" data-id="18-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>colocando un papel en el piso</strong></div></div>
+      <div class="shot" data-id="18-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando un pañal y haciendo cara de que no</strong></div></div>
+      <div class="shot" data-id="18-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora limpiando chichi del piso</div></div>
+      <div class="shot" data-id="18-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>colocando el tapete en el balcón</strong></div></div>
+      <div class="shot" data-id="18-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close up del tapete</strong></div></div>
+      <div class="shot" data-id="18-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora mostrándole el tapete al perro</div></div>
+      <div class="shot" data-id="18-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perro en el tapete</div></div>
+      <div class="shot" data-id="18-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del tapete</strong></div></div>
+      <div class="shot" data-id="18-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>abrazando a su perro</strong></div></div>
+      <div class="shot" data-id="18-14"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips del perro en la casa</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 19 -->
+  <div class="reel" data-reel="19">
+    <div class="reel-head">
+      <span class="reel-num">REEL 19</span>
+      <span class="reel-title">"¿Cómo funciona el tapete sanitario Tapee?" — Instructivo</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Instructivo</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(19)">📝 Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZSXSH3nP1/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216602197011449" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="19">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="19-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito con el tapete</div></div>
+      <div class="shot" data-id="19-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando la grama de arriba y tocando el pasto</strong></div></div>
+      <div class="shot" data-id="19-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando la capa de arena</strong></div></div>
+      <div class="shot" data-id="19-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>agregando un vaso con agua al tapete</strong></div></div>
+      <div class="shot" data-id="19-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito haciendo algo</div></div>
+      <div class="shot" data-id="19-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando la bolsa de arena</strong> y haciendo como si la fuera a cambiar</div></div>
+      <div class="shot" data-id="19-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito</div></div>
+      <div class="shot" data-id="19-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>levantando el tapete y mostrando lo grande que es</strong> (80×60)</div></div>
+      <div class="shot" data-id="19-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Close up del tapete</div></div>
+      <div class="shot" data-id="19-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito en el tapete</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 20 -->
+  <div class="reel" data-reel="20">
+    <div class="reel-head">
+      <span class="reel-num">REEL 20</span>
+      <span class="reel-title">"Mi peludo hacía pipí por toda la casa" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(20)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@bigpuppy.pe/video/7311461054100278533?_r=1&_t=ZS-985GXMhjuYn" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216602197011451" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="20">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="20-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> toma del perrito · <strong>Abajo:</strong> toma de chichi en el piso</div></div>
+      <div class="shot" data-id="20-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> perrito en el tapete · <strong>Abajo:</strong> creadora mostrando el tapete</div></div>
+      <div class="shot" data-id="20-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> close up del tapete · <strong>Abajo:</strong> creadora ajustando el tapete</div></div>
+      <div class="shot" data-id="20-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito en el tapete</div></div>
+      <div class="shot" data-id="20-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito</div></div>
+      <div class="shot" data-id="20-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del tapete</strong></div></div>
+      <div class="shot" data-id="20-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma del perrito oliendo el tapete o usándolo (para el CTA)</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="paola">
+  <div class="creator-title">
+    <h2>Paola</h2>
+    <span class="count">Reels 26–30</span>
+  </div>
+  <!-- REEL 26 -->
+  <div class="reel" data-reel="26">
+    <div class="reel-head">
+      <span class="reel-num">REEL 26</span>
+      <span class="reel-title">"¡No! ¡Sí! ¡No! ¡Sí!" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(26)">📝 Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7653247196967521566&language=en-US&currency=USD&region=US&dateRange=%5B%222026-06-06%22%2C%222026-07-05%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216606650541248" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="26">0/12</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="26-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>viendo un chichi en el piso</strong> y diciendo "¡No!"</div></div>
+      <div class="shot" data-id="26-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del <strong>chichi del perro en el tapete</strong> y diciendo "¡Sí!"</div></div>
+      <div class="shot" data-id="26-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>limpiando un chichi en el piso</strong> y diciendo "¡No!"</div></div>
+      <div class="shot" data-id="26-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>alzando la grama del tapete</strong> y diciendo "¡Sí!"</div></div>
+      <div class="shot" data-id="26-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> creadora colocando periódico en el piso · <strong>Abajo:</strong> creadora colocando un pee pad</div></div>
+      <div class="shot" data-id="26-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> creadora echando ambientador por la casa · <strong>Abajo:</strong> chichi del perro en el piso</div></div>
+      <div class="shot" data-id="26-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> creadora colocando el tapete · <strong>Abajo:</strong> perro usando el tapete</div></div>
+      <div class="shot" data-id="26-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Arriba:</strong> creadora mostrando que el tapete tiene arena · <strong>Abajo:</strong> clip del perrito</div></div>
+      <div class="shot" data-id="26-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora interactuando con el perrito</div></div>
+      <div class="shot" data-id="26-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>cambiando la arena</strong> (o mímica de que la está cambiando)</div></div>
+      <div class="shot" data-id="26-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito con el tapete</div></div>
+      <div class="shot" data-id="26-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando el tapete a cámara</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 27 -->
+  <div class="reel" data-reel="27">
+    <div class="reel-head">
+      <span class="reel-num">REEL 27</span>
+      <span class="reel-title">"Señal de que tu método no sirve" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(27)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/chGhz73mf74FDYnTMYS6?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216606650541250" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="27">0/12</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="27-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con un <strong>periódico en el piso lleno de chichi</strong> (toma flotante en post)</div></div>
+      <div class="shot" data-id="27-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>echándole ambientador al piso</strong> (toma flotante en post)</div></div>
+      <div class="shot" data-id="27-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro con un chichi al lado en el piso</div></div>
+      <div class="shot" data-id="27-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del piso con chichi y <strong>gesto negativo con la mano</strong></div></div>
+      <div class="shot" data-id="27-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito usando el tapete</div></div>
+      <div class="shot" data-id="27-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV <strong>mostrando la arena que trae el tapete</strong></div></div>
+      <div class="shot" data-id="27-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>organizando el tapete</strong></div></div>
+      <div class="shot" data-id="27-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perro usando el tapete</div></div>
+      <div class="shot" data-id="27-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora interactuando con el perro</div></div>
+      <div class="shot" data-id="27-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito por la casa</div></div>
+      <div class="shot" data-id="27-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>colocando el tapete en el piso</strong></div></div>
+      <div class="shot" data-id="27-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con el perro <strong>sentados al lado del tapete</strong> (para el CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 28 -->
+  <div class="reel" data-reel="28">
+    <div class="reel-head">
+      <span class="reel-num">REEL 28</span>
+      <span class="reel-title">"Hola, me llamo Firulais" — Sketch</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(28)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@mrcarlosm/video/7189758799366982918?_r=1&_t=ZS-983bEng14ZI" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216606650541252" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="28">0/11</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="28-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma del perrito</div></div>
+      <div class="shot" data-id="28-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma de un <strong>piso con chichi</strong></div></div>
+      <div class="shot" data-id="28-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>limpiando el piso, frustrada</strong></div></div>
+      <div class="shot" data-id="28-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con <strong>cara de frustración y el perrito al lado</strong></div></div>
+      <div class="shot" data-id="28-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+      <div class="shot" data-id="28-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del producto <strong>mostrando la grama y la arena</strong></div></div>
+      <div class="shot" data-id="28-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>feliz interactuando con el perrito</strong></div></div>
+      <div class="shot" data-id="28-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito con el tapete</div></div>
+      <div class="shot" data-id="28-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora interactuando con el perrito <strong>con el tapete al lado</strong></div></div>
+      <div class="shot" data-id="28-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>llamando al perrito al tapete</strong></div></div>
+      <div class="shot" data-id="28-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close up del producto</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 29 -->
+  <div class="reel" data-reel="29">
+    <div class="reel-head">
+      <span class="reel-num">REEL 29</span>
+      <span class="reel-title">"No compres esto. Mejor, compra esto" — Us vs Them</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Us vs Them</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(29)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@cuchipets.co/video/7458767458959248645?_r=1&_t=ZS-983b9S4Juke" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216606650541254" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="29">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="29-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perro usando Tapee</div></div>
+      <div class="shot" data-id="29-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>recogiendo un pee pad con chichi</strong></div></div>
+      <div class="shot" data-id="29-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tapándose la nariz</strong> porque huele mal</div></div>
+      <div class="shot" data-id="29-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando feliz el tapete</strong></div></div>
+      <div class="shot" data-id="29-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del tapete</strong></div></div>
+      <div class="shot" data-id="29-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Perro usando Tapee</div></div>
+      <div class="shot" data-id="29-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora interactuando con el perro</div></div>
+      <div class="shot" data-id="29-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>feliz con el perro mostrándole el tapete</strong></div></div>
+      <div class="shot" data-id="29-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perro interactuando con el tapete</div></div>
+      <div class="shot" data-id="29-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con el tapete y con el perro (para el CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 30 -->
+  <div class="reel" data-reel="30">
+    <div class="reel-head">
+      <span class="reel-num">REEL 30</span>
+      <span class="reel-title">"¿Cansada de que tu casa huela a orín?" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(30)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/y6Op5NI8T6B5XfcvI3CA?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1216606650541256" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="30">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="30-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>frustrada limpiando el piso</strong></div></div>
+      <div class="shot" data-id="30-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>feliz mostrando el tapete</strong></div></div>
+      <div class="shot" data-id="30-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+      <div class="shot" data-id="30-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perrito usando el tapete</div></div>
+      <div class="shot" data-id="30-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del perro usando el tapete</div></div>
+      <div class="shot" data-id="30-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>feliz con su perro</strong></div></div>
+      <div class="shot" data-id="30-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>con el tapete y el perrito sentados</strong></div></div>
+      <div class="shot" data-id="30-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando el tapete a cámara</strong> (para el CTA)</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · TAPEE · Entrega 2</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_tapee_rodaje_e2_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "16": {
+    "title": "REEL 16 — Lau London",
+    "sub": "TOF · Pantalla verde · Casa que huele a chichi de perro",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Tu casa huele a chichi de perro y todo el mundo lo nota… menos tú.",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Así mantenía mi casa y ni cuenta me daba, pero cuando llegaba visita, veía a todo el mundo haciendo caras.",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y salía como loca a echar ambientador con la visita en la sala.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Pero eso solo tapaba el problema y no lo eliminaba.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Así que busqué por internet y encontré un tapete buenísimo que ayuda con el olor.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Este tapete tiene una arena que se traga el olor por debajo, no lo tapa por encima como los demás. Entonces ya no me toca limpiar todos los días, simplemente le cambio la arena cada 15 días y ya, listo.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "A mi perrito le gusta porque huele a pasto y a mí también porque lo puede usar solito, sin ayuda.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Yo no sé tú, pero si te da pena que la gente entre a tu casa y huela a chichi de perro, te dejo el link acá abajo.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "17": {
+    "title": "REEL 17 — Lau London",
+    "sub": "TOF · Unboxing · No tienen tiempo de sacar el perro al parque",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Llevo meses pisando charcos de chichi de perro y me la paso limpiando, así que decidí buscar una solución.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "(texto peludo): ¿Y eso qué es?",
+        "Voz IA TikTok (igual a la ref)"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Este tapete es un baño con grama para que tu peludo haga sus cositas adentro. Se supone que huele a pasto y que él solito entiende que ahí es.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "(texto peludo): Ay mami, yo hago donde a mí me nazca.",
+        "Voz IA TikTok (igual a la ref)"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Ven, huele el pastico.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "(textos peludo): Ay sí, huele a parque, huele a pastico, me encanta.",
+        "Voz IA TikTok (igual a la ref)"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Ahora, después de tantos meses trapeando y trapeando, mi peludo en un solo día aprendió solito.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Cuando no tengo tiempo de sacarlo a orinar, él mismo lo hace en su nuevo césped en casa.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si quieres conseguirlo lo encuentras en el link de abajo, se llama Tapee.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "18": {
+    "title": "REEL 18 — Lau London",
+    "sub": "TOF · A cámara · Apartamentos no aptos para que el perro haga sus necesidades",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Si tu peludo hace esto en el piso, no es que sea maloso ni sucio. Casi siempre es un problema de comportamiento o de estrés.",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Un perro encerrado en un apartamento, sin un lugar claro que sienta como suyo para hacer sus necesidades, se estresa.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y esto es lo que la mayoría no sabe: el problema casi nunca es el perro. Es que el periódico o los pañales desechables no le dan una zona fija que reconozca, entonces cada día duda y vuelve a marcar en otro lado.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Lo que de verdad lo calma es tener SU espacio, siempre en el mismo sitio. Por eso lo que yo uso es este tapete.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Este tapete absorbe el pipí por debajo, así el olor no se queda por toda tu casa.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Además le das su lugar fijo, con un olor natural a pasto que lo guía justo ahí.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Ahora, seamos honestos: esto no es magia de un día. Ningún tapete hace que aprenda en 24 horas. Toma unos días de constancia mientras el peludo lo hace suyo.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Pero es la forma real de bajarle el estrés a tu peludo y de que tu casa deje de ser un campo minado. Se llama Tapee, te dejo el link abajo.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "19": {
+    "title": "REEL 19 — Lau London",
+    "sub": "MOF · Instructivo · Tapetes que eliminan olores",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¿Cómo funciona el tapete sanitario Tapee para perritos?",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "La grama de arriba imita el pasto de verdad, y ese olor natural hace que tu perrito quiera hacer ahí por puro instinto.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Debajo va una capa de arena ecológica que atrapa el líquido y el olor por dentro, para que no se quede impregnado en tu casa.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Cada cierto tiempo solo retiras la arena usada, pones nueva, y ya. Sin lavar todos los días.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y mide 80 por 60, es el tapete más grande del país, así que hasta tu perrito grandote hace sus cosas cómodo.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si lo quieres, consíguelo en el link de abajo, a tu peludo le va a encantar.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "20": {
+    "title": "REEL 20 — Lau London",
+    "sub": "BOF · Pantalla dividida · Perro que hace pipí por toda la casa",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Mi peludo hacía pipí por toda la casa, a cada rato, donde le diera la gana.",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Pero encontré los tapetes de Tapee.",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Es un tapete con grama, es como un pedacito de parque metido en el apartamento.",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Ahora hace ahí su pipí y su popó solito, porque la grama lo llama por instinto.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y lo mejor de todo es que no tengo que limpiar pipí del piso.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Miles de perritos lo usan ahora, y ha sido la solución para los malos olores en los apartamentos.",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si lo quieres, consíguelo antes que se agoten en el link de abajo.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "26": {
+    "title": "REEL 26 — Paola",
+    "sub": "TOF · Pantalla dividida · Lavar los tapetes todos los días porque huelen mal",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¡No! ¡Sí! ¡No! ¡Sí! ¡No!",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Cada vez que pones un periódico o un pee pad para que tu peludo haga chichí, tu casa termina oliendo a orín igual.",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Justo por eso me cambié a Tapee, porque este trae arena ecológica debajo de la grama que atrapa el olor del pipí. Y como lo absorbe por dentro, ya no tienes que vivir trapeando ni tapando el olor.",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y a diferencia de otros, con este solo cambias la arena cada 15 días y ya. Más fácil imposible.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Así que si quieres que tu peludo haga sus necesidades adentro sin que la casa huela mal, te dejo el link aquí abajo.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "27": {
+    "title": "REEL 27 — Paola",
+    "sub": "TOF · UGC · Métodos poco efectivos para que el perro haga chichi",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Esto es señal de que el método para que tu peludo haga chichí en casa no sirve.",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y esto es señal de que por más que lo tapes con ambientadores, tampoco sirve.",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Pero aquí está la cosa: no necesitas periódico, pee pads, o químicos para arreglar todo eso.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Necesitas 1 solo tapete que lo resuelve todo.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Este tapete es el único en Colombia con arena ecológica integrada.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Por dentro lleva arena ecológica que atrapa el olor del pipí, para que la casa deje de oler a orín.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y lo mejor: solo cambias la arena cada 15 días, no todos los días como con lo de siempre.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Como huele a pasto, el peludo aprende a usarlo solito, sin que tengas que gritarle.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Lo pones en el piso una vez y ya está.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Así que deja de usar cosas que no te sirven y cámbiate a Tapee, te dejo el link abajo.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "28": {
+    "title": "REEL 28 — Paola",
+    "sub": "TOF · Sketch · Tener que limpiar la casa por chichi en el piso",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Hola, me llamo Firulais. Y no entiendo por qué cada vez que hago chichí, mi mamá se pone como una Esperancita a trapear y limpiar todo.",
+        "Voz IA TikTok (igual a la ref)"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Yo no sé para qué hace eso, lo peor es que sigue oliendo a orín. No entiendo nada de nada.",
+        "Voz IA TikTok"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "¿Acaso no conoce el tapete Tapee?",
+        "Voz IA TikTok"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Tiene arena ecológica debajo de la grama que atrapa el olor de mi pipí por dentro. Por eso mi mamá ya no vive con el trapero.",
+        "Voz IA TikTok"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y solo lo cambia cada 15 días, no todos los días.",
+        "Voz IA TikTok"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "Ahora mi mamá está feliz, y la casa huele deli. Y yo, todo guapito, y todos felices.",
+        "Voz IA TikTok"
+      ]
+    ]
+  },
+  "29": {
+    "title": "REEL 29 — Paola",
+    "sub": "MOF · Us vs Them · Pee pads desechables vs Tapee",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "No compres esto. Mejor, compra esto.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Comprar pee pads desechables para el chichí de tu peludo no es la mejor opción: gastas plata cada mes, llenas la casa de basura, y ni así se va el olor a orín.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Mejor compra un tapete sanitario de buena calidad como Tapee: tiene grama artificial con arena ecológica debajo que atrapa el olor por dentro, es durable, fácil de mantener y no retiene malos olores.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y lo mejor: en vez de estar limpiando todos los días, solo cambias la arena cada 15 días.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Ah, y a los peluditos de la casa les encanta, porque huele a pasto y aprenden a usarlo solitos.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Pide el tuyo en el link de abajo.",
+        "Voz en off"
+      ]
+    ]
+  },
+  "30": {
+    "title": "REEL 30 — Paola",
+    "sub": "BOF · Pantalla verde · Vergüenza al recibir visitas",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¿Cansada de que tu casa huela a orín por más que limpies? Este tapete fue lo único que me lo quitó.",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Se llama Tapee y no tiene químicos que le hagan daño a tu peludo, y ya lo tienen más de 20 mil peluditos en sus casas.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Sirve para que el peludo haga adentro de tu casa y para volver a recibir visitas sin penas del olor.",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Hasta el peludo más terco lo usa — te va a pedir salir menos y va a empezar a usarlo más.",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Te dejo el link para que lo consigas antes que se agoten.",
+        "Voz en off"
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
