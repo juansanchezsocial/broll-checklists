@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALMMA + GUMMY BOX · Tomas de Apoyo</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>ALMMA + GUMMY BOX · Tomas de Apoyo</h1>
+  <div class="sub">Rodaje — ALMMA MUJER Reels 41–45 (Marilinda) · THE GUMMY BOX Reels 176–180 (Karina)</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="marilinda">Marilinda — ALMMA MUJER</div>
+    <div class="chip" data-filter="karina">Karina — THE GUMMY BOX</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="marilinda">
+  <div class="creator-title">
+    <h2>Marilinda — ALMMA MUJER</h2>
+    <span class="count">Reels 41–45</span>
+  </div>
+  <!-- REEL 41 -->
+  <div class="reel" data-reel="41">
+    <div class="reel-head">
+      <span class="reel-num">REEL 41</span>
+      <span class="reel-title">"Antes y después" — UGC reseña · Soporte busto grande</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(41)">📝 Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7632392583402032415&language=en-US&currency=USD&region=US&dateRange=%5B%222026-06-14%22%2C%222026-07-13%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216172763201442/1216561479873098" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="41">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="41-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hook tal cual la referencia: toma <strong>sin brasier</strong> y luego <strong>con el brasier</strong> mostrando <strong>un seno realzado y el otro no</strong></div></div>
+      <div class="shot" data-id="41-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablar a cámara con <strong>un seno en el bra y el otro abajo</strong>; mientras habla, <strong>subirse el seno</strong> y mostrar que ambos quedan bien sujetados</div></div>
+      <div class="shot" data-id="41-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablar a cámara <strong>solo con el bra puesto</strong> (bloque tecnología de gel)</div></div>
+      <div class="shot" data-id="41-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip de la creadora <strong>mostrando el realce</strong> (para voz off de talla M)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 42 -->
+  <div class="reel" data-reel="42">
+    <div class="reel-head">
+      <span class="reel-num">REEL 42</span>
+      <span class="reel-title">"Así estaban antes, así están ahora" — Pantalla verde · Realce natural</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(42)">📝 Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7657173035811720462&language=en-US&currency=USD&region=US&dateRange=%5B%222026-06-14%22%2C%222026-07-13%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216172763201442/1216561479873100" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="42">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="42-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip con <strong>blusa 1 sin bra</strong> (hook "antes")</div></div>
+      <div class="shot" data-id="42-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip con <strong>blusa 1 + bra</strong> (hook "ahora")</div></div>
+      <div class="shot" data-id="42-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip con <strong>blusa 2 sin bra</strong></div></div>
+      <div class="shot" data-id="42-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip con <strong>blusa 2 + bra</strong></div></div>
+      <div class="shot" data-id="42-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con camisa <strong>sin bra, cara de frustración</strong> porque se le ven caídas</div></div>
+      <div class="shot" data-id="42-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando a cámara <strong>con el bra puesto</strong></div></div>
+      <div class="shot" data-id="42-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+      <div class="shot" data-id="42-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips con el bra puesto para voz off de las <strong>bandas de gel</strong> (saltar, moverse, no se resbala)</div></div>
+      <div class="shot" data-id="42-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close up</strong> de la creadora con el bra puesto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 43 -->
+  <div class="reel" data-reel="43">
+    <div class="reel-head">
+      <span class="reel-num">REEL 43</span>
+      <span class="reel-title">"De aquí abajo a aquí arriba" — UGC · Brasieres que no se mueven</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(43)">📝 Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7528525789369863455&language=en-US&currency=USD&region=US&dateRange=%5B%222026-06-14%22%2C%222026-07-13%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216172763201442/1216561479873102" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="43">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="43-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hook <strong>igual a la referencia</strong>: toma con <strong>blusa sin bra</strong> + toma mostrando <strong>solo el bra puesto</strong></div></div>
+      <div class="shot" data-id="43-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip con el bra puesto <strong>por delante y por detrás</strong>, mostrando cómo se moldea</div></div>
+      <div class="shot" data-id="43-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Con la camiseta puesta: <strong>un seno en el bra y el otro abajo</strong>, subírselo a cámara ("así de fácil se realzan")</div></div>
+      <div class="shot" data-id="43-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Selfie caminando</strong>: mostrar que el bra no lastima ni se corre</div></div>
+      <div class="shot" data-id="43-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>con el bra puesto</strong> (cierre "lo único que uso")</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 44 -->
+  <div class="reel" data-reel="44">
+    <div class="reel-head">
+      <span class="reel-num">REEL 44</span>
+      <span class="reel-title">"Sí funciona" — Pantalla dividida · Bra para hacer deporte</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(44)">📝 Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7606061052349926669&language=en-US&currency=USD&region=US&dateRange=%5B%222026-06-14%22%2C%222026-07-13%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216172763201442/1216561479873104" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="44">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="44-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hook: <strong>un seno arriba en el sostén y el otro abajo</strong>, señalárselos mientras habla</div></div>
+      <div class="shot" data-id="44-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con <strong>la camisa y el bra puestos</strong> ("así conseguí este realce")</div></div>
+      <div class="shot" data-id="44-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Arriba: <strong>modelando el bra y mostrando la tecnología de gel</strong> / Abajo: hablando</div></div>
+      <div class="shot" data-id="44-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Arriba: <strong>haciendo ejercicio o saltando</strong> con el bra puesto</div></div>
+      <div class="shot" data-id="44-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Con una camisa puesta mostrando que <strong>se vean realzadas</strong></div></div>
+      <div class="shot" data-id="44-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Arriba: <strong>paneo del bra</strong> / Abajo: hablando (CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 45 -->
+  <div class="reel" data-reel="45">
+    <div class="reel-head">
+      <span class="reel-num">REEL 45</span>
+      <span class="reel-title">"Una cosa que deben saber" — UGC · Bra que da soporte</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(45)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/pVYOIXlcyBh5coMho0VX?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216172763201442/1216561479873106" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="45">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="45-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mostrando <strong>los demás colores</strong> del bra</div></div>
+      <div class="shot" data-id="45-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips de la creadora <strong>mostrando el realce</strong></div></div>
+      <div class="shot" data-id="45-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto con una <strong>blusa sin bra</strong> — <strong>marcar la camisa</strong> para mostrar dónde caen los senos</div></div>
+      <div class="shot" data-id="45-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto con la <strong>blusa marcada + el bra</strong> (van como fotos flotantes en edición)</div></div>
+      <div class="shot" data-id="45-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close up</strong> mostrando cómo queda el bra puesto</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="karina">
+  <div class="creator-title">
+    <h2>Karina — THE GUMMY BOX</h2>
+    <span class="count">Reels 176–180</span>
+  </div>
+  <!-- REEL 176 -->
+  <div class="reel" data-reel="176">
+    <div class="reel-head">
+      <span class="reel-num">REEL 176</span>
+      <span class="reel-title">"El mío parece con la solitaria" — Respondiendo comentario · Antojos adolescentes</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(176)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/0S2UvOVmZ5TatMQkKCkC?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216572168438091" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="176">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="176-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando a cámara <strong>leyendo el comentario</strong> (hook)</div></div>
+      <div class="shot" data-id="176-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Cara de desaprobación</strong> cuando cuenta lo del hijo comiendo dulces</div></div>
+      <div class="shot" data-id="176-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Muestra las <strong>gomitas a cámara y se come una</strong></div></div>
+      <div class="shot" data-id="176-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Interactuando con el producto: <strong>lo pone en la mesa, lo mira, lo abre y lo muestra</strong></div></div>
+      <div class="shot" data-id="176-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Cierre: <strong>grita mirando hacia un lado</strong> "SANTIAGO, APÚRATEEE"</div></div>
+      <div class="shot" data-id="176-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de apoyo de <strong>snacks, gaseosas y un adolescente picando</strong> entre comidas (superpuestas — si no hay banco, grabarlas)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 177 -->
+  <div class="reel" data-reel="177">
+    <div class="reel-head">
+      <span class="reel-num">REEL 177</span>
+      <span class="reel-title">"Señales de que el estrés te pasa factura" — VSL sin voz · Estrés</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">VSL</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(177)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/3b2UppmHasuiMH6W6Tq4?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216572168438093" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="177">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="177-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Acostada boca abajo en 4 sobre la cama</strong>, inmóvil, cara hundida en la almohada — <strong>tal cual la referencia</strong></div></div>
+      <div class="shot" data-id="177-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mira fijo a cámara <strong>sosteniéndose ambos costados del cabello</strong> (señal 1: caída de cabello)</div></div>
+      <div class="shot" data-id="177-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Abre y cierra la boca apretando la mandíbula</strong>, se marcan los músculos, y masajea cerca del oído (expresión exagerada)</div></div>
+      <div class="shot" data-id="177-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Infla los cachetes</strong> mirando a cámara y señala la hinchazón con ambas manos</div></div>
+      <div class="shot" data-id="177-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Parpadea varias veces</strong> con mirada cansada — exagerado y raro</div></div>
+      <div class="shot" data-id="177-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Tirada en el piso boca arriba</strong>, agotada; con la mano <strong>busca el frasco de The Gummy Box</strong> en el suelo (la cámara sigue el movimiento)</div></div>
+      <div class="shot" data-id="177-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Se come la gomita, se para</strong> y ya se le ve un semblante diferente</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 178 -->
+  <div class="reel" data-reel="178">
+    <div class="reel-head">
+      <span class="reel-num">REEL 178</span>
+      <span class="reel-title">"Eso no es por el gimnasio" — Sticker comentario · Hierro y cicatrización</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(178)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@jessnotsimpson1/video/7648109981258042638?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216572168438095" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="178">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="178-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Con <strong>ropa deportiva y actitud de gym coach</strong>: lee el sticker del comentario y mira a cámara</div></div>
+      <div class="shot" data-id="178-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Señala en pantalla</strong> cada síntoma que menciona (pálidas / raspón / moretones)</div></div>
+      <div class="shot" data-id="178-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>señalando una animación</strong> (para la voz en off de absorción de hierro; fondos van por edición)</div></div>
+      <div class="shot" data-id="178-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando mientras <strong>muestra el abdomen con las manos</strong> (salud digestiva)</div></div>
+      <div class="shot" data-id="178-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Muestra el frasco</strong> mientras habla del combo de ingredientes</div></div>
+      <div class="shot" data-id="178-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">CTA: <strong>va por otro tarro, pone dos sobre la mesa</strong> y se come una gomita</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 179 -->
+  <div class="reel" data-reel="179">
+    <div class="reel-head">
+      <span class="reel-num">REEL 179</span>
+      <span class="reel-title">"Las medias te dejan marcas así" — Pantalla verde · Desorden metabólico</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(179)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@cassidythesahm/video/7631694642219732237?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216572168438097" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="179">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="179-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando a cámara para <strong>superponer en pantalla verde</strong> (hook; fondos de tobillos/espalda/laboratorio van por edición)</div></div>
+      <div class="shot" data-id="179-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Señala el fondo</strong> mientras habla (bloque problema)</div></div>
+      <div class="shot" data-id="179-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas negativas: <strong>ella trabajando, estresada</strong></div></div>
+      <div class="shot" data-id="179-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Enumera con los dedos</strong> los síntomas en orden (storytelling)</div></div>
+      <div class="shot" data-id="179-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Sostiene el producto</strong> (descubrimiento)</div></div>
+      <div class="shot" data-id="179-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Buscando las gomitas y abriéndolas</strong> — que se vea integrado a la rutina</div></div>
+      <div class="shot" data-id="179-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando a cámara y <strong>comiéndose las gomitas</strong> (bloque producto)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 180 -->
+  <div class="reel" data-reel="180">
+    <div class="reel-head">
+      <span class="reel-num">REEL 180</span>
+      <span class="reel-title">"¿Eso también sirve para las uñas?" — UGC Testimonial · Uñas fuertes</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(180)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/471AEZZAHiblnriSnxVf?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216572168438099" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="180">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="180-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hook: <strong>sostiene el frasco mirando a cámara y sonríe</strong></div></div>
+      <div class="shot" data-id="180-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Primer plano de las uñas</strong> mientras sostiene el frasco y luego toma las gomitas</div></div>
+      <div class="shot" data-id="180-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Hero shot del frasco</strong> mientras señala la etiqueta</div></div>
+      <div class="shot" data-id="180-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">CTA: <strong>señala hacia abajo sosteniendo dos frascos</strong></div></div>
+      <div class="shot" data-id="180-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Antes/después de uñas y reseñas van por <strong>edición</strong> (links en el brief)</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · ALMMA MUJER E3 + GUMMY BOX E5</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_almma_41_45_gummy_176_180_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "41": {
+    "title": "REEL 41 — Marilinda",
+    "sub": "TOF · UGC reseña · Soporte para busto grande",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Antes y después. Antes y después\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Para todas las de busto grande que quieren un realce natural, el brasier de gel de Almma les va a encantar\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"El soporte tiene tecnología de gel que se moldea a tu cuerpo\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Yo uso la talla M, y este bra las sostiene buenísimo\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Van hasta la talla XL, te dejo el link abajo para que los consigas\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "42": {
+    "title": "REEL 42 — Marilinda",
+    "sub": "TOF · Pantalla verde · Realce natural",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Así estaban antes, así están ahora. Así me quedaban antes, así ahora\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Las de busto grande tenemos que dejar de escuchar a las de busto pequeño sobre qué brasier funciona de verdad\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Porque a ellas les puede funcionar muchísimos modelos, pero nosotras sabemos que necesitamos uno que nos realce y nos dé un soporte resistente\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Este es el brasier de gel de Almma, y les muestro cómo funciona\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"El bra te sostiene gracias a las bandas de gel, que reparten el peso en vez de concentrarlo en un solo punto como los de varilla. Y así, puedes saltar, moverte, y no se resbala\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Yo uso la talla M y me queda perfecto\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Así que si tienes el busto pesado, este bra es ideal para ti\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "43": {
+    "title": "REEL 43 — Marilinda",
+    "sub": "TOF · UGC · Brasieres que no se mueven",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Así es como las llevo de aquí abajo a aquí arriba\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Este bra tiene tirantes ajustables y las bandas de gel se moldean a tu cuerpo para darte soporte y realce\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Mira, así de fácil se realzan, me encanta como se ve\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Lo he usado todo el día, y sigue en su lugar como el primer momento\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Literalmente es lo único que uso en mi día a día\"",
+        "Voz en off"
+      ]
+    ]
+  },
+  "44": {
+    "title": "REEL 44 — Marilinda",
+    "sub": "TOF · Pantalla dividida · Bra para hacer deporte",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Sí funciona\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Así conseguí este realce, solo con un brasier\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"No es que el brasier se ajuste a una talla, es que la tecnología de gel se ajusta a vos: se moldea a la forma de tu cuerpo y sostiene desde abajo, repartiendo el peso en vez de apretar como un aro\"",
+        "Pantalla dividida"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Puedo ponérmelo para hacer deporte, para salir, y siempre están en su lugar\"",
+        "Pantalla dividida"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Son de la marca Almma Mujer, te dejo el link aquí abajo\"",
+        "Pantalla dividida"
+      ]
+    ]
+  },
+  "45": {
+    "title": "REEL 45 — Marilinda",
+    "sub": "MOF · UGC · Bra que da soporte",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Una cosa que deben saber de este brasier de Almma\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Es que van a querer uno en cada color\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Y sí, es suavecito como mantequilla y sin costuras\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Y llega hasta talla XXL\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"El soporte y el levante son increíbles\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Es la misma tecnología de gel que se ha vuelto viral en redes por ese soporte que todas amamos\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"No tiene aros, así que no se te va a clavar en la espalda ni en los costados\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Es de Almma, te dejo el link abajo\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "176": {
+    "title": "REEL 176 — Karina",
+    "sub": "TOF · Respondiendo comentario · Antojos adolescentes",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Comentario: \"¿Mi hijo tiene 13 años, pero tiene un apetito... me va es a quebrar? 😂\" → \"Te entiendo, el mío parece con la solitaria jajajaja\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Problema",
+        "\"A esa edad comen comida chatarra a toda hora. Además están pasando por todos esos cambios de la pubertad y casi nunca se cuidan\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Rutina",
+        "\"El mío mantiene comiendo dizque gomitas y dulces. Por eso le compré estas gomitas saludables, jajaja. Tienen vinagre de manzana, vitamina C y probióticos, son 3 al día y me quedo más tranquila porque no se come todas esas porquerías\"",
+        "A cámara + Producto"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Le quitan esos antojos locos, también le ayudan con la piel y la limpieza del intestino. Esta marca en particular me ha gustado. Bueno, te la dejo ahí abajo, que ya me toca llevarlo al fútbol (grita: SANTIAGO, APÚRATEEE)\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "177": {
+    "title": "REEL 177 — Karina",
+    "sub": "TOF · VSL sin voz (texto superpuesto) · Estrés — misma música que la referencia",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "SEÑALES DE QUE EL ESTRÉS YA TE ESTÁ PASANDO FACTURA",
+        "A cámara sin voz"
+      ],
+      [
+        "body",
+        "Señal 1",
+        "1. Se te cae más cabello de lo normal",
+        "A cámara sin voz"
+      ],
+      [
+        "body",
+        "Señal 2",
+        "2. Aprietas la mandíbula sin darte cuenta",
+        "A cámara sin voz"
+      ],
+      [
+        "body",
+        "Señal 3",
+        "3. Tu cara amanece más inflamada",
+        "A cámara sin voz"
+      ],
+      [
+        "body",
+        "Señal 4",
+        "4. Tus ojos se sienten pesados todo el día",
+        "A cámara sin voz"
+      ],
+      [
+        "body",
+        "Señal 5",
+        "Combatir ese cansancio ya parece parte de tu personalidad",
+        "A cámara sin voz"
+      ],
+      [
+        "cta",
+        "Cierre",
+        "Superpuesto discreto al final: \"Gomitas reparadoras de Vinagre de manzana\"",
+        "A cámara sin voz"
+      ]
+    ]
+  },
+  "178": {
+    "title": "REEL 178 — Karina",
+    "sub": "MOF · Sticker de comentario + voz a cámara · Hierro y cicatrización lenta",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Sticker: \"Yo no entreno porque siempre que medio lo intento me salen moretones\" → \"Oigan, eso cero es por el gimnasio, más bien es una señal de que tienen problemas de hierro. En serio\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Síntomas",
+        "\"1. ¿Vivir pálidas? 2. ¿Un raspón que se demora muchísimo en cerrar? 3. ¿Moretones por cualquier golpecito? La lista puede ser más larga de lo que creen\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Autoridad",
+        "\"Muchas creen que solo es comer más carne... pero también importa cómo lo absorbe el cuerpo. Ahí la vitamina C juega un papel importante porque contribuye a mejorar la absorción del hierro y participa en la formación normal de colágeno\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Problema",
+        "\"Y si además nunca le paras bolas a tu salud digestiva... al final todo se te junta\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Por eso yo buscaba una rutina más simple: vitamina C, probióticos, inulina y vinagre de manzana con la madre, todo en un mismo tarro\"",
+        "A cámara + Producto"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Mucho más fácil que tener cuatro frascos diferentes. Si quieren ver la fórmula completa, les dejo el link aquí abajito\"",
+        "A cámara + Producto"
+      ]
+    ]
+  },
+  "179": {
+    "title": "REEL 179 — Karina",
+    "sub": "MOF · Pantalla verde · Figura de autoridad · Desorden metabólico + inflamación",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Las medias te dejan marcas así... El brasier te deja esas líneas profundas en la espalda... ¿Y además sientes que te mareas si comes cualquier cosa o ya te dijeron que tienes el colesterol alto?\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Problema",
+        "\"Entonces escucha bien, porque muchas veces uno empieza a ver varias señales al tiempo y termina pensando que todas están desconectadas. A mí me pasó después de un desorden metabólico y una época de muchísimo estrés\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Storytelling",
+        "\"Primero fueron las marcas en los tobillos... después el brasier... luego los mareos al comer... después el cansancio. Mejor dicho... de todo un poquito\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Descubrimiento",
+        "\"Ahí fue cuando decidí empezar a cuidar mucho más mi rutina y a fijarme en los ingredientes que estaba consumiendo todos los días\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Estas gomitas tienen vinagre de manzana con la madre, inulina, prebióticos, probióticos y vitaminas. Me gustó porque reúnen varios ingredientes en una sola rutina\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Hay que priorizarnos más. Si estabas buscando una forma práctica de incluir estos ingredientes en tu rutina, te dejo el link aquí abajito\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "180": {
+    "title": "REEL 180 — Karina",
+    "sub": "BOF · UGC Testimonial · Uñas más fuertes",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Sticker: \"¿Sirve para las uñas?\" → \"La pregunta que más me hacen ustedes es: ¿Eso también sirve para las uñas?\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Experiencia",
+        "\"Y, en mi experiencia, sí, amigos... a mí me ha encantado. Antes mantenía las uñas súper corticas porque se me rompían todo el tiempo\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Rutina",
+        "\"Desde que estas gomitas hacen parte de mi rutina, y con ingredientes como vitamina C y probióticos, siento mis uñas mucho más fuertes\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Prueba social",
+        "\"Y así como yo, muchas personas también las empezaron a incluir en su rutina todos los días\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Beneficio",
+        "\"Me gusta porque reúne varios ingredientes en una sola rutina y eso hace que sea muchísimo más fácil ser constante\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Y hoy en la página web tienes hasta un 20% de descuento si compras más de un tarro, además de envío gratis. Haz clic en el enlace de abajo y pide las tuyas\"",
+        "A cámara"
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
