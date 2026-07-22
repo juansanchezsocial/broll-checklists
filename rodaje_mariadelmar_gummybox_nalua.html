@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodaje María del Mar · Tomas de Apoyo</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Rodaje María del Mar · Tomas de Apoyo</h1>
+  <div class="sub">THE GUMMY BOX Calm Vibes (Reels 196–200) + NALUA Kit Capilar (Reels 11–15)</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="gummybox">THE GUMMY BOX · Calm Vibes</div>
+    <div class="chip" data-filter="nalua">NALUA · Kit Capilar</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="gummybox">
+  <div class="creator-title">
+    <h2>THE GUMMY BOX · Calm Vibes</h2>
+    <span class="count">Reels 196–200</span>
+  </div>
+  <!-- REEL 196 -->
+  <div class="reel" data-reel="196">
+    <div class="reel-head">
+      <span class="reel-num">REEL 196</span>
+      <span class="reel-title">"¿Tienes alguno de estos síntomas?" — Sketch</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(196)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@doctormuggle/video/7188142112972475653?_r=1&_t=ZS-983WQOyO9EC" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216754189633670" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="196">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="196-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>sin poder dormir</strong> en la cama</div></div>
+      <div class="shot" data-id="196-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>se despierta de golpe</strong>, mira el celular con cara de "otra vez", suspira</div></div>
+      <div class="shot" data-id="196-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Suena la alarma, <strong>la apaga con cara de "no puedo más"</strong> y se tapa la cabeza con la almohada</div></div>
+      <div class="shot" data-id="196-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en cama <strong>con ojos abiertos</strong>, gesto de pensamientos acelerados, se agarra la cabeza</div></div>
+      <div class="shot" data-id="196-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla dividida:</strong> dando vueltas en la cama / desesperada porque no puede dormir</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 197 -->
+  <div class="reel" data-reel="197">
+    <div class="reel-head">
+      <span class="reel-num">REEL 197</span>
+      <span class="reel-title">"Probé de todo para el insomnio" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(197)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@mila.magnani/video/7206746790060690734?_r=1&_t=ZS-983Wag5JCYn" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216754189633672" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="197">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="197-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>dando vueltas en la cama</strong></div></div>
+      <div class="shot" data-id="197-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>tratando de meditar</strong> para poder dormir</div></div>
+      <div class="shot" data-id="197-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en el celular acostada y <strong>apagándolo para forzarse a dormir</strong></div></div>
+      <div class="shot" data-id="197-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>acomodándose de otra manera</strong> para intentar dormir y después <strong>almohada en la cara</strong> (frustración)</div></div>
+      <div class="shot" data-id="197-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>sentada estresada</strong> porque no puede dormir</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 198 -->
+  <div class="reel" data-reel="198">
+    <div class="reel-head">
+      <span class="reel-num">REEL 198</span>
+      <span class="reel-title">"Si te duermes a las 2 o 3 de la mañana" — UGC prueba</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(198)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@daniellaisasifit/video/7348326711567650054?_r=1&_t=ZS-98DgTxSUK4S" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216754189633674" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="198">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="198-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="198-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>comiendo las gomitas antes de dormir</strong></div></div>
+      <div class="shot" data-id="198-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma final <strong>"recién levantada"</strong> — con voz de recién despierta (grabar aparte, look de mañana)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 199 -->
+  <div class="reel" data-reel="199">
+    <div class="reel-head">
+      <span class="reel-num">REEL 199</span>
+      <span class="reel-title">"¿Me voy a volver dependiente?" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(199)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@magentafamilystor/video/7285481825240108294?_r=1&_t=ZS-98DiRLBg3hU" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216754189633676" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="199">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="199-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>dando vueltas en la cama</strong> sin poder dormir</div></div>
+      <div class="shot" data-id="199-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con <strong>almohada en la cara</strong>, desesperada porque no puede dormir</div></div>
+      <div class="shot" data-id="199-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto sacando gomitas en la mano</strong> (ponerlo encima de la cama)</div></div>
+      <div class="shot" data-id="199-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>comiendo la gomita</strong></div></div>
+      <div class="shot" data-id="199-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>acostándose feliz</strong> porque ya puede descansar</div></div>
+      <div class="shot" data-id="199-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>como recién despierta, feliz</strong> porque durmió bien (en selfie)</div></div>
+      <div class="shot" data-id="199-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto mostrando lo que trae</strong> (ingredientes)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 200 -->
+  <div class="reel" data-reel="200">
+    <div class="reel-head">
+      <span class="reel-num">REEL 200</span>
+      <span class="reel-title">"Las gomitas que uso y no tienen melatonina" — Reseña</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Reseña</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(200)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/LF9SIDVhDReO4kn0Bjpl?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1216754189633666" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="200">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="200-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="200-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiendo el producto</strong></div></div>
+      <div class="shot" data-id="200-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>recién levantada, feliz</strong> porque durmió bien</div></div>
+      <div class="shot" data-id="200-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><em>(Edición / banco)</em> Clips de diferentes creadoras comiendo las gomitas — no se graba en set</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="nalua">
+  <div class="creator-title">
+    <h2>NALUA · Kit Capilar</h2>
+    <span class="count">Reels 11–15</span>
+  </div>
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"Así tenía el pelo cuando dejé la plancha" — UGC 3 tips</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/L17GyEyWpaxOHEGoZhYr?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216754189633678" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablar a cámara <strong>con el cabello ya definido</strong></div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto del pelo reseco y con frizz</strong> (va como foto flotante en edición)</div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>aplicándose la crema</strong></div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>mostrando el cabello definido</strong></div></div>
+      <div class="shot" data-id="11-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo de los dos productos</strong> (crema + aceite)</div></div>
+      <div class="shot" data-id="11-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>aplicando el aceite en las puntas</strong></div></div>
+      <div class="shot" data-id="11-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>en la cama mostrando el aceite</strong> (rutina de noche)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"¿Su pelo se le ve así cuando lo deja secar solo?" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/ciLPfq2dfWWs39iupw1o?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216754377623930" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>peinándose con el cabello reseco</strong> y <strong>tapa la cámara con el cepillo</strong> (transición — como la referencia)</div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Transición con el cepillo</strong> mostrando cómo queda el cabello después</div></div>
+      <div class="shot" data-id="12-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> creadora aplicándose la crema / <strong>close up de la crema</strong></div></div>
+      <div class="shot" data-id="12-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> creadora aplicándose el aceite / <strong>close up del aceite</strong></div></div>
+      <div class="shot" data-id="12-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando el cabello definido</strong></div></div>
+      <div class="shot" data-id="12-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>modelando el cabello</strong></div></div>
+      <div class="shot" data-id="12-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> cabello seco con gesto negativo / cabello definido feliz</div></div>
+      <div class="shot" data-id="12-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando los productos a cámara</strong></div></div>
+      <div class="shot" data-id="12-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> paneo del producto / creadora con el cabello definido</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"De pelo reseco a rizos suaves y sin frizz" — Transformación</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Voz off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/4toyyRutu6TlH01erIDL?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216754377623928" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma muy de cerca del cabello reseco</strong> (igual que la referencia)</div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma del cabello sedoso y definido</strong></div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Poner la crema sobre una mesa</strong> (POV, mirar la ref)</div></div>
+      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>colocándose la crema</strong></div></div>
+      <div class="shot" data-id="13-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con el <strong>cabello definido</strong> que se vea bien</div></div>
+      <div class="shot" data-id="13-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Poner el aceite en la mesa</strong>, al lado de la crema ya puesta</div></div>
+      <div class="shot" data-id="13-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>colocándose el aceite</strong></div></div>
+      <div class="shot" data-id="13-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando cómo le queda el cabello</strong></div></div>
+      <div class="shot" data-id="13-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con el cabello definido <strong>mostrando los dos productos</strong></div></div>
+      <div class="shot" data-id="13-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"¿Sales corriendo en las mañanas?" — UGC tips</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/0cn3w1qk5nJGZiZUhw7R?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216754189633680" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> creadora hablando a cámara / creadora mostrando el cabello reseco</div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>mostrando la crema</strong></div></div>
+      <div class="shot" data-id="14-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>aplicándose la crema</strong> (con el cabello húmedo, recién duchada)</div></div>
+      <div class="shot" data-id="14-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>haciendo scrunch</strong> en el cabello</div></div>
+      <div class="shot" data-id="14-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando cómo le queda de definido</strong></div></div>
+      <div class="shot" data-id="14-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del aceite</strong></div></div>
+      <div class="shot" data-id="14-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>aplicándose el aceite antes de dormir</strong></div></div>
+      <div class="shot" data-id="14-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla completa:</strong> creadora mostrando el cabello definido</div></div>
+      <div class="shot" data-id="14-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto del cabello reseco</strong> (flotante en edición)</div></div>
+      <div class="shot" data-id="14-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto del cabello definido</strong> (flotante en edición)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">"Por qué este kit sí vale la pena" — Reseña de producto</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Voz off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/M4oJI0g26i46isWhrBYR?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216754377623932" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="15-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> POV de los dos productos / cabello definido</div></div>
+      <div class="shot" data-id="15-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong> (queda de fondo en edición)</div></div>
+      <div class="shot" data-id="15-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Video del cabello definido</strong> (va flotante en edición)</div></div>
+      <div class="shot" data-id="15-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Video del cabello seco</strong> (va flotante en edición)</div></div>
+      <div class="shot" data-id="15-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> cabello definido / cabello seco</div></div>
+      <div class="shot" data-id="15-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> POV del aceite / creadora aplicándose el aceite</div></div>
+      <div class="shot" data-id="15-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando el cabello definido</strong></div></div>
+      <div class="shot" data-id="15-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando los dos productos a cámara</strong> mientras muestra el cabello</div></div>
+      <div class="shot" data-id="15-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><em>(Edición / banco)</em> Al menos 3 clips de diferentes creadoras mostrando el cabello definido — no se graba en set</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · Rodaje María del Mar · Gummy Box E5 + NALUA E1</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_rodaje_mdm_gummy196_200_nalua11_15_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "196": {
+    "title": "REEL 196 — María del Mar · Gummy Box",
+    "sub": "TOF · Sketch · Ángulo: falta de descanso",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¿Tienes alguno de estos síntomas? (a cámara)"
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "¿Te acuestas cansada pero no puedes dormir? (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "¿Te despiertas a media noche sin razón y no puedes conciliar el sueño? (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "¿Te levantas más cansada de lo que te acostaste? (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "¿El estrés del día no te suelta ni cuando te acuestas? (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 5",
+        "Todo eso puede ser señal de que tu sistema nervioso no está descansando como debería. El estrés acumulado del día no desaparece solo cuando te acuestas. (voz off + pantalla dividida)"
+      ],
+      [
+        "body",
+        "Cuerpo 6",
+        "Por eso estas gomitas. Tienen tres ingredientes que trabajan juntos para calmar el sistema nervioso, relajar los músculos y preparar tu mente para el descanso real. (a cámara)"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si quieres más información, te dejo el link abajo. Son las Calm Vibes de The Gummy Box."
+      ]
+    ]
+  },
+  "197": {
+    "title": "REEL 197 — María del Mar · Gummy Box",
+    "sub": "TOF · Pantalla verde · Ángulo: mente muy activa al final de la noche",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Probé de todo para el insomnio y nada me funcionaba.\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "\"Dejé el teléfono a un lado, tomaba tés, conté ovejas y a la 1am seguía mirando el techo dando vueltas.\""
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "Y resulta que no era cuestión de hacer más rutinas nocturnas. Era que mi sistema nervioso llegaba tan activo al final del día que no podía apagarse solo."
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "Por suerte me di cuenta que ese problema se puede solucionar esa misma noche. Ahora, 30 minutos antes de dormir me tomo estas gomitas que tienen ingredientes naturales para calmar el sistema nervioso y relajar los músculos. (a cámara)"
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "\"En media hora ya siento que la mente se calma y el cuerpo se relaja. Hoy duermo sin dar vueltas y me despierto descansada de verdad.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Si quieres eso mismo, el link está en mi bio. Son las Calm Vibes de The Gummy Box.\""
+      ]
+    ]
+  },
+  "198": {
+    "title": "REEL 198 — María del Mar · Gummy Box",
+    "sub": "TOF · UGC · Prueba en vivo día/noche",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Si todas las noches te duermes a las 2 o 3 de la mañana porque tu mente no para, este video es para ti."
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "\"Escúchenme, yo he probado todo. Y mi mente en la noche simplemente se activa sola.\""
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "\"Resulta que me acabo de pedir estas gomitas. No sé si funcionen, no sé si sea real, pero he visto muy buenas reseñas.\""
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "Son las 12 de la noche y literalmente podría saltar en un pie ahora mismo. Mi mente no se calla. Yo soy de las que sobrepiensa todo en la noche, y eso es un problema."
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "Tienen manzanilla, pasiflora y citrato de magnesio. Todo natural, nada que me deje como zombie al día siguiente. Se toman 30 minutos antes de dormir. Vamos a probarlas. (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 5",
+        "Dejaré el video hasta acá y mañana les cuento cómo me fue."
+      ],
+      [
+        "body",
+        "Cuerpo 6",
+        "Bueno, me acabo de despertar y solo les diré que dormí como un bebé. Qué emoción, yo tenía mis dudas de que funcionaran, pero 10 de 10."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Así que les dejo el link para que corran a conseguirlaaaas."
+      ]
+    ]
+  },
+  "199": {
+    "title": "REEL 199 — María del Mar · Gummy Box",
+    "sub": "MOF · UGC · Ángulo: miedo a la dependencia / químicos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Me compré estas gomitas de magnesio y manzanilla porque me estaba durmiendo a las 2 o 3 de la mañana.\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "Todo lo que había probado para el insomnio no me había resultado. Hasta que una amiga me recomendó estas. (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "\"No solo te ayudan a dormir mejor, sino a mejorar los ciclos del sueño y la calidad con la que duermes. Mi mente descansa en lugar de estar pensando en lo que tengo que hacer al día siguiente.\""
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "Despierto mucho más fresca porque de verdad descanso. Y eso me da más energía para el día."
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "Y sé lo que están pensando: ¿me voy a volver dependiente? Para nada. No generan dependencia ni te dejan esa sensación de zombie al día siguiente que dejan otras pastillas para dormir."
+      ],
+      [
+        "body",
+        "Cuerpo 5",
+        "Tienen manzanilla, pasiflora y citrato de magnesio. Es todo natural. (voz off)"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Son súper eficientes, 10 de 10. Se consiguen directo en este link y te las mandan rapidito a tu casa."
+      ]
+    ]
+  },
+  "200": {
+    "title": "REEL 200 — María del Mar · Gummy Box",
+    "sub": "BOF · Reseña · Sin melatonina + descuento",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Estas son las gomitas que uso para dormir que no tienen melatonina, y ahora están con descuento.\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "A mí personalmente no me gusta consumir melatonina porque después el cuerpo se vuelve perezoso y deja de producirla solo. Te toca tomarla sí o sí para poder dormir."
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "Estas en cambio tienen manzanilla, pasiflora y citrato de magnesio. Todo natural, para que no te quedes aturdida al día siguiente. (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "\"Te despiertas súper descansada y lista para el día.\" (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "Más de 12.000 personas ya las están tomando y la están recomendando. (voz off)"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si las habías querido probar, este es el momento: consíguelas ya con descuento en el link de abajo."
+      ]
+    ]
+  },
+  "11": {
+    "title": "REEL 11 — María del Mar · NALUA",
+    "sub": "TOF · UGC · Ángulo: cabello dañado por el calor",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Así tenía el pelo cuando dejé la plancha, decidí dejarlo natural y así lo tengo hoy.\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "No fue de un día para otro, pero aquí te digo tres cosas que me sirvieron."
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "\"La uno: con esta crema el frizz se le baja a uno desde la primera vez. Lo que se demora es que si maltrataste el cabello con calor, va a tomar un poco más de tiempo que te crezca más el cabello.\""
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "\"La dos: no se llene de productos. Yo llegué a tener el baño lleno de frascos, y entre más compraba, peor me iba. Hoy uso dos cosas y ya: esta crema definidora para el frizz, y un aceite de batana con romero para la caída.\""
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "Y la tres: el aceite se usa de dos maneras distintas."
+      ],
+      [
+        "body",
+        "Cuerpo 5",
+        "Lo aplicas en las puntas, para darle brillo. Y en las noches en el cuero cabelludo, para que te sirva para la caída de cabello. (voz off)"
+      ],
+      [
+        "cta",
+        "CTA",
+        "Así que si quieres empezar a cuidar tu cabello, pruébalos ahora en kit en el link de abajo."
+      ]
+    ]
+  },
+  "12": {
+    "title": "REEL 12 — María del Mar · NALUA",
+    "sub": "TOF · Pantalla dividida · Ángulo: planchas que dañan el cabello",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Su pelo se le ve así cuando lo deja secar solo y se lo peina?\" (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "\"El mío también. Hasta que hice esto.\""
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "Lo único que hago es usar una crema definidora para el frizz y para definir, y un aceite de batana con romero que sirve para la caída del cabello."
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "La crema deja el rizo formado y suelto."
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "Y el aceite le devuelve el brillo y se siente más resistente."
+      ],
+      [
+        "body",
+        "Cuerpo 5",
+        "\"Yo antes había probado keratinas, usaba planchas, y lo único que hacía era dañar mi pelo.\""
+      ],
+      [
+        "body",
+        "Cuerpo 6",
+        "\"Con esto dejo secar mi pelo al aire y me queda así. Sin frizz y sin el problema de que se me caiga.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si lo quieres, consíguelos en kit en el link de abajo. Son de la marca Nalua."
+      ]
+    ]
+  },
+  "13": {
+    "title": "REEL 13 — María del Mar · NALUA",
+    "sub": "TOF · Voz off · Ángulo: frizz incontrolable",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Cómo pasar de un pelo reseco y esponjado a unos rizos suaves, brillantes y sin frizz.\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "\"El frizz se baja desde la primera vez que uno la usa.\""
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "El rizo queda formado y suelto, no tieso ni acartonado como cuando usas gel."
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "\"El aceite es el que alimenta tu cabello: le devuelve el brillo, lo deja más suave y previene la caída de cabello.\""
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "\"Uno para definir y quitar el frizz, y el otro para cuidarlo.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "Consigue el kit en el link de abajo. Son de la marca Nalua."
+      ]
+    ]
+  },
+  "14": {
+    "title": "REEL 14 — María del Mar · NALUA",
+    "sub": "MOF · UGC · Rutina rápida de mañana",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Eres de las que sale corriendo en las mañanas y no tienes tiempo de definir el pelo? Te tengo unos tips.\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "Primero que todo, consíguete esta crema definidora. Apenas te termines de duchar te la pones ahí mismo con el cabello húmedo. (voz off)"
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "Te la esparces, te peinas y eso te baja el frizz y te deja la onda formada."
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "\"Y segundo, consíguete este aceite de batana con romero. Te lo aplicas en la noche antes de dormir, en el cuero cabelludo, y esto será bendito si sufres de caída de cabello o quieres darle más brillo.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Así que si quieres pasar de esto a esto, hazte el favor y consíguelos. Vienen los dos en el mismo kit, es de Nalua.\""
+      ]
+    ]
+  },
+  "15": {
+    "title": "REEL 15 — María del Mar · NALUA",
+    "sub": "BOF · Voz off · Reseña del kit anti frizz + anti caída",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Por qué este kit de Nalua sí vale la pena?\""
+      ],
+      [
+        "body",
+        "Cuerpo 1",
+        "Simple, porque es un tratamiento capilar anti frizz y anti caída."
+      ],
+      [
+        "body",
+        "Cuerpo 2",
+        "\"La crema define la onda sin dejarte el pelo pesado ni acartonado.\""
+      ],
+      [
+        "body",
+        "Cuerpo 3",
+        "Y el aceite de batana con romero trabaja en la caída del cabello y a su vez te da brillo y suavidad."
+      ],
+      [
+        "body",
+        "Cuerpo 4",
+        "Así tienes menos frizz, más definición, y un pelo más abundante."
+      ],
+      [
+        "body",
+        "Cuerpo 5",
+        "Por eso muchas mujeres lo están usando ahora."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Y ahora es tu turno de conseguirlos. Te dejo el link abajo."
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
