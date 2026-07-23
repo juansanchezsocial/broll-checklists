@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodaje Paula Pinzón · Tomas de Apoyo</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Rodaje Paula Pinzón · Tomas de Apoyo</h1>
+  <div class="sub">SELVAR Reels 6–10 · SWISSHOME Reels 1–5 · Entrega 1</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="selvar">SELVAR · Desinfectante</div>
+    <div class="chip" data-filter="swisshome">SWISSHOME · Ollas acero quirúrgico</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="selvar">
+  <div class="creator-title">
+    <h2>SELVAR · Desinfectante</h2>
+    <span class="count">Reels 6–10</span>
+  </div>
+  <!-- REEL 6 -->
+  <div class="reel" data-reel="6">
+    <div class="reel-head">
+      <span class="reel-num">REEL 6</span>
+      <span class="reel-title">"Si estás usando cualquier desinfectante para los juguetes… espera"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(6)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@consumidorasconscientes/video/7509306577149529362?_r=1&_t=ZS-98Dov9MmnUC" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216733939306606/1216761140307427" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="6">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="6-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma del <strong>bebé con un juguete en la boca</strong></div></div>
+      <div class="shot" data-id="6-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>leyendo la etiqueta</strong> de un frasco desinfectante + <strong>gesto negativo</strong></div></div>
+      <div class="shot" data-id="6-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mamá <strong>quitándole el juguete de la boca</strong> al bebé</div></div>
+      <div class="shot" data-id="6-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora limpiando superficies — <strong>sin que se vea el producto</strong></div></div>
+      <div class="shot" data-id="6-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora en el PC <strong>tranquila</strong> mientras el bebé tiene un juguete en la boca</div></div>
+      <div class="shot" data-id="6-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>limpiando con el producto</strong></div></div>
+      <div class="shot" data-id="6-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>limpiando un juguete</strong> del bebé con Selvar</div></div>
+      <div class="shot" data-id="6-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Pantalla dividida: creadora limpiando <strong>manijas</strong> / limpiando <strong>juguetes</strong></div></div>
+      <div class="shot" data-id="6-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Pantalla dividida: creadora limpiando <strong>la mesa</strong> / <strong>otra superficie</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 7 -->
+  <div class="reel" data-reel="7">
+    <div class="reel-head">
+      <span class="reel-num">REEL 7</span>
+      <span class="reel-title">"Recordatorio para que desinfecten los juguetes de sus bebés"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(7)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@mayra.sernar/video/7560815815893716244?_r=1&_t=ZS-98DpFDqCFgj" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216733939306606/1216761140307432" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="7">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="7-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Varios juguetes sobre la mesa</strong> + creadora hablando con el bebé en las manos</div></div>
+      <div class="shot" data-id="7-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Limpiando los juguetes con el desinfectante — <strong>que no se vea comercial</strong></div></div>
+      <div class="shot" data-id="7-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips de <strong>juguetes tirados en el piso</strong></div></div>
+      <div class="shot" data-id="7-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips del <strong>bebé con los juguetes en la boca</strong></div></div>
+      <div class="shot" data-id="7-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora limpiando <strong>otras partes de la casa</strong> con el desinfectante</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 8 -->
+  <div class="reel" data-reel="8">
+    <div class="reel-head">
+      <span class="reel-num">REEL 8</span>
+      <span class="reel-title">"Con un bebé en casa vivía preocupada porque todo estuviera desinfectado"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(8)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@mariazelzel/video/7449460545377373445?_r=1&_t=ZS-98DpMGAD0vF" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216733939306606/1216761140307434" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="8">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="8-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips del bebé metiéndose a la boca diferentes juguetes — <strong>mínimo 4 tomas con juguetes distintos</strong></div></div>
+      <div class="shot" data-id="8-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips de la creadora <strong>limpiando diferentes superficies</strong></div></div>
+      <div class="shot" data-id="8-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora limpiando un juguete y después <strong>pasándolo por agua</strong></div></div>
+      <div class="shot" data-id="8-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Bebé <strong>metiéndose el juguete a la boca</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 9 -->
+  <div class="reel" data-reel="9">
+    <div class="reel-head">
+      <span class="reel-num">REEL 9</span>
+      <span class="reel-title">"La mezcla casera de vinagre con alcohol no está desinfectando nada"</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Us vs Them</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(9)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@livholistic/video/7526267186608983309?_r=1&_t=ZS-98G7dtvXhtk" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216733939306606/1216805540014925" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="9">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="9-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tarro con <strong>vinagre y alcohol</strong>: dejarlo a un lado y poner el producto a cámara</div></div>
+      <div class="shot" data-id="9-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>limpiando</strong></div></div>
+      <div class="shot" data-id="9-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips creadora <strong>mostrando el producto</strong></div></div>
+      <div class="shot" data-id="9-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips creadora <strong>pasando la mano</strong> por donde limpió (sin residuo pegajoso)</div></div>
+      <div class="shot" data-id="9-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips creadora <strong>limpiando juguetes</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 10 -->
+  <div class="reel" data-reel="10">
+    <div class="reel-head">
+      <span class="reel-num">REEL 10</span>
+      <span class="reel-title">"El desinfectante que por fin puedo usar tranquila con mi bebé"</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(10)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@vanesamaro91/video/7084751968278826286?_r=1&_t=ZS-98G8JAz2xrI" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216733939306606/1216805540014927" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="10">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="10-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>limpiando con el desinfectante</strong></div></div>
+      <div class="shot" data-id="10-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora limpiando (superficies del día a día)</div></div>
+      <div class="shot" data-id="10-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>mostrando el producto</strong></div></div>
+      <div class="shot" data-id="10-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip limpiando <strong>cosas del bebé</strong> o en la habitación del bebé</div></div>
+      <div class="shot" data-id="10-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips de <strong>mamás usando el producto</strong> (para el bloque de prueba social)</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="swisshome">
+  <div class="creator-title">
+    <h2>SWISSHOME · Ollas acero quirúrgico</h2>
+    <span class="count">Reels 1–5</span>
+  </div>
+  <!-- REEL 1 -->
+  <div class="reel" data-reel="1">
+    <div class="reel-head">
+      <span class="reel-num">REEL 1</span>
+      <span class="reel-title">"Si tu sartén se ve así por dentro, ¿a dónde se fue esa capa negra?"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(1)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@pau_henriques/video/7069772897199344901?_r=1&_t=ZS-98FzbN8hQAv" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649406696/1216804180534944" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="1">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="1-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo de las ollas</strong></div></div>
+      <div class="shot" data-id="1-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando las ollas a cámara</strong></div></div>
+      <div class="shot" data-id="1-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>cocinando en el sartén</strong></div></div>
+      <div class="shot" data-id="1-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo de las ollas para el cierre (CTA)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 2 -->
+  <div class="reel" data-reel="2">
+    <div class="reel-head">
+      <span class="reel-num">REEL 2</span>
+      <span class="reel-title">"Los sartenes donde cocinas son más peligrosos de lo que crees"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(2)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@bernardkizer/video/7372566456829070638?_r=1&_t=ZS-98FzymEj54H" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649406696/1216804180534946" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="2">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="2-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con el <strong>sartén viejo en la mano</strong></div></div>
+      <div class="shot" data-id="2-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip de un <strong>sartén de teflón pelado</strong> + hacer unos huevos para mostrar que <strong>se quedan pegados</strong></div></div>
+      <div class="shot" data-id="2-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mostrando el <strong>juego completo</strong></div></div>
+      <div class="shot" data-id="2-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo de las ollas</strong></div></div>
+      <div class="shot" data-id="2-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>cocinando en las ollas</strong></div></div>
+      <div class="shot" data-id="2-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>mostrando las ollas a cámara</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 3 -->
+  <div class="reel" data-reel="3">
+    <div class="reel-head">
+      <span class="reel-num">REEL 3</span>
+      <span class="reel-title">"Cuando veas tu sartén de teflón así de rayado, tíralo"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(3)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@miguelassal/video/7591645167422082326?_r=1&_t=ZS-98G08Zv2Aib" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649406696/1216804180534948" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="3">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="3-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con un <strong>sartén pelado</strong> en la mano</div></div>
+      <div class="shot" data-id="3-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo de las ollas</strong></div></div>
+      <div class="shot" data-id="3-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>cocinando en las ollas</strong></div></div>
+      <div class="shot" data-id="3-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>mostrando las ollas</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 4 -->
+  <div class="reel" data-reel="4">
+    <div class="reel-head">
+      <span class="reel-num">REEL 4</span>
+      <span class="reel-title">"Cuatro razones por las que esta es muchísimo mejor"</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Us vs Them</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(4)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@barrenechef/video/7419323020700814625?_r=1&_t=ZS-98G3s9ZGhvB" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649406696/1216804180534950" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="4">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="4-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablar a cámara y hacer la <strong>transición igual a la referencia</strong></div></div>
+      <div class="shot" data-id="4-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip del <strong>sartén con un huevo pegado</strong></div></div>
+      <div class="shot" data-id="4-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>indignada</strong> porque se le pegó la comida</div></div>
+      <div class="shot" data-id="4-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip de la olla de la marca mostrando que <strong>la comida no se pega</strong></div></div>
+      <div class="shot" data-id="4-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>echándole aceite al sartén de teflón</strong></div></div>
+      <div class="shot" data-id="4-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora haciendo como si fuera a echarle aceite a la olla y <strong>gesto de que no hace falta</strong></div></div>
+      <div class="shot" data-id="4-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>lavando el sartén de teflón muy suave</strong> para no rayarlo</div></div>
+      <div class="shot" data-id="4-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>lavando la olla de la marca</strong> sin cuidado</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 5 -->
+  <div class="reel" data-reel="5">
+    <div class="reel-head">
+      <span class="reel-num">REEL 5</span>
+      <span class="reel-title">"¿Lista para el último juego de ollas que vas a comprar en tu vida?"</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(5)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/FAm9CU69T43R6tlqVClv?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649406696/1216804180534952" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="5">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="5-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>similares a la referencia</strong></div></div>
+      <div class="shot" data-id="5-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>cocinando (close up)</strong></div></div>
+      <div class="shot" data-id="5-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora con <strong>todo el juego de ollas en el mesón</strong></div></div>
+      <div class="shot" data-id="5-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora mirando un sartén de teflón, <strong>dejándolo a un lado</strong> y agarrando las de la marca</div></div>
+      <div class="shot" data-id="5-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo de las ollas</strong></div></div>
+      <div class="shot" data-id="5-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close up</strong> de las ollas</div></div>
+      <div class="shot" data-id="5-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip cocinando algo y mostrando que <strong>no se pelan</strong></div></div>
+      <div class="shot" data-id="5-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora <strong>mostrando todo lo que trae el juego</strong> (5 ollas + sartén + tetera)</div></div>
+      <div class="shot" data-id="5-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora cocinando (cierre)</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · SELVAR + SWISSHOME · Entrega 1 · Creadora: Paula Pinzón</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_selvar_6_10_swisshome_1_5_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "6": {
+    "title": "REEL 6 — SELVAR · Paula Pinzón",
+    "sub": "TOF · Pantalla verde · Ángulo: productos agresivos con químicos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Si estás usando cualquier desinfectante para limpiar los juguetes o la silla donde come tu bebé... por favor, espera un momento.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Yo antes solamente veía que dijera 'desinfecta' y ya. Nunca me había puesto a pensar qué era exactamente lo que estaba usando todos los días en las cosas que mi hijo toca.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Desde que soy mamá empecé a leer mucho más las etiquetas. Me di cuenta de que encontrar un producto que me diera tranquilidad no era tan fácil como pensaba.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Yo quería dos cosas. Primero, que pudiera usarlo todos los días sobre las superficies que mi hijo toca todo el tiempo. Y segundo, que la marca fuera transparente con lo que está usando en su fórmula.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Ahí fue cuando encontré Selvar. Me gustó, tiene ingredientes de origen natural, además tiene una fragancia cítrica muy suave que no invade toda la casa.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Hoy simplemente hace parte de mi rutina. Lo uso en los juguetes, en la silla para comer, en la mesa, en todas esas cosas que limpiamos una y otra vez durante el día. Y chicas ojo, siempre que limpio con el desinfectante después enjuago con agua para mayor seguridad.\"",
+        "Voz en off · Pantalla dividida"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Al final no se trata de encontrar el producto perfecto. Se trata de sentir tranquilidad con las decisiones que tomas para cuidar a tu familia.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "7": {
+    "title": "REEL 7 — SELVAR · Paula Pinzón",
+    "sub": "TOF · UGC · Ángulo: detergente multiusos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Este es un recordatorio para que desinfecten los juguetes de sus bebés. ¿Sofía, los vas a limpiar tú?\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Hoy vamos a desinfectar todos los juguetes porque se la pasan todo el día en el piso, en el carro… y después terminan otra vez en sus manitos, o peor aún, en su boca.\"",
+        "A cámara + tomas de apoyo"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Yo por eso uso este desinfectante: aplico un poquito sobre un paño limpio y voy pasando juguete por juguete. Si alguno va directamente a la boca, recuerden enjuagarlo después. Es un hábito que ya hacemos casi todos los días.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Y no solo lo uso para sus juguetes, yo lo uso para absolutamente toda la casa.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Son esos pequeños hábitos los que me dan tranquilidad durante el día. Si quieres conseguirlo se llama Selvar, te dejo el link abajo.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "8": {
+    "title": "REEL 8 — SELVAR · Paula Pinzón",
+    "sub": "TOF · UGC",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Con un bebé en casa, vivía preocupada porque todo estuviera perfectamente limpio y desinfectado.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "(Sin texto — tomas del bebé metiéndose juguetes a la boca. En edición: mismo audio del segundo 5 y tomas en blanco y negro, como la referencia.)",
+        "Solo imagen"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Con este desinfectante ya no tengo esa preocupación.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Ahora hace parte de nuestra rutina diaria y lo uso para desinfectar los juguetes, la silla para comer, la mesa y todas esas superficies que mi bebé toca todos los días.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Me encanta porque tiene ingredientes naturales y es seguro para mi bebé.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Y ojo, después de desinfectarlos siempre los enjuago para mayor seguridad. Es un hábito sencillo que me da mucha más tranquilidad durante el día.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"El desinfectante se llama Selvar, es un 10 de 10. Te dejo el link para que lo consigas.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "9": {
+    "title": "REEL 9 — SELVAR · Paula Pinzón",
+    "sub": "MOF · Us vs Them",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"La mezcla casera de vinagre con alcohol que todo el mundo hace en realidad no está desinfectando la mesa donde come tu bebé. Por eso yo dejé de hacerla y me pasé a este.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Limpiar y desinfectar no son lo mismo, y ahí está la diferencia.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Este mata las bacterias desde el primer minuto. Lo paso por cualquier superficie donde mi bebé esté, y no tengo miedo de sentir ese olor a cloro que es súper dañino para la salud.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"No deja la superficie pegajosa ni con residuo raro. Yo lo uso hasta para limpiar los juguetes de mi bebé y después los enjuago.\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Si lo quieres se llama Selvar, te dejo el link abajo.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "10": {
+    "title": "REEL 10 — SELVAR · Paula Pinzón",
+    "sub": "BOF · Pantalla verde",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Este es el desinfectante que por fin puedo usar tranquila con mi bebé en la casa.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Lo paso por las superficies que más toca mi hijo todos los días, y lo mejor: mata las bacterias desde el primer minuto.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"¿Dónde lo uso? En lo que uno toca mil veces sin pensar. Las manijas cuando llegamos de la calle. La mesa. La bandeja de la silla de comer.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Y no tiene ese olor a cloro que te obliga a abrir todas las ventanas. Tiene ingredientes naturales que no son agresivos contigo ni con tu bebé.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Por eso miles de mamás lo están usando.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Y lo mejor es que si lo consigues en este link te llega con envío gratis a cualquier parte del país.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "1": {
+    "title": "REEL 1 — SWISSHOME · Paula Pinzón",
+    "sub": "TOF · Pantalla verde · Ángulo: tóxicos en el teflón",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Si tu sartén se ve así por dentro, ¿a dónde crees que se fue toda esa capa negra que ya no está?\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Se fue soltando pedacito a pedacito directo en tu comida. Y eso no se arregla lavando mejor. Una vez que empieza a pelarse, esa olla es veneno para ti y tu familia.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Y mientras tú te sigues intoxicando poco a poco, existen estas ollas que son de acero quirúrgico, el mismo material que usan en los hospitales. Es de alta calidad, no se pela, no se raya y no se oxida.\"",
+        "A cámara + tomas de apoyo"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Solo las compras una vez en tu vida y cuidas la salud de tu familia para siempre.\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Si las quieres, consíguelas en el link de abajo.\"",
+        "Voz en off"
+      ]
+    ]
+  },
+  "2": {
+    "title": "REEL 2 — SWISSHOME · Paula Pinzón",
+    "sub": "TOF · Ángulo: sartenes que no duran",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Los sartenes donde cocinas tu comida y la de tu familia son más peligrosos de lo que crees.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Problema",
+        "\"La mayoría de los sartenes que usamos todos los días son de teflón. Y el teflón tiene una capa por encima que no está hecha para aguantar el calor.\"",
+        "A cámara + tomas de apoyo"
+      ],
+      [
+        "body",
+        "Solución",
+        "\"Por eso, al paso del tiempo se va gastando y se raya, soltando esas partículas que van directo a tu comida.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Transformación",
+        "\"Mientras que estas son de acero inoxidable de grado quirúrgico.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Son más seguras porque su material no tiene ninguna capa que se pele: es sólido, estable y no suelta nada a tu comida. Y además dura para toda la vida: no se raya ni se oxida.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Un juego de estos se compra una vez, para toda la vida y sin poner en riesgo a tu familia. Consíguelas en el link de abajo.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "3": {
+    "title": "REEL 3 — SWISSHOME · Paula Pinzón",
+    "sub": "TOF · Pantalla verde",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Cuando veas tu sartén de teflón así de rayado, tíralo. No cocines nunca más en él.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Problema",
+        "\"Cuando ves el metal asomándose por debajo, es porque toda esa capa negra ya se está soltando.\"",
+        "Pantalla verde"
+      ],
+      [
+        "body",
+        "Solución",
+        "\"Y ojo que eso no desaparece: se va, poquito a poquito, a lo que le sirves a tu familia todos los días. Una sartén así de rayada no es un tema de que se vea fea. Es que está soltando tóxicos, y toca sacarla de la cocina.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Transformación",
+        "\"Por eso yo me pasé a algo que no se pela nunca: estas ollas son acero inoxidable de grado quirúrgico. Al no tener ninguna capa encima, no hay nada que se pueda desprender y caer en tu comida.\"",
+        "Pantalla verde"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"No te la juegues con la salud de tu familia por usar sartenes tóxicos. Estos los compras una vez en tu vida y tienes la seguridad de cuidar a los que más quieres.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "4": {
+    "title": "REEL 4 — SWISSHOME · Paula Pinzón",
+    "sub": "MOF · Us vs Them",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Seguro tienes una sartén de estas y la usas todos los días. Pero si te digo que esta de acá es muchísimo mejor… ¿me lo creerías? Déjame darte cuatro razones.\"",
+        "A cámara"
+      ],
+      [
+        "body",
+        "Razón 1",
+        "\"Cada dos o tres años te toca botar esta y comprar otra, porque va perdiendo el antiadherente hasta que ya no sirve. Esta no. Esta, si la cuidas bien, te dura toda la vida.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Razón 2",
+        "\"Sí, esas son antiadherentes… pero cuando les echas aceite para que no se pegue, es el aceite el que está haciendo el trabajo, no la sartén. En esta, con que aprendas a usarla bien, haces prácticamente lo mismo usando muy poquito.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Razón 3",
+        "\"Esas son fáciles de lavar, pero te toca cuidarlas con el alma para no rayar esa capa. Esta la puedes fregar con lo que quieras, y no le pasa absolutamente nada.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Razón 4",
+        "\"Con las de teflón, cuidado con subir mucho el fuego: pasado cierto punto empieza a botar tóxicos. Esta aguanta candela sin problema, es perfecta para sellar cualquier carne bien caliente.\"",
+        "A cámara"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Por todo esto, esta es mi favorita y no las cambio. Así que consíguelas ya.\"",
+        "A cámara"
+      ]
+    ]
+  },
+  "5": {
+    "title": "REEL 5 — SWISSHOME · Paula Pinzón",
+    "sub": "BOF · Ángulo: ollas duraderas",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Lista para el último juego de ollas que vas a comprar en tu vida?\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "\"Estas son las ollas que uso yo y en las que confío. A diferencia de los sartenes de teflón, que se van pelando y sueltan tóxicos que quedan en tu comida, estas son de acero quirúrgico: no se pelan, no se rayan, no se oxidan. Las compras una sola vez… y las usas para toda la vida.\"",
+        "Voz en off"
+      ],
+      [
+        "body",
+        "Oferta",
+        "\"Vienen las 5 ollas, el sartén, y la tetera va de regalo. Con garantía de 10 años.\"",
+        "Voz en off"
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Ahora mismo las consigues con descuento dando clic al enlace de abajo.\"",
+        "Voz en off"
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
