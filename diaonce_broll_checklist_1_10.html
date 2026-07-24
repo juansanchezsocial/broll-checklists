@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DÍA ONCE ORGÁNICO · Tomas de Apoyo · Reels 1–10</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>DÍA ONCE ORGÁNICO · Tomas de Apoyo · Reels 1–10</h1>
+  <div class="sub">Rodaje Entrega 1 — Aceite de orégano con comino negro</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="maria-laura">Maria Laura</div>
+    <div class="chip" data-filter="manuela">Manuela</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="maria-laura">
+  <div class="creator-title">
+    <h2>Maria Laura</h2>
+    <span class="count">Reels 1–5</span>
+  </div>
+  <!-- REEL 1 -->
+  <div class="reel" data-reel="1">
+    <div class="reel-head">
+      <span class="reel-num">REEL 1</span>
+      <span class="reel-title">"Gases todo el día" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(1)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@reviveconmaria/video/7378240215044852997" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216801215293648" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="1">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="1-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong> (aceite de orégano con comino negro)</div></div>
+      <div class="shot" data-id="1-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Imágenes flotantes de apoyo de los síntomas (gases / inflamación / acidez) — overlays de edición</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 2 -->
+  <div class="reel" data-reel="2">
+    <div class="reel-head">
+      <span class="reel-num">REEL 2</span>
+      <span class="reel-title">"Así es vivir con resistencia a la insulina" — Demostración</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Demostración</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(2)">📝 Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZSXpptRn1/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216801215293653" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="2">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="2-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>creadora preocupada</strong></div></div>
+      <div class="shot" data-id="2-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">De perfil: se pasa la mano por el abdomen y se lo aprieta con las dos manos; se suelta el botón del jean</div></div>
+      <div class="shot" data-id="2-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Sentada en el borde de la cama, hombros caídos, se pasa las manos por la cara y bosteza</div></div>
+      <div class="shot" data-id="2-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Abre la nevera, se queda mirando adentro, la cierra, vuelve y la abre; busca en el cajón del escritorio</div></div>
+      <div class="shot" data-id="2-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Se toma un vaso de agua completo de un trago y se sirve otro enseguida</div></div>
+      <div class="shot" data-id="2-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Creadora mostrando el aceite</strong> + paneo del aceite</div></div>
+      <div class="shot" data-id="2-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del aceite</strong> + creadora tomando el producto</div></div>
+      <div class="shot" data-id="2-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo del producto + creadora mostrando el aceite</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 3 -->
+  <div class="reel" data-reel="3">
+    <div class="reel-head">
+      <span class="reel-num">REEL 3</span>
+      <span class="reel-title">"¿Tienes el colesterol alto?" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(3)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@wallmorenodiaz/video/7524530256317893894" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216801215293655" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="3">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="3-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="3-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Imágenes flotantes de apoyo de los 3 síntomas (arterias / hígado graso / piernas pesadas) — overlays de edición</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 4 -->
+  <div class="reel" data-reel="4">
+    <div class="reel-head">
+      <span class="reel-num">REEL 4</span>
+      <span class="reel-title">"Cómo dejé de vivir con resistencia a la insulina" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(4)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@nutriifit__/video/7453551386840534278" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216801215293657" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="4">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="4-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>creadora cansada</strong></div></div>
+      <div class="shot" data-id="4-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora antojada de dulce</div></div>
+      <div class="shot" data-id="4-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto del cuello de la creadora (se oscurece con IA para mostrar manchas)</div></div>
+      <div class="shot" data-id="4-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora mirando un paquete de dulce y gesto de negación (o con un café, decidir no ponerle azúcar)</div></div>
+      <div class="shot" data-id="4-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora haciendo ejercicio</div></div>
+      <div class="shot" data-id="4-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip <strong>creadora tomando el aceite</strong></div></div>
+      <div class="shot" data-id="4-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="4-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto estómago inflamado + foto estómago desinflamado</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 5 -->
+  <div class="reel" data-reel="5">
+    <div class="reel-head">
+      <span class="reel-num">REEL 5</span>
+      <span class="reel-title">"El antojo no es tuyo" — POV</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(5)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@oreaceitedeoregano/video/7554570755351072011" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216801215293659" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="5">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="5-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong> + creadora tomando el producto</div></div>
+      <div class="shot" data-id="5-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora antojada de dulce / comiendo dulce / ansiosa</div></div>
+      <div class="shot" data-id="5-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo del producto</div></div>
+      <div class="shot" data-id="5-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip creadora tomando el producto / tranquila y desinflamada</div></div>
+      <div class="shot" data-id="5-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Toma creadora mostrando el producto a cámara</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="manuela">
+  <div class="creator-title">
+    <h2>Manuela</h2>
+    <span class="count">Reels 6–10</span>
+  </div>
+  <!-- REEL 6 -->
+  <div class="reel" data-reel="6">
+    <div class="reel-head">
+      <span class="reel-num">REEL 6</span>
+      <span class="reel-title">"Así amanecía por el SIBO y la cándida" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(6)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@isifitness_/video/7334724361145847046" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216800827121835" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="6">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="6-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla verde:</strong> de perfil, camiseta subida mostrando el abdomen inflamado; luego otro plano donde se aprecie aún más la inflamación (como la referencia)</div></div>
+      <div class="shot" data-id="6-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella buscando agua y sirviéndosela en un vaso</div></div>
+      <div class="shot" data-id="6-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella con un pocillo, revolviendo agua tibia con limón con una cuchara, tomando de a pocos</div></div>
+      <div class="shot" data-id="6-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Poniendo unas gotas del aceite en una cuchara</div></div>
+      <div class="shot" data-id="6-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella muestra el producto un momento y lo pone en la mesa</div></div>
+      <div class="shot" data-id="6-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla dividida antes/después:</strong> antes muy inflamada y pálida / después ya sin inflamación</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 7 -->
+  <div class="reel" data-reel="7">
+    <div class="reel-head">
+      <span class="reel-num">REEL 7</span>
+      <span class="reel-title">"No eres fea, es tu piel seca" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(7)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@natiscart/video/7651690644640992542" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216800827121837" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="7">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="7-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla verde (fondo):</strong> antes de una piel muy roja, seca y con placas</div></div>
+      <div class="shot" data-id="7-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Señala su rostro con expresión seria; ella con la cara roja (ruborizar con maquillaje) poniéndose cremas a cámara</div></div>
+      <div class="shot" data-id="7-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Muestra el gotero y aplica las gotas debajo de la lengua</div></div>
+      <div class="shot" data-id="7-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close-up del producto</strong> (texto: "Sublingual • No quema • No irrita")</div></div>
+      <div class="shot" data-id="7-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Muestra la piel glowy ahora (el después)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 8 -->
+  <div class="reel" data-reel="8">
+    <div class="reel-head">
+      <span class="reel-num">REEL 8</span>
+      <span class="reel-title">"Cortisol alto, barriga y papada" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(8)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@fixltwithattitude/video/7659784778136292638" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216800827121839" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="8">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="8-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando a cámara, escupe a un lado mientras toma algo en un vaso, gestos de desagrado (superponer barriga inflamada, papada, chica gritando del estrés)</div></div>
+      <div class="shot" data-id="8-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> arriba se le ve mucha papada (con ángulos y postura) / abajo incómoda tocándose la cara, desesperada</div></div>
+      <div class="shot" data-id="8-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> arriba echando productos en una bolsa de basura / abajo con varios vasos al frente que desplaza a un lado</div></div>
+      <div class="shot" data-id="8-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> arriba poniéndose gotas debajo de la lengua / abajo tomas del producto y sirviendo en una cuchara</div></div>
+      <div class="shot" data-id="8-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Dividida:</strong> arriba sin la barriga inflamada / abajo sin papada</div></div>
+      <div class="shot" data-id="8-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas a producto + ella poniéndose el aceite bajo la lengua</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 9 -->
+  <div class="reel" data-reel="9">
+    <div class="reel-head">
+      <span class="reel-num">REEL 9</span>
+      <span class="reel-title">"Vivía preocupada por la presión" — Respondiendo comentario</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Resp. comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(9)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@obsidiandealz/video/7655929711595490573" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216800827121841" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="9">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="9-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Habla a cámara (comentario superpuesto: "¿Alguien más vive pendiente de que la presión no se le dispare?")</div></div>
+      <div class="shot" data-id="9-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella mareándose y agarrándose de las paredes, cayéndose al suelo, luego subiendo las piernas a la pared</div></div>
+      <div class="shot" data-id="9-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella buscando algo en la cocina, encuentra el aceite y lo muestra a cámara (rutina normal de mañana)</div></div>
+      <div class="shot" data-id="9-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Usando el producto</strong> mientras habla</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 10 -->
+  <div class="reel" data-reel="10">
+    <div class="reel-head">
+      <span class="reel-num">REEL 10</span>
+      <span class="reel-title">"Ya estamos en 2026" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(10)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/3mLIIqOqgWasS2xqDfEO" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216775696303162/1216800827121843" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="10">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="10-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Primer plano, mira directo a cámara (texto: "¿TE AGUANTAS LOS GASES?")</div></div>
+      <div class="shot" data-id="10-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella cruzando las piernas, apretando el abdomen, mirando alrededor incómoda</div></div>
+      <div class="shot" data-id="10-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Señala a cámara</div></div>
+      <div class="shot" data-id="10-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella vaciando el inodoro (se escucha) y se lava las manos</div></div>
+      <div class="shot" data-id="10-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella mostrando el producto a cámara mientras lo abre (texto: "75% Carvacrol")</div></div>
+      <div class="shot" data-id="10-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomando agua, luego poniéndose unas gotas debajo de la lengua</div></div>
+      <div class="shot" data-id="10-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Pantalla dividida ANTES:</strong> barriga sonando, reunión, caminar rápido al baño / <strong>DESPUÉS:</strong> sentada tranquila en la reunión</div></div>
+      <div class="shot" data-id="10-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Hablando a cámara y mostrando el producto</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · DÍA ONCE ORGÁNICO · Entrega 1</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_diaonce_1_10_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "1": {
+    "title": "REEL 1 — Maria Laura",
+    "sub": "TOF · Autoridad · Gases todo el día",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Tienes gases todo el día. La barriga se te inflama, tienes eructos. ¿Y esa acidez que llega sin que hayas comido nada raro?"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Si te pasan tres de esas cuatro cosas es porque tienes bacterias creciendo donde no deberían."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y es muy probable que esas bacterias se treparon a la parte alta del intestino, y ahí es donde fermentan lo que comes, y ese gas es el que te infla. Por eso te hinchas igual con la ensalada que con la pizza."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Tengo muchos pacientes que han llegado con ese problema, y por eso les he recomendado este aceite de orégano con comino negro."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "El orégano trae un activo que se llama carvacrol y es el que actúa sobre esas bacterias. El comino trabaja el terreno donde se instalaron."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si te identificaste con alguno de esos síntomas, pruébalo un mes y me cuentas. Te dejo el link acá abajo."
+      ]
+    ]
+  },
+  "2": {
+    "title": "REEL 2 — Maria Laura",
+    "sub": "TOF · Demostración · Resistencia a la insulina",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Así es vivir con resistencia a la insulina."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "La barriga que crece y no baja."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Cansancio. Mucho cansancio."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Hambre a toda hora."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Sed que no se quita con nada."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Para eso yo recomiendo el aceite de orégano con comino negro."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "El comino negro ayuda a que tus células vuelvan a responderle a la insulina, y el orégano ayuda a bajar toda esa inflamación de adentro que es la que te tiene así. Son unas goticas debajo de la lengua y listo."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Consíguelo ahora en el link de abajo, vas a notar que se te calmarán todos esos síntomas."
+      ]
+    ]
+  },
+  "3": {
+    "title": "REEL 3 — Maria Laura",
+    "sub": "TOF · Autoridad · Colesterol alto",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¿Tienes el colesterol alto? Te voy a contar tres cosas que están pasando en tu cuerpo ahorita mismo, mientras tú no sientes absolutamente nada."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "La primera: tus arterias se van cerrando. El colesterol se va pegando por dentro, poquito a poco, y el paso se va haciendo cada vez más angosto. Eso no duele. No te avisa."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "La segunda: tu hígado. Él es el que produce y el que saca el colesterol, y cuando lleva años trabajando de más, se empieza a llenar de grasa. Ahí es cuando te sale en la ecografía que tienes hígado graso y ni siquiera tomas."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y la tercera: la circulación. Te empiezan a pesar las piernas al final del día, te dan calambres en la noche, se te hinchan los pies. Uno lo achaca al trabajo o a la edad, y casi nunca es eso."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y lo peor de todo es que no se siente. La gente se entera cuando el examen sale en rojo por segunda vez."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Si estás en esos meses que te dieron para bajar el colesterol antes de empezar con medicamentos, toma aceite de orégano con comino negro. El comino negro ayuda a que tu hígado produzca menos colesterol y a que tu cuerpo lo saque mejor."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Es de lo poco natural que tiene estudios serios en personas para esto. Te dejo el link abajo."
+      ]
+    ]
+  },
+  "4": {
+    "title": "REEL 4 — Maria Laura",
+    "sub": "TOF · UGC · Resistencia a la insulina",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¿Cómo logré dejar de vivir así, con resistencia a la insulina, cuando me la pasaba cansada todo el día, con una ansiedad por lo dulce que no controlaba, y manchas oscuras en el cuello?"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Hubo tres cosas que me ayudaron."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "La primera fue la alimentación. Saqué el azúcar de verdad, no a medias: la del café, la de la galleta de media tarde, y mejor subí la proteína todos los días."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "La segunda fue empezar a moverme, hacer más deporte así fuera media hora en el día."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y la tercera fue la suplementación. Después de buscar muchísimo por internet encontré que el aceite de orégano con comino negro es bendito."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "El comino negro ayuda a que tus células vuelvan a responderle a la insulina. Y el orégano baja la inflamación y los antojos de dulce, porque cuando tienes hongos creciendo en el intestino son ellos los que piden azúcar, no tú."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si quieres cambiar tus hábitos empieza usando este aceite, es un 10 de 10. Te dejo el link abajo."
+      ]
+    ]
+  },
+  "5": {
+    "title": "REEL 5 — Maria Laura",
+    "sub": "MOF · POV · Antojos de dulce / hongos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "¿Sabías que el aceite de orégano con comino negro ataca los hongos que te están pidiendo dulce todo el día?"
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Y es que ese antojo no es tuyo. Lo que pasa es que se quitaron las bacterias buenas del intestino y en ese espacio crecen unos hongos que viven del azúcar. Por eso a las cuatro de la tarde tú no quieres algo dulce, lo necesitas."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "El orégano tiene una sustancia que se llama carvacrol, y esa es la que ataca esos hongos. El comino negro se encarga del terreno donde se metieron. Uno va por ellos, el otro por el lugar donde viven."
+      ],
+      [
+        "body",
+        "Cuerpo",
+        "Por eso la gente lo toma cuando le da ese bajón a media tarde, cuando anda con gases todo el día, o cuando la barriga se le inflama."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Solo tomas unas goticas bajo la lengua y listo. Consíguelo en el link de abajo."
+      ]
+    ]
+  },
+  "6": {
+    "title": "REEL 6 — Manuela",
+    "sub": "TOF · UGC · SIBO y cándida",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Bueno, miren, así amanecía yo por tener SIBO y cándida... con el abdomen completamente inflamado. Les voy a mostrar exactamente lo que hago cada mañana."
+      ],
+      [
+        "body",
+        "Rutina",
+        "Primero tomo agua al clima en ayunas para ayudar al intestino a moverse."
+      ],
+      [
+        "body",
+        "Rutina",
+        "Después un poquito de agua tibia con limón, como primer paso detox."
+      ],
+      [
+        "body",
+        "Descubrimiento",
+        "Y aquí entre nos, lo que más me ha funcionado es que luego me pongo unas gotas de aceite de orégano con comino, para bajar esa panza y sanar el intestino."
+      ],
+      [
+        "body",
+        "Educación",
+        "Este, a diferencia de otros que he probado, no quema ni irrita el estómago."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Uff... es que de verdad miren el antes y después para mí. Menos mal lo encontré y decidí incluirlo en mi rutina."
+      ]
+    ]
+  },
+  "7": {
+    "title": "REEL 7 — Manuela",
+    "sub": "TOF · Pantalla verde · Brotes de piel seca",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "No eres fea... es que tu piel está toda 'seca'."
+      ],
+      [
+        "body",
+        "Identificación",
+        "Yo también vivía así, la piel horrorosa, me brotaba hasta en el cuello."
+      ],
+      [
+        "body",
+        "Prueba social",
+        "Probé crema tras crema. Me calmaban un rato... y después todo volvía."
+      ],
+      [
+        "body",
+        "Producto",
+        "Me recomendaron aceite de orégano, y lo compré, y definitivamente sirve. Mira el después de la piel, ahora está luminosa, suave."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Y este, deja te muestro la marca, o sea es wow, y el plus es que tiene aceite de comino, que sirve como antioxidante. Si tú también mantienes así y quieres probarlo, el link está abajo."
+      ]
+    ]
+  },
+  "8": {
+    "title": "REEL 8 — Manuela",
+    "sub": "TOF · Pantalla dividida · Cortisol",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Si vives con el cortisol alto, la barriga inflamada, la cara con papada y el estrés a mil, deja de probar remedios al azar."
+      ],
+      [
+        "body",
+        "Identificación",
+        "Yo estaba mal con esa papadota... hasta que empecé a cambiar mi rutina."
+      ],
+      [
+        "body",
+        "Descubrimiento",
+        "Lo primero que hice fue dejar de probar una cosa diferente cada semana y buscar algo que realmente pudiera mantener en mi rutina."
+      ],
+      [
+        "body",
+        "Producto",
+        "Por eso, este aceite de orégano con comino negro. Se toma debajo de la lengua, no quema y no irrita."
+      ],
+      [
+        "body",
+        "Demostración",
+        "Lo empecé a usar todos los días, y miren la diferencia..."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si tú también sientes que has probado de todo, entra a la página y conoce por qué este formato es diferente."
+      ]
+    ]
+  },
+  "9": {
+    "title": "REEL 9 — Manuela",
+    "sub": "TOF · Respondiendo comentario · Presión arterial elevada",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Yo era de las que se medía la presión todo el tiempo y vivía preocupada por cada chequeo."
+      ],
+      [
+        "body",
+        "Producto",
+        "Siempre tuve ese problema, todo me alteraba la presión, y resultaban mareos, caídas, desmayos, etc."
+      ],
+      [
+        "body",
+        "Rutina",
+        "En ese afán de buscar cosas que de verdad pudiera hacer todos los días, encontré este aceite de orégano y comino, ayuda a relajar los vasos sanguíneos."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Son solo unas goticas y ya. Literalmente me toma unos segundos y sigo con mi día. Si quieres usarlo, elige uno de excelente calidad como este, que no te va a irritar ni a dar sensación de que te quema por dentro."
+      ]
+    ]
+  },
+  "10": {
+    "title": "REEL 10 — Manuela",
+    "sub": "MOF · UGC · Gases, ruidos y retorcijones",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "Amiga, ya estamos en 2026... que te sigas pedorreando en todo lado no debería ser normal."
+      ],
+      [
+        "body",
+        "Identificación",
+        "O sea vives apretando porque te da pena que se escape un gas en la calle, en la casa, o con el novio..."
+      ],
+      [
+        "body",
+        "Open Loop",
+        "Pero nunca lo solucionas de raíz."
+      ],
+      [
+        "body",
+        "Educación",
+        "Muchas veces no es que tengas 'mala digestión'. El problema es que estás fermentando todos esos desechos allá adentro."
+      ],
+      [
+        "body",
+        "Producto",
+        "Por eso yo empecé a usar aceite de orégano con 75% de carvacrol."
+      ],
+      [
+        "body",
+        "Mecanismo",
+        "El carvacrol se ha estudiado porque ayuda a mantener equilibradas las bacterias intestinales, y cuando hay menos fermentación normalmente también hay menos gases y menos retorcijones."
+      ],
+      [
+        "body",
+        "Resultado",
+        "Lo primero que yo noté fue que dejé de vivir con esa angustia de que se me fuera a salir un gas en público, o que la barriga sonara, o de salir corriendo al baño cada rato."
+      ],
+      [
+        "cta",
+        "CTA",
+        "Si ese también es tu caso, entra a la página y pide el tuyo, a ver si así superas esa etapa de gases locos."
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
