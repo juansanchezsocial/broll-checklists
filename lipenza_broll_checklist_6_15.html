@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIPENZA · Tomas de Apoyo · Reels 6–15</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 720px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 24px 24px; max-height: 70vh; overflow-y: auto; }
+  .guion-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .guion-row:last-child { border-bottom: none; }
+  .guion-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .guion-label.cta { color: var(--bof); }
+  .guion-label.hook { color: var(--mof); }
+  .guion-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .guion-fmt { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>LIPENZA · Tomas de Apoyo · Reels 6–15</h1>
+  <div class="sub">Rodaje — Lipenza · discos masticables de cúrcuma, jengibre y pimienta negra</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="vanesa">Vanesa</div>
+    <div class="chip" data-filter="carolina">Carolina</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="vanesa">
+  <div class="creator-title">
+    <h2>Vanesa</h2>
+    <span class="count">Reels 6–10 · Copy Isabella</span>
+  </div>
+  <!-- REEL 6 -->
+  <div class="reel" data-reel="6">
+    <div class="reel-head">
+      <span class="reel-num">REEL 6</span>
+      <span class="reel-title">"El verdadero desarrollo de personaje…" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(6)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@fatimanutrigen/video/7483616199645973765" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216284197657787" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="6">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="6-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mujer <strong>bajando escaleras agarrada de la baranda</strong> con cara de molestia</div></div>
+      <div class="shot" data-id="6-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Persona <strong>rotando el tobillo y masajeándose la rodilla</strong> al sentarse</div></div>
+      <div class="shot" data-id="6-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas <strong>caminando y subiendo escaleras</strong> tocándose la rodilla</div></div>
+      <div class="shot" data-id="6-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el <strong>frasco de Lipenza</strong> y toma una tableta (toma de producto)</div></div>
+      <div class="shot" data-id="6-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Persona <strong>subiendo escaleras con normalidad</strong> (después / positivo)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 7 -->
+  <div class="reel" data-reel="7">
+    <div class="reel-head">
+      <span class="reel-num">REEL 7</span>
+      <span class="reel-title">"Esta cúrcuma me dejó los dientes amarillos…" — Sketch</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Sketch (2 personajes)</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(7)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@trendtoksetter31/video/7495137242424331551" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216284197657789" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="7">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="7-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Primer plano de <strong>lengua y dientes amarillos</strong> (personaje 1, orgullosa)</div></div>
+      <div class="shot" data-id="7-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Entra <strong>personaje 2 mirando la boca</strong> con cara de susto</div></div>
+      <div class="shot" data-id="7-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Personaje 2 <strong>saca dos frascos</strong> y los pone sobre la mesa</div></div>
+      <div class="shot" data-id="7-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Señala la <strong>etiqueta de Lipenza (pimienta negra / piperina)</strong> vs. el otro frasco sin ese ingrediente</div></div>
+      <div class="shot" data-id="7-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Personaje 1 se tapa la boca, mira el <strong>cepillo de dientes y luego el frasco de Lipenza</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 8 -->
+  <div class="reel" data-reel="8">
+    <div class="reel-head">
+      <span class="reel-num">REEL 8</span>
+      <span class="reel-title">"Levante la mano si le pasa esto…" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC a cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(8)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@microingredients/video/7645362391470968094" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216284197657791" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="8">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="8-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto de <strong>piernas pesadas</strong> (con IA, exagerar inflamación)</div></div>
+      <div class="shot" data-id="8-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto de <strong>anillos apretados</strong></div></div>
+      <div class="shot" data-id="8-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mujer <strong>dejándose caer en el sofá</strong> al llegar a casa, inflamada</div></div>
+      <div class="shot" data-id="8-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Saca el <strong>frasco de Lipenza</strong>, toma una tableta y lo guarda (toma de producto)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 9 -->
+  <div class="reel" data-reel="9">
+    <div class="reel-head">
+      <span class="reel-num">REEL 9</span>
+      <span class="reel-title">"Mis peores enemigos antes del período…" — POV</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(9)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@microingredients/video/7642117587987451166" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216284197657793" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="9">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="9-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Ella <strong>desesperada quitándose las medias</strong>, gestos de dolor/enojo (tomas cortas)</div></div>
+      <div class="shot" data-id="9-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto de los pies</strong> (con IA poner marcas de las medias)</div></div>
+      <div class="shot" data-id="9-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Trabajando en el pc, se levanta y <strong>mueve/dobla las piernas</strong> para 'destrabarlas'</div></div>
+      <div class="shot" data-id="9-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Agarra el <strong>frasco de Lipenza</strong>, lo abre, se lo toma y se toca las piernas con cara de sorpresa</div></div>
+      <div class="shot" data-id="9-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Muestra las pastillas a cámara</strong> y las guarda en el bolso</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 10 -->
+  <div class="reel" data-reel="10">
+    <div class="reel-head">
+      <span class="reel-num">REEL 10</span>
+      <span class="reel-title">"Así se ve la retención de líquidos…" — Pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(10)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/uNd4SAbRXcJi50HkmdDf?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216284197657795" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="10">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="10-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Arriba: <strong>brincando para ponerse un pantalón</strong> que no le sube · Abajo: <strong>masajeándose las piernas</strong> desesperada</div></div>
+      <div class="shot" data-id="10-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tomas de <strong>mujeres mostrando el producto</strong> (tomar del banco de fotos)</div></div>
+      <div class="shot" data-id="10-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Mostrando los <strong>ingredientes desde la etiqueta</strong> y las pastillitas a pantalla (zoom al producto)</div></div>
+      <div class="shot" data-id="10-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Guardando Lipenza en el bolso</strong></div></div>
+      <div class="shot" data-id="10-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Abriendo el tarro</strong> y tomas a producto</div></div>
+      <div class="shot" data-id="10-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Cerrándose el jean con normalidad</strong> · Abajo: mostrar la página web</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="carolina">
+  <div class="creator-title">
+    <h2>Carolina</h2>
+    <span class="count">Reels 11–15 · Copy Luisa</span>
+  </div>
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"¿Sientes tus piernas pesadas?" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad / nutricionista</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@adri.fisio.fitness/video/7522601028303326487" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216318353272442" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>sintiendo las piernas pesadas e inflamadas</strong> (como la referencia)</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV de una pierna inflamada</strong></div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong> y paneo de los discos</div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto pierna hinchada</strong> + <strong>foto pierna desinflamada</strong> (antes/después, pasar por IA)</div></div>
+      <div class="shot" data-id="11-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiéndose el disco</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"Que las medias te marquen el tobillo no es normal…" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde / autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@drwaltersegovia/video/7374561262379814177" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216318353272444" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Fondo pantalla verde: <strong>imagen de la marca de las medias en el tobillo</strong> (adjunta en la tarea)</div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Close up de piernas inflamadas</strong></div></div>
+      <div class="shot" data-id="12-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV de piernas inflamadas y pesadas</strong></div></div>
+      <div class="shot" data-id="12-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong> y POV del producto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"¿Terminas el día con las piernas hinchadas?" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">📝 Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZSCnVGwGg/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216318353272446" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV piernas inflamadas</strong> y close up de persona con pies pesados</div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>mostrando la pastilla a cámara</strong></div></div>
+      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora <strong>comiendo la pastilla</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"Olvídate de los masajes costosos…" — Voz en off</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Voz en off / UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/KlDOllNQo4Sg0JN0HQz8?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216318353272450" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Piernas inflamadas</strong> y close up de la creadora con las piernas pesadas</div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del disco</strong></div></div>
+      <div class="shot" data-id="14-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>POV del producto</strong> y creadora tomando el producto</div></div>
+      <div class="shot" data-id="14-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto piernas inflamadas y desinflamadas</strong> (antes/después)</div></div>
+      <div class="shot" data-id="14-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Toma de las piernas desinflamadas</strong></div></div>
+      <div class="shot" data-id="14-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Paneo del producto</strong> (cierre)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">★★★★★ Reseñas de clientas — Comercial prueba social</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Comercial / prueba social</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/4PmOku9kct5vbr7cTsBW?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216255178416849/1216318353272448" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="15-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><strong>Foto del producto</strong> (como la referencia)</div></div>
+      <div class="shot" data-id="15-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Imagen flotante de <strong>antes/después de un pie inflamado y desinflamado</strong></div></div>
+      <div class="shot" data-id="15-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Diferentes <strong>clips de creadoras tomando Lipenza</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · LIPENZA · Entrega 1</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_lipenza_6_15_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = checked.length + '/' + shots.length;
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "6": {
+    "title": "REEL 6 — Vanesa",
+    "sub": "TOF · Pantalla dividida · Molestias en rodillas y tobillos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"El verdadero desarrollo de personaje es cuando usted empieza a bajar escaleras haciendo 'ay, ay, ay'... como si eso ayudara. 😂\""
+      ],
+      [
+        "body",
+        "Romper la creencia",
+        "\"Y uno de terco echándole la culpa a la edad... como si a los 30 ya tocara pedir grúa pa' bajar un piso.\""
+      ],
+      [
+        "body",
+        "Nueva explicación",
+        "\"La cosa es que muchas veces las articulaciones ya vienen avisando hace rato...\""
+      ],
+      [
+        "body",
+        "Rutina",
+        "\"Por eso yo metí estas pasticas de Lipenza en mi rutina. Tienen cúrcuma estandarizada y listo... una cosa más de las que hago todos los días.\""
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Así que si las rodillas ya le mandan indirectas... no espere a que le manden carta certificada. 🤣\""
+      ]
+    ]
+  },
+  "7": {
+    "title": "REEL 7 — Vanesa",
+    "sub": "TOF · Sketch · Calidad y absorción",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "P1: \"¡Esta cúrcuma sí está buenísima! Mire cómo me dejó los dientes... amarillos, amarillos.\" 😁"
+      ],
+      [
+        "body",
+        "Choque",
+        "P2: \"¿Y quién le dijo que eso era bueno?\""
+      ],
+      [
+        "body",
+        "Remate",
+        "P1: \"...¿Cómo así que no?\" 🤨"
+      ],
+      [
+        "body",
+        "Descubrimiento",
+        "P2: \"Amiga... que le pinte la lengua no quiere decir que su cuerpo la esté aprovechando. Lo importante es que la curcumina sí se absorba.\""
+      ],
+      [
+        "body",
+        "Comparación",
+        "P2: \"Por eso yo siempre reviso que tenga pimienta negra. Estas pasticas de Lipenza la incluyen para ayudar a mejorar la absorción de la curcumina.\""
+      ],
+      [
+        "cta",
+        "Cierre",
+        "P2: \"Al final eso es lo que uno busca... apoyar el bienestar general y sentirse menos inflamada, no andar con los dientes amarillos creyendo que hizo negocio.\" 😂"
+      ]
+    ]
+  },
+  "8": {
+    "title": "REEL 8 — Vanesa",
+    "sub": "TOF · UGC a cámara · Inflamación de bajo grado",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"A ver... levante la mano si últimamente le pasa esto: amanece sintiendo las piernas pesadas, los anillos un día le entran y al otro no, y llega la noche sintiendo que el cuerpo le pesa el doble... como si hubiera cargado un bulto todo el día.\""
+      ],
+      [
+        "body",
+        "Revelación",
+        "\"Yo me había resignado, porque ajá, la edad llega con sus achaques... pero resulta que todas esas cositas son inflamación de bajo grado.\""
+      ],
+      [
+        "body",
+        "Rutina",
+        "\"Por eso empecé a tomar estas pasticas de Lipenza. Tienen cúrcuma, jengibre y pimienta negra, una combinación natural que ayuda a apoyar la respuesta natural del cuerpo frente a esos procesos y aporta al bienestar general.\""
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Ahí le dejo pues, para que pueda seguir diciendo: la vieja es la cédula, no yo.\""
+      ]
+    ]
+  },
+  "9": {
+    "title": "REEL 9 — Vanesa",
+    "sub": "MOF · POV · Hinchazón premenstrual en piernas",
+    "rows": [
+      [
+        "hook",
+        "Hook (texto)",
+        "\"Mis peores enemigos la semana antes del período:\""
+      ],
+      [
+        "body",
+        "Punto 2 (texto)",
+        "\"Pasar horas sentada... y levantarme con las piernas súper inflamadas.\""
+      ],
+      [
+        "body",
+        "Producto (texto)",
+        "\"Adiós a esa hinchazón y a que se me marquen las medias.\""
+      ],
+      [
+        "cta",
+        "Cierre (texto)",
+        "\"Mi mejor aliado en los días de período.\""
+      ]
+    ]
+  },
+  "10": {
+    "title": "REEL 10 — Vanesa",
+    "sub": "BOF · Pantalla dividida · Retención de líquidos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Así se ve la retención de líquidos: jeans que no suben y piernas que te duelen todo el tiempo.\""
+      ],
+      [
+        "body",
+        "Prueba social",
+        "\"No eres la única, cada vez más mujeres incluyen Lipenza en su rutina mensual.\""
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Con cúrcuma, jengibre y pimienta negra.\""
+      ],
+      [
+        "body",
+        "Giro",
+        "\"¿Entonces por qué seguir esperando a que pase?\""
+      ],
+      [
+        "body",
+        "Oferta",
+        "\"Hasta 58% OFF por tiempo limitado.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Pídelo hoy en la página web.\""
+      ]
+    ]
+  },
+  "11": {
+    "title": "REEL 11 — Carolina",
+    "sub": "TOF · Autoridad · Retención de líquidos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Sientes tus piernas pesadas? ¿Se te hinchan al final del día o se te duermen? Esto no es solo cansancio, puede ser una inflamación que no estás tratando. Y si lo ignoras, puede ir a más.\""
+      ],
+      [
+        "body",
+        "Identificación",
+        "\"Muchas mujeres creen que sus piernas se hinchan solo por peso o falta de ejercicio, pero puede tratarse de retención de líquido e inflamación real, que no responde igual a la dieta ni al ejercicio.\""
+      ],
+      [
+        "body",
+        "Historia",
+        "\"Por eso quiero hablarte de Lipenza: son unos discos masticables hechos con cúrcuma, jengibre y pimienta negra. Solo tomas 2 discos al día, uno en la mañana antes del desayuno y otro en la noche antes de la comida.\""
+      ],
+      [
+        "body",
+        "Recomendación",
+        "\"Es un producto que yo como nutricionista recomiendo 100% a mis pacientes, no es agresivo con el estómago ni con los riñones.\""
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Si esto te suena familiar, vale la pena que lo consideres. Y si conoces a alguien a quien le pase lo mismo, envíale este video.\""
+      ]
+    ]
+  },
+  "12": {
+    "title": "REEL 12 — Carolina",
+    "sub": "TOF · Pantalla verde · Medias que se marcan en el tobillo",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Fíjate bien en esta imagen. Que las medias te dejen esta marca en los tobillos no es normal.\""
+      ],
+      [
+        "body",
+        "Identificación",
+        "\"Hola, soy [Nombre], nutricionista. Vamos a hablar de por qué se marcan las medias y por qué se hinchan tus piernas.\""
+      ],
+      [
+        "body",
+        "Historia",
+        "\"Esto pasa cuando el cuerpo retiene líquido y se genera inflamación, algo muy común sobre todo pasando los 30 años.\""
+      ],
+      [
+        "body",
+        "Dolor",
+        "\"Además de pies y tobillos hinchados, puedes sentir hormigueo, pesadez y que la piel se marca con facilidad. Si no se atiende, puede ir aumentando con el tiempo. Por eso, si lo notas persistente, lo primero es consultar a tu médico.\""
+      ],
+      [
+        "body",
+        "Hábito",
+        "\"Y como apoyo diario, lo que yo recomiendo son estos discos de cúrcuma, jengibre y pimienta negra. Te tomas dos al día, uno en la mañana y otro en la noche.\""
+      ],
+      [
+        "body",
+        "Naturalidad",
+        "\"Estos discos están pensados para ayudar a bajar la inflamación y la retención de líquidos que causan esa hinchazón y esa marca en la piel.\""
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Se llaman Lipenza, y lo puedes conseguir en el link de abajo con descuento.\""
+      ]
+    ]
+  },
+  "13": {
+    "title": "REEL 13 — Carolina",
+    "sub": "TOF · Pantalla verde · Piernas hinchadas al final del día",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"¿Terminas el día con los tobillos y las piernas así de hinchadas e inflamadas?\""
+      ],
+      [
+        "body",
+        "Identificación",
+        "\"Soy [Nombre], nutricionista, y te voy a compartir algo simple que puedes incorporar en tu día a día para ayudar a desinflamar.\""
+      ],
+      [
+        "body",
+        "Historia",
+        "\"Esta hinchazón muchas veces es por retención de líquido e inflamación, no solo por cansancio o por estar de pie todo el día.\""
+      ],
+      [
+        "body",
+        "Producto",
+        "\"Lo que yo recomiendo como apoyo diario es Lipenza: unos discos masticables de cúrcuma, jengibre y pimienta negra.\""
+      ],
+      [
+        "body",
+        "Ingredientes",
+        "\"La cúrcuma es un antiinflamatorio natural que ayuda a reducir la hinchazón. El jengibre ayuda a mejorar la circulación y la sensación de pesadez. Y la pimienta negra aumenta la absorción de la cúrcuma. Juntos ayudan a calmar la hinchazón, la pesadez y otros síntomas de la inflamación en las piernas.\""
+      ],
+      [
+        "cta",
+        "Cierre",
+        "\"Cuéntame en los comentarios si a ti también se te hinchan las piernas al final del día, y comparte este video con alguien que lo necesite.\""
+      ]
+    ]
+  },
+  "14": {
+    "title": "REEL 14 — Carolina",
+    "sub": "MOF · Voz en off · Alternativa a masajes costosos",
+    "rows": [
+      [
+        "hook",
+        "Hook",
+        "\"Si tus piernas se ven así de hinchadas al final del día, olvídate de los masajes costosos y prueba esto en su lugar.\""
+      ],
+      [
+        "body",
+        "Identificación",
+        "\"Después de los 30, muchas mujeres empiezan a retener más líquido y a sentir inflamación en las piernas.\""
+      ],
+      [
+        "body",
+        "Historia",
+        "\"Yo investigué bien y encontré un producto con los ingredientes correctos para este problema: un disco masticable de cúrcuma, jengibre y pimienta negra.\""
+      ],
+      [
+        "body",
+        "Dolor",
+        "\"Me gusta mucho el resultado que estoy viendo en mis piernas. Se sienten mucho más livianas. Ya no termino el día con esa pesadez ni esa hinchazón en los tobillos.\""
+      ],
+      [
+        "cta",
+        "Naturalidad",
+        "\"Si tú también sufres de inflamación en los pies, se llama Lipenza, consíguelo en el link de abajo.\""
+      ]
+    ]
+  },
+  "15": {
+    "title": "REEL 15 — Carolina",
+    "sub": "BOF · Comercial prueba social · Piernas inflamadas",
+    "rows": [
+      [
+        "hook",
+        "Reseña 1",
+        "★★★★★ \"Después de la semana 2 empecé a notar que mis piernas ya no se hinchaban tanto al final del día.\""
+      ],
+      [
+        "body",
+        "Reseña 2",
+        "★★★★★ \"Para la semana 6 ya sentía mucho menos pesadez, y para la semana 12 la marca que me dejaban las medias casi no se notaba.\""
+      ],
+      [
+        "body",
+        "Reseña 3",
+        "★★★★★ \"La verdad no esperaba que funcionara tan bien, siento que encontré lo que necesitaba.\""
+      ],
+      [
+        "cta",
+        "CTA",
+        "\"Compra ahora Lipenza y empieza a sentir la diferencia en tus piernas.\" (música chill acústico / lo-fi de ambiente)"
+      ]
+    ]
+  }
+};
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = data.rows.map(([cls, label, text, fmt]) => {
+      let badge = '';
+      if (fmt) {
+        const f = fmt.toLowerCase();
+        const fc = f.includes('voz') ? 'voz' : f.includes('verde') ? 'verde' : f.includes('podcast') ? 'podcast' : '';
+        badge = `<span class="guion-fmt ${fc}">${fmt}</span>`;
+      }
+      return `<div class="guion-row"><div class="guion-label ${cls}">${label}</div><div class="guion-text">${text}<br>${badge}</div></div>`;
+    }
+    ).join('');
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
