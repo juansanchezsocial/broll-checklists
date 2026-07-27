@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVABLOOM · Tomas de Apoyo · Reels 11–20</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-2: #f1f3f6;
+    --text: #14161a;
+    --muted: #5b6573;
+    --accent: #2563eb;
+    --accent-dim: #2563eb14;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --border: #dde2ea;
+    --border-strong: #c5ccd6;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #b45309;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { position: sticky; top: 0; background: var(--bg); padding-top: 8px; padding-bottom: 16px; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; color: var(--text); }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .progress-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .progress-bar { flex: 1; height: 10px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .3s ease; width: 0%; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text); font-weight: 600; white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; font-weight: 500; }
+  .chip:hover { border-color: var(--border-strong); background: var(--card-2); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .reset-btn { margin-left: auto; background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .reset-btn:hover { color: #b91c1c; border-color: #b91c1c; background: #fee2e2; }
+
+  .creator-block { margin-top: 36px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title .count { color: var(--muted); font-size: 14px; font-weight: 500; }
+
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.hidden { display: none; }
+  .reel-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .reel-head:hover { background: var(--card-2); }
+  .reel-num { font-weight: 700; font-size: 15px; min-width: 78px; color: var(--text); letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); font-weight: 500; }
+  .reel-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.02em; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); border-color: var(--tof-bg); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); border-color: var(--mof-bg); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); border-color: var(--bof-bg); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .reel-progress.done { color: var(--green); background: var(--green-bg); padding: 2px 8px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  .shot { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--green); border-color: var(--green); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 15px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: #000; font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: #ede9fe; color: #6d28d9; vertical-align: 1px; }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+
+  .ref-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #fff; text-decoration: none; padding: 6px 14px; background: var(--accent); border-radius: 8px; font-weight: 600; }
+  .ref-link:hover { background: #1d4ed8; }
+  .ref-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; text-decoration: none; padding: 4px 11px; background: var(--accent); border-radius: 100px; font-weight: 700; border: 1px solid var(--accent); white-space: nowrap; transition: all .15s; letter-spacing: 0.02em; cursor: pointer; }
+  .ref-btn:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .guion-btn { background: #16a34a; border-color: #16a34a; }
+  .guion-btn:hover { background: #15803d; border-color: #15803d; }
+  .asana-btn { background: #f06a6a; border-color: #f06a6a; }
+  .asana-btn:hover { background: #d94d4d; border-color: #d94d4d; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20, 22, 26, 0.5); backdrop-filter: blur(4px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+  .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+  .modal-head .modal-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 2px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+  .guion-table td.g-texto { font-size: 14px; color: var(--text); }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: #f4f0ff; }
+  .guion-table tr.is-broll td.g-est { color: #6d28d9; box-shadow: inset 3px 0 0 #8b5cf6; }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: #dbeafe; color: #1e40af; white-space: nowrap; }
+  .guion-fmt.voz { background: #ede9fe; color: #6d28d9; }
+  .guion-fmt.verde { background: #dcfce7; color: #15803d; }
+  .guion-fmt.podcast { background: #ffedd5; color: #c2410c; }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: #f4f0ff; border: 1px solid #c4b5fd; border-left: 3px solid #8b5cf6; flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .reel-head { flex-wrap: wrap; }
+    .reel-num { min-width: auto; }
+    .reel-progress { margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>OVABLOOM · Tomas de Apoyo · Reels 11–20</h1>
+  <div class="sub">Rodaje Entrega 2 — OvaBloom (inositol 40:1 · HerBalance)</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+  <div class="toolbar">
+    <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="carolina">Carolina</div>
+    <div class="chip" data-filter="valeria">Valeria Roa</div>
+    <div class="chip" data-filter="pending">Pendientes</div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<div class="creator-block" data-creator="carolina">
+  <div class="creator-title">
+    <h2>Carolina</h2>
+    <span class="count">Reels 11–15</span>
+  </div>
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"Tener problemas ováricos se ve así" — Hirsutismo</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC Before/After</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/yMCnsHQcJiaFLFvfjoCP?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216839788726853" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Fotos del <strong>mentón</strong>, del <strong>bigote</strong> y de la <strong>parte lateral/patillas</strong> de la cara (3 fotos separadas — luego se les pone vello con AI)</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Problema</span>Ella <strong>usando la pinza</strong> de depilar</div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Problema</span>Clips <strong>tomando alguna pastilla</strong>, con actitud aburrida / estresada</div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cambio de creencia</span>Imágenes <strong>laterales, frontales y con la boca hacia arriba</strong>, con una pinza de cejas o cuchilla de depilar en la mano (después se les agrega rojez con AI)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"De qué hablaaas, si yo nací así" — Caída de cabello</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Respondiendo comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/rlCZ0GARefUrqz9bDaJi?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216839788726855" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"Las señales de que tenía acné adulto" — Acné hormonal</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida + Voz en off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/uAVtd1RDbbTBb40bs3D9?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216839821630320" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Ella <strong>espichándose la cara</strong> frente al espejo</div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Señal #1</span>Creadora <strong>lavándose el lado derecho del mentón</strong></div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Señal #2</span>Ella <strong>poniéndose maquillaje</strong> súper estresada</div></div>
+      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Señal #3</span>Ella <strong>tirando la cosmetiquera en el lavamanos</strong></div></div>
+      <div class="shot" data-id="13-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Señal #3</span>Ella <strong>poniéndose varias cremas</strong> súper desesperada</div></div>
+      <div class="shot" data-id="13-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución</span><strong>Buscando el producto</strong></div></div>
+      <div class="shot" data-id="13-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución</span><strong>Preparando y tomando</strong> el producto</div></div>
+      <div class="shot" data-id="13-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">After</span>Mostrando el después: la <strong>piel súper luminosa</strong></div></div>
+      <div class="shot" data-id="13-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">After</span>Ella <strong>mirándose al espejo súper feliz</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"Mi bestie quedó embarazada" — Quistes / regulación hormonal</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Pantalla verde + Storytime</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/q8HCXE2ebjhmpBqkUB5r?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216839821630322" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Fondo 1</span>Ella <strong>hablando por celular y gritando súper feliz</strong> (plate de fondo para la pantalla verde)</div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Fondo 2</span>Ella <strong>sentada en el sanitario moviendo el pie</strong>, desesperada, esperando</div></div>
+      <div class="shot" data-id="14-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Fondo 2</span>Ella <strong>brincando de la felicidad</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">"Tenía meses sin que me bajara" — Periodo irregular</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">📝 Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/f9M7drroC9YpxkGGswzt?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216839821630324" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="valeria">
+  <div class="creator-title">
+    <h2>Valeria Roa</h2>
+    <span class="count">Reels 16–20</span>
+  </div>
+  <!-- REEL 16 -->
+  <div class="reel" data-reel="16">
+    <div class="reel-head">
+      <span class="reel-num">REEL 16</span>
+      <span class="reel-title">"El acné hormonal no se cura con skincare" — Acné hormonal</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(16)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@noeliacadenass/video/7663578017536462112" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216873499200415" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="16">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="16-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Alimentación</span>Clip <strong>creadora comiendo</strong></div></div>
+      <div class="shot" data-id="16-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Inositol</span>Creadora <strong>tomando OvaBloom</strong> — ojo: <strong>que NO se vea la marca</strong></div></div>
+      <div class="shot" data-id="16-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="16-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span>Clip <strong>creadora tomando el producto</strong></div></div>
+      <div class="shot" data-id="16-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span>Clip <strong>creadora mostrando la piel bonita</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 17 -->
+  <div class="reel" data-reel="17">
+    <div class="reel-head">
+      <span class="reel-num">REEL 17</span>
+      <span class="reel-title">"3 señales de desequilibrio hormonal" — Acné hormonal</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(17)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@notaskincarefan/video/7438693939655249185" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216873499183651" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="17">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 18 -->
+  <div class="reel" data-reel="18">
+    <div class="reel-head">
+      <span class="reel-num">REEL 18</span>
+      <span class="reel-title">"4 cosas que creías normales en tu periodo" — Solo texto en pantalla</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">POV · sin audio hablado</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(18)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@ciclica_oficial/video/7340394596662299910" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216873499183653" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="18">0/10</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="18-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 1</span>Toma inicial como la referencia: <strong>gesto de 4 síntomas</strong> + mostrar una <strong>toalla con salsa que simule la menstruación</strong></div></div>
+      <div class="shot" data-id="18-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 2</span>Se agarra el vientre, se dobla y <strong>cae de lado al sofá en posición fetal</strong></div></div>
+      <div class="shot" data-id="18-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 3</span>Clip creadora con el <strong>estómago muy hinchado</strong></div></div>
+      <div class="shot" data-id="18-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 3</span>Foto de la creadora con el <strong>estómago desinflamado</strong></div></div>
+      <div class="shot" data-id="18-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 4</span><strong>Dos fotos</strong> de la creadora con la <strong>cara con acné</strong> (van arriba y abajo en pantalla dividida)</div></div>
+      <div class="shot" data-id="18-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 5</span>Clip creadora <strong>en el baño sorprendida</strong> porque le acaba de llegar la menstruación y no la esperaba</div></div>
+      <div class="shot" data-id="18-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 6</span>Creadora haciendo <strong>mímica de llamar a la cámara</strong> y después <strong>mostrar el producto</strong></div></div>
+      <div class="shot" data-id="18-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 7</span>Creadora <strong>tomando el producto</strong></div></div>
+      <div class="shot" data-id="18-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 7</span><strong>Paneo del producto</strong></div></div>
+      <div class="shot" data-id="18-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Toma 7</span>Creadora <strong>mostrando el producto a cámara</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 19 -->
+  <div class="reel" data-reel="19">
+    <div class="reel-head">
+      <span class="reel-num">REEL 19</span>
+      <span class="reel-title">"Me hicieron creer que era normal" — Cólicos fuertes</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Storytelling</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(19)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@dra.samportillo/video/7618414283143023893" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216873499183655" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="19">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="19-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">After</span>Clip <strong>creadora con muchos cólicos</strong></div></div>
+      <div class="shot" data-id="19-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="19-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span>Clip <strong>creadora tomando</strong> el producto</div></div>
+      <div class="shot" data-id="19-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span>Clip <strong>creadora sin cólicos</strong>, tomando agua y estando tranquila</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 20 -->
+  <div class="reel" data-reel="20">
+    <div class="reel-head">
+      <span class="reel-num">REEL 20</span>
+      <span class="reel-title">"Me compré esto porque tenía acné hormonal" — Acné / cólicos</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(20)">📝 Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@magentafamilystor/video/7285481825240108294" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216493808195641/1216873499183657" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="20">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="20-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Clip creadora <strong>mostrando el producto a cámara</strong></div></div>
+      <div class="shot" data-id="20-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Fotos</strong> creadora mostrando el <strong>acné que tenía</strong></div></div>
+      <div class="shot" data-id="20-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Foto</strong> creadora mostrando que <strong>ya no tiene acné</strong></div></div>
+      <div class="shot" data-id="20-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Clip creadora <strong>tomando el producto</strong></div></div>
+      <div class="shot" data-id="20-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Problema</span><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="20-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cambio de creencia</span>Clip creadora <strong>tomando el producto</strong></div></div>
+      <div class="shot" data-id="20-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución</span>Clip <strong>creadora sin acné</strong></div></div>
+      <div class="shot" data-id="20-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución</span>Clip <strong>creadora tranquila sin cólicos</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · OVABLOOM · Entrega 2</footer>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_ovabloom_11_20_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "11": {
+    "title": "REEL 11 — Carolina",
+    "sub": "TOF · Problem Aware · UGC Before/After · Hirsutismo · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Tener problemas ovaricos se ve asi, y asi, y tambien asi",
+          "Voz en off / Tomas de apoyo",
+          "Tomar fotos de menton, zona labial y parte lateral de la cara",
+          "Con AI poner vello facial por hirsutismo<br>1. Foto del mentón<br>2. Foto del bigote<br>3. Foto lateral/patillas"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Problema",
+          "pinza, cera… y a los dos dias, aun mas vello, hice mil tratamientos y seguia igual",
+          "Voz en off<br>Pantalla dividida",
+          "Arriba: Ella usando pinza, luego clips tomando alguna pastilla y actitud super aburrida/estresada",
+          "Abajo: <a href=\"https://www.tiktok.com/@monipercast/video/7244336230555471146\" target=\"_blank\">clip de referencia</a> — desde 01:04. Hacer zoom y que solo se vea la zona donde se pone la cera"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cambio de creencia",
+          "Mi cara se veia asi, super inflamada, lastimada, roja",
+          "Voz en off / Tomas de apoyo",
+          "Imagenes laterales, frontales, con la boca hacia arriba y en la mano una pinza de cejas o una cuchilla de depilar",
+          "Con AI, ponerle irritación/rojez a las imágenes"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Solución",
+          "En verdad ya estaba cansada, y ya en mis ultimos intentos, encontre este producto, dice que tiene D-Chiro-Inositol, no se bien como se dice, pero es un ingrediente que ayuda con equilibrio hormonal y el SOP.",
+          "A cámara",
+          "Preparando OvaBloom, close-up del producto, mezclándolo y tomándolo.",
+          "Superpuesto: <strong>D-Chiro-Inositol</strong>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "After",
+          "Ya llevo 4 meses usandolo, y mira como me veo, NADA, de vez en cuando algun pelito travieso, pero mirame la piel, de verdad WOW",
+          "A cámara",
+          "Mostrando la cara y la textura de la piel, y luego hablando super feliz.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "12": {
+    "title": "REEL 12 — Carolina",
+    "sub": "TOF · Problem Aware · Respondiendo a comentario · Caída de cabello · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Respuesta",
+          "De que hablaaas, si yo naci asi?, jejeje, no mentira, estuve a punto de estar calva y tiesa.",
+          "A cámara",
+          "Ella mostrando el cabello con actitud pícara; cuando dice \"calva\" lo dice susurrando (para que Meta no nos cancele) y gesticula muy bien.",
+          "Comentario: <strong>💬 \"Reina que pelatzo, que te estas haciendo, porque asi no estabas antes?\"</strong>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Problema",
+          "Tenia demasiados espacios despoblados, el cabello super delgado, uff, que fuerte recordar eso",
+          "Voz en off",
+          "",
+          "<a href=\"https://pin.it/3nCjAUOo7\" target=\"_blank\">pin.it/3nCjAUOo7</a> — solo la parte donde se ve despoblado, que no se vea la cara"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cambio",
+          "Yo nunca he tenido el pelo demasiado grueso, pero tampoco para caerse de esa manera",
+          "A cámara",
+          "Hablando a cámara mientras se peina",
+          "En \"pero tampoco para caerse de esa manera\" dejar en voz en off y poner <a href=\"https://pin.it/7wJod7sfW\" target=\"_blank\">este video</a> hasta 0:02"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Resulta que estaba teniendo problemas hormonales",
+          "A cámara",
+          "Se sigue peinando",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Y el medico me recomendo usar inositol. Basicamente esto me ayuda a regular las hormonas y me freno la caida de cabello, lo tomo hace rato ya, como 1 año",
+          "A cámara",
+          "Deja de peinarse y va a buscar el producto, lo empieza a preparar y se lo toma",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Y bueno mi reina, mirame el pelatzo ahora, gracias a ovabloom con su inositol.",
+          "A cámara",
+          "Deja el vaso a un lado y muestra el pelo, se lo agarra, muestra el volumen, etc.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "13": {
+    "title": "REEL 13 — Carolina",
+    "sub": "TOF · Problem Aware · Pantalla dividida + Voz en off · Acné hormonal · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Estas fueron las señales que me sirvieron para darme cuenta de que tenia acne adulto",
+          "Voz en off / Tomas de apoyo",
+          "<strong>Abajo:</strong> Ella como espichándose la cara en frente del espejo",
+          "<strong>Arriba:</strong> 1. <a href=\"https://pin.it/d8VCU0Fuw\" target=\"_blank\">pin 1</a> · 2. <a href=\"https://pin.it/6Jcmi853i\" target=\"_blank\">pin 2</a> · 3. <a href=\"https://pin.it/6XT0k8inA\" target=\"_blank\">pin 3</a>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Señal #1",
+          "Uno. Siempre sale en el mismo lado del mentón.",
+          "Voz en off / Tomas de apoyo",
+          "<strong>Abajo:</strong> Creadora lavándose lado derecho del mentón",
+          "<strong>Arriba:</strong> 1. <a href=\"https://pin.it/7Bf36yq1I\" target=\"_blank\">pin 1</a> · 2. <a href=\"https://pin.it/qHshaggyW\" target=\"_blank\">pin 2</a>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Señal #2",
+          "Dos. Lo tapas con corrector... pero igual se sigue viendo.",
+          "Voz en off / Tomas de apoyo",
+          "<strong>Arriba:</strong> Ella poniéndose maquillaje súper estresada",
+          "<strong>Abajo:</strong> <a href=\"https://pin.it/3scjLeES7\" target=\"_blank\">pin</a> — cortar y solo dejar media cara"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Señal #3",
+          "Tres. Compraste un montón de cremas pensando que era un problema de la piel... y nada cambiaba.",
+          "Voz en off / Tomas de apoyo",
+          "<strong>Arriba:</strong> Ella tirando en el lavamanos la cosmetiquera<br><strong>Abajo:</strong> Y ella poniéndose varias cremas súper desesperada",
+          "Número <strong>\"3\"</strong>. Paneo rápido por los productos."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cambio de creencia",
+          "A mí me pasó igual, hacia de todo, y esos brotes no se iban, el problema era hormonal. Y para eso las cremas no sirven mucho",
+          "A cámara",
+          "Se está maquillando y va hablando",
+          "Texto: SOP apareciendo a mis 20's✨"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Solución",
+          "A mi me sirvio el inositol, este de OvaBloom, ademas tiene zinc, y apoya la recuperacion de la piel y el equilibrio hormonal",
+          "Voz en off / Tomas de apoyo",
+          "<strong>Arriba:</strong> Buscando el producto<br><strong>Abajo:</strong> Preparando y tomando el producto.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "After",
+          "Hoy mi piel se ve mucho más tranquila y, sobre todo, ya no vivo esperando el próximo brote.",
+          "Voz en off / Tomas de apoyo",
+          "<strong>Arriba:</strong> Mostrando el después, la piel súper luminosa<br><strong>Abajo:</strong> Ella mirándose al espejo, súper feliz",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "14": {
+    "title": "REEL 14 — Carolina",
+    "sub": "MOF · Solution Aware · Pantalla verde + Storytime · Quistes ováricos · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Mi amiga tenia quistes en los ovarios, entonces era super complicado quedar en embarazo, para controlar problema hormonal le enviaron inositol",
+          "A cámara",
+          "Ella en la cocina, preparando el inositol mientras habla",
+          "<strong>Storytime de como mi bestie quedo embarazada tomando inositol despues de no poder.</strong>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Educación",
+          "El inositol ayuda a regular el ciclo menstrual, a los problemas hormonales y tambien ayuda mucho con el tema de los quistes",
+          "Pantalla verde",
+          "<strong>Superpuesta:</strong> Ella hablando, mientras se pone con una brocha rubor, jugar mucho con la brocha.",
+          "<strong>Fondo:</strong> <a href=\"https://drive.google.com/file/d/1gN-l-aDEJlEDxb1b6FHZ8c5lxA95K1Q_/view\" target=\"_blank\">video en Drive</a>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Contexto",
+          "Bueno, total, mi mejor amiga queria tener hijos hace rato pero por los problemas en los ovarios no habia podido.",
+          "Pantalla verde",
+          "<strong>Superpuesta:</strong> Ella hablando",
+          "<strong>Fondo:</strong> <a href=\"https://drive.google.com/file/d/1gN-l-aDEJlEDxb1b6FHZ8c5lxA95K1Q_/view\" target=\"_blank\">video en Drive</a>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Un Lunes equis, me llama mi mejor amiga, me dice que cree que esta vez si esta en embarazo, y me pide que la acompane, normal yo fui, me sente en el sanitario, esperamos, y esperamos,",
+          "Pantalla verde + fondo a grabar",
+          "<strong>Superpuesta:</strong> Ella hablando<br><strong>Fondo 1:</strong> Ella hablando por celular, y grita super feliz.",
+          "<strong>Fondo 2:</strong> Ella sentada en el sanitario moviendo el pie, desesperada, esperando"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cambio",
+          "Cuando, pum. POSITIVA. Nena yo creo que yo me puse mas feliz que ella misma, yo solo saltaba y lloraba",
+          "Pantalla verde + fondo a grabar",
+          "<strong>Superpuesta:</strong> Ella hablando<br><strong>Fondo 2:</strong> Ella brincando de la felicidad",
+          "<strong>Fondo 1:</strong> <a href=\"https://pin.it/5dyXk7Fs4\" target=\"_blank\">pin.it/5dyXk7Fs4</a>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cierre",
+          "No fue de un día para otro, pero OvaBloom la ayudó muchísimo. Yo también tengo SOP, no estoy buscando embarazarme pero he notado un cambio enorme en mi regulación hormonal. Asi que amiga, te lo recomiendo, jajaja.",
+          "A cámara",
+          "Termina de preparar el producto, se lo toma y está visible el tarro y la marca.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "15": {
+    "title": "REEL 15 — Carolina",
+    "sub": "BOF · POV · Periodo irregular · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Tenia meses sin que me bajara, y no, no era embarazo. Eran mis hormonas.",
+          "A cámara",
+          "Ella con unas toallas higiénicas, organizándolas en algún cajón de la habitación; al fondo se ve el producto",
+          "<strong>Texto:</strong> <em>POV: Tienes SOP</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Solución",
+          "Pero desde que descubri el myo-inositol de OvaBloom, volvio mi periodooo",
+          "A cámara",
+          "Agarra el producto y muestra el tarro",
+          "Sellos en pantalla: <strong>Sin hormonas • Fórmula natural • Registro INVIMA</strong>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Prueba social",
+          "Yo empece a ver que muchas mujeres lo empezaron a utilizar para su equilibrio hormonal, lo quice probar, y ya llevo 5 meses con el periodo regular",
+          "A cámara",
+          "Caminando hacia la cocina con el producto",
+          "Superponer: <a href=\"https://drive.google.com/file/d/1T8M1J56Mc_jxJQ9yi1Hizr9KAgqOtZfB/view\" target=\"_blank\">video en Drive</a>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Oferta + CTA",
+          "Amiga y justo hoy tiene <strong>19% de descuento</strong>, además tienes <strong>30 días de garantía</strong>. Asi que te dejo el link, aprovecha la promocion hoy.",
+          "A cámara",
+          "Preparando el producto y tomándolo",
+          "Texto grande: <strong>19% OFF • $109.900 • Garantía 30 días • 🍓 Sabor fresa</strong>"
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "16": {
+    "title": "REEL 16 — Valeria Roa",
+    "sub": "TOF · Pantalla verde · Acné hormonal · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "El acné hormonal no se cura con <em>skincare</em>, y alguien te lo tenía que decir.",
+          "",
+          "",
+          "Imágenes de referencia adjuntas en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Problema",
+          "si se Te brota justo antes del periodo. Siempre en la misma zona: boca, mandíbula,",
+          "Pantalla verde",
+          "",
+          "Fondo: pantalla dividida arriba/abajo con las imágenes adjuntas; luego cambiar de fondo mientras termina la frase"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cambio de creencia",
+          "cuello, pecho. Y duelen. es acné hormonal",
+          "Pantalla verde",
+          "",
+          "Fondo arriba y abajo con las imágenes adjuntas en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Solución",
+          "Todo eso lo dispara una sola hormona: la testosterona. Si, me estas escuchando bien, esa es la hormona de los hombres, porque esa también la tenemos, y viene en una cantidad muy pequeña pero cuando se te sube, es que empiezas a tener estos problemas",
+          "A cámara",
+          "",
+          "Imágenes flotantes (adjuntas en Asana)"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Y si se te subió, no solo te brota la cara. Se te cae el pelo o Subes de peso sin explicación.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Por eso debes bajar esa testosterona, y para que eso ocurra debes hacer solo dos cosas, primero tener una buena alimentacion",
+          "A cámara con tomas de apoyo",
+          "clip creadora comiendo",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "Y segundo: tomar un suplemento con inositol. El inositol es algo que tu cuerpo ya produce, y ayuda a ordenar la insulina. ¿Y eso qué tiene que ver? Que cuando la insulina se ordena, la testosterona baja. Ahí es donde atacas la raíz — no el granito.",
+          "A cámara con tomas de apoyo",
+          "creadora tomando ovabloom pero que no se vea la marca",
+          "Imagen flotante (adjunta en Asana)"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "Por eso yo empecé a tomar OvaBloom, que tiene el inositol en dosis altas y que viene con zinc, que calma la grasa y la inflamación de la piel.",
+          "Voz off",
+          "pov del producto<br>clip creadora tomando el producto<br>clip creadora mostrando la piel bonita",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "Asi que si sufres de acné hormonal, pruebalo ahora mismo",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "17": {
+    "title": "REEL 17 — Valeria Roa",
+    "sub": "TOF · UGC · Acné hormonal · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Si te sale acné acá (señalar el mentón) siempre antes del periodo, eso es una señal de que tus hormonas están desordenadas. Y aquí te doy tres señales más de que tienes un desequilibrio hormonal",
+          "A cámara",
+          "",
+          "¿Desequilibrio hormonal? + imagen adjunta en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Problema",
+          "La que acabo de decir es la primera: acné en la mandíbula, ese que aparece justo antes del periodo.",
+          "A cámara",
+          "",
+          "Imagen adjunta en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cambio de creencia",
+          "La segunda: vello grueso donde no debería salir. En el mentón, el pecho, la espalda.",
+          "A cámara",
+          "",
+          "Imágenes adjuntas en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Solución",
+          "La tercera: subes de peso rápido sin razón, y no lo bajas por más que lo intentes,",
+          "A cámara",
+          "",
+          "Imagen adjunta en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "After",
+          "¿te pasan dos o más de estos sintomas? entonces tienes un desbalance hormonal",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Y por eso ni la crema ni la dieta sola te sirven. Lo que te va a servir es un suplemento que pueda controlar tus hormonas, por eso te recomiendo este que tiene diferentes vitaminas que atacan la causa de tu desbalance",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Se llama ovabloom y lo puedes conseguir aquí en este link",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "18": {
+    "title": "REEL 18 — Valeria Roa",
+    "sub": "TOF · POV · sin línea hablada, todo texto en pantalla · Entrega 2",
+    "cols": [
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "hacer la toma inicial como la referencia haciendo el gesto de 4 sintomas y mostrar una toalla con alguna salsa que simule la menstruacion",
+          "\"4 cosas que creías normales en tu periodo… 🚫 y NO lo son\""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Se agarra el vientre, se dobla, cae de lado al sofá en posición fetal.",
+          "Que los cólicos te tumben a la cama 😣 Doblarte del dolor NO es normal ❌"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "clip creadora con el estomago muy hinchado<br>foto de la creadora con el estomago desinflamado",
+          "\"Amanecer plana y a media tarde no cerrar el pantalón 🎈 Esa hinchazón NO es normal ❌\"<br>poner imagen flotante"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "dos fotos de la creadora con la cara con acne",
+          "Que te brote la cara SIEMPRE en el mismo punto, justo antes de que baje 😩 NO es normal ❌<br>poner una foto arriba y otra abajo como pantalla dividida"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "clip creadora en el baño sorprendida porque le acabo de llegar la menstruacion y no la esperaba",
+          "No saber NUNCA cuándo te va a llegar 🩸 Vivir con protector 'por si acaso' NO es normal ❌"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "creadora haciendo mimica de llamar a la cámara y despues mostrar el producto",
+          "\"Todo esto es UNA sola señal: tus hormonas están desordenadas 🔑 Y sí, se puede arreglar 👇\""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "creadora tomando el producto<br>paneo del producto<br>creadora mostrando el producto a cámara",
+          "OvaBloom 🍓 es un suplemento que ataca la causa, no cada síntoma ✨<br>Tiene vitaminas e ingredientes que sirven para el desequilibrio hormonal"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "19": {
+    "title": "REEL 19 — Valeria Roa",
+    "sub": "TOF · Storytelling · Cólicos con dolor fuerte · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Hay mujeres que se retuercen del dolor cada vez que les baja, y aún así les hicieron creer que eso es normal.",
+          "A cámara",
+          "hacerlo mientras se maquilla y va contando la historia",
+          "Imagen adjunta en Asana"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Problema",
+          "y yo era una de esas. Desde el colegio me tocaba faltar. Me doblaba en la cama, a veces vomitaba del dolor. Y mi mamá me decía que me aguantara, que asi era ser mujer",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cambio de creencia",
+          "ya cuando grande Fui a un montón de médicos. Todos me decían lo mismo: que estaba exagerando.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Pero gracias a la vida conoci a mi ginecologa de cabecera, que me explico que eso era por desorden hormonal",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "After",
+          "por eso es que tu cuerpo produce más inflamación, y esa inflamación es la que hace que el cólico pegue tan fuerte.",
+          "A cámara con tomas de apoyo",
+          "clip creadora con muchos colicos",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "por eso empece a tomar este suplemento que tiene inositol, que ordena las hormonas desbalanceadas, y omega 3, que baja esa inflamación del cólico.",
+          "Voz off",
+          "pov del producto<br>clip creadora tomando<br>clip creadora sin colicos, tomando agua y estando tranquila",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "Si a ti también te dijeron que te aguantaras, esto es para ti. Te lo dejo acá abajo",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "20": {
+    "title": "REEL 20 — Valeria Roa",
+    "sub": "MOF · UGC · Acné hormonal / cólicos · Entrega 2",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Me compré esto porque tenía acné hormonal y ya había probado de todo pero nada me daba resultados",
+          "Voz off",
+          "clip creadora mostrando el producto a cámara<br>Fotos creadora mostrando el acne que tenia<br>foto creadora mostrando que no tiene acne<br>clip creadora tomando el producto",
+          "fotos flotantes del antes y despues del acne"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Problema",
+          "una amiga me lo recomendó. Me dijo que era lo único que a ella le había funcionado, y que servia para el desbalance hormonal",
+          "Voz off",
+          "pov del producto",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cambio de creencia",
+          "Esto tiene inositol, que ordena las hormonas desbalanceadas, y trae zinc, que baja la grasa y la inflamación de la piel.",
+          "A cámara con tomas de apoyo",
+          "clip creadora tomando el producto",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Solución",
+          "además no solo sirve para el acné. También para los cólicos, para la hinchazón, para regular el periodo. Porque cuando ordenas las hormonas, se ordena todo lo que ellas tenían descontrolado.",
+          "A cámara con tomas de apoyo",
+          "clip creadora sin acne<br>clip creadora tranquila sin colicos",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "After",
+          "Si tú también ya probaste de todo, dale una oportunidad, se llama ovabloom",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est">${cell || ''}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto">${cell || ''}</td>`;
+        if (i === fmtCol) return `<td>${cell ? `<span class="guion-fmt ${fmtClass(cell)}">${cell}</span>` : ''}</td>`;
+        return `<td>${cell || ''}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    if (event && event.target.id !== 'guionModal' && event.type !== undefined && event.currentTarget !== event.target) {
+      // clicked inside modal — ignore
+    }
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
