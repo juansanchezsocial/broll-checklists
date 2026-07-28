@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodaje Naty · Tomas de Apoyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_naty_nalua16_20_newwealth6_9_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 21px; }
+    .reel-head { flex-wrap: wrap; gap: 8px; }
+    .reel-num { min-width: auto; }
+    .reel-title { flex-basis: 100%; order: 3; }
+    .reel-progress { margin-left: auto; }
+    .theme-btn { top: 12px; right: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>Rodaje Naty · Tomas de Apoyo</h1>
+    <div class="sub">NALUA Reels 16–20 (Entrega 2) · NEW WEALTH Reels 6–9 + adicional (Entrega 1)</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="nalua">NALUA · Naty</div>
+    <div class="chip" data-filter="newwealth">NEW WEALTH · Naty</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="nalua">
+  <div class="creator-title">
+    <h2>NALUA · Naty</h2>
+    <span class="count">Reels 16–20 · Entrega 2</span>
+  </div>
+  <!-- REEL 16 -->
+  <div class="reel" data-reel="16">
+    <div class="reel-head">
+      <span class="reel-num">REEL 16</span>
+      <span class="reel-title">"Si tu maquillaje siempre se ve acartonado…" — piel acartonada</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(16)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4J5HaFN/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216930065128233" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="16">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="16-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora lavándose la cara con el jabón</div></div>
+      <div class="shot" data-id="16-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del jabón</div></div>
+      <div class="shot" data-id="16-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora mostrando el jabón a cámara</div></div>
+      <div class="shot" data-id="16-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora maquillada mostrando su piel linda</div></div>
+      <div class="shot" data-id="16-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo de todo el kit</div></div>
+      <div class="shot" data-id="16-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora mostrando el serum</div></div>
+      <div class="shot" data-id="16-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora aplicándose el serum</div></div>
+      <div class="shot" data-id="16-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora mostrando la crema</div></div>
+      <div class="shot" data-id="16-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora aplicándose la crema</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 17 -->
+  <div class="reel" data-reel="17">
+    <div class="reel-head">
+      <span class="reel-num">REEL 17</span>
+      <span class="reel-title">"Si tu hijo adolescente ya empezó con granitos…" — acné hormonal</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(17)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4JaSht3/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216930065128235" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="17">0/12</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="17-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora mostrando el jabón</div></div>
+      <div class="shot" data-id="17-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora aplicándose el jabón</div></div>
+      <div class="shot" data-id="17-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora mostrando el serum</div></div>
+      <div class="shot" data-id="17-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora aplicándose el serum</div></div>
+      <div class="shot" data-id="17-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora con la cara manchada</div></div>
+      <div class="shot" data-id="17-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora mostrando la crema</div></div>
+      <div class="shot" data-id="17-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora aplicándose la crema</div></div>
+      <div class="shot" data-id="17-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips: creadora mostrando la piel bonita</div></div>
+      <div class="shot" data-id="17-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora con acné</div></div>
+      <div class="shot" data-id="17-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora sin acné</div></div>
+      <div class="shot" data-id="17-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: hijo con acné</div></div>
+      <div class="shot" data-id="17-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: hijo sin acné</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 18 -->
+  <div class="reel" data-reel="18">
+    <div class="reel-head">
+      <span class="reel-num">REEL 18</span>
+      <span class="reel-title">"Si tienes comedones cerrados…" — pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(18)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4JuF2Km/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216930065128237" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="18">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="18-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del jabón (mitad de arriba de la pantalla dividida)</div></div>
+      <div class="shot" data-id="18-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora aplicándose el jabón</div></div>
+      <div class="shot" data-id="18-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del serum (mitad de arriba)</div></div>
+      <div class="shot" data-id="18-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora aplicándose el serum</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 19 -->
+  <div class="reel" data-reel="19">
+    <div class="reel-head">
+      <span class="reel-num">REEL 19</span>
+      <span class="reel-title">"Un mes. Eso fue lo que me tomó bajar los brotes" — acné ocasional</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(19)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4JHxrsu/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216930065128239" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="19">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="19-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora sorprendida con su piel radiante</div></div>
+      <div class="shot" data-id="19-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora mostrando la piel bonita</div></div>
+      <div class="shot" data-id="19-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Video: paneo del producto</div></div>
+      <div class="shot" data-id="19-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora mostrando la piel radiante</div></div>
+      <div class="shot" data-id="19-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora con acné</div></div>
+      <div class="shot" data-id="19-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora con acné (la segunda)</div></div>
+      <div class="shot" data-id="19-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Creadora aplicándose la crema en un grano</div></div>
+      <div class="shot" data-id="19-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV del serum</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 20 -->
+  <div class="reel" data-reel="20">
+    <div class="reel-head">
+      <span class="reel-num">REEL 20</span>
+      <span class="reel-title">"¿Tienes estos molestos granitos?" — la rutina completa</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Voz off IA · POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(20)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4J9asSt/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1216930065128241" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="20">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="20-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora mostrando todos los productos</div></div>
+      <div class="shot" data-id="20-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora con acné</div></div>
+      <div class="shot" data-id="20-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Foto: creadora sin acné</div></div>
+      <div class="shot" data-id="20-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clip: creadora aplicándose el jabón</div></div>
+      <div class="shot" data-id="20-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo del serum</div></div>
+      <div class="shot" data-id="20-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">POV de la crema</div></div>
+      <div class="shot" data-id="20-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Clips: creadora usando los productos</div></div>
+      <div class="shot" data-id="20-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Paneo de todo el kit</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="newwealth">
+  <div class="creator-title">
+    <h2>NEW WEALTH · Naty</h2>
+    <span class="count">Reels 6–9 + adicional · Entrega 1</span>
+  </div>
+  <!-- REEL 6 -->
+  <div class="reel" data-reel="6">
+    <div class="reel-head">
+      <span class="reel-num">REEL 6</span>
+      <span class="reel-title">"Estás tomando lo que no era" — las 5 señales</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara + pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(6)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@vitaminas.co/video/7551509702471896376" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216902223708782/1216936335705618" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="6">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="6-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Close-up del tarro girando en la mano, con la <strong>etiqueta legible</strong></div></div>
+      <div class="shot" data-id="6-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>El scoop entrando al vaso de agua</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 7 -->
+  <div class="reel" data-reel="7">
+    <div class="reel-head">
+      <span class="reel-num">REEL 7</span>
+      <span class="reel-title">"No necesito esto" — el cajón entero vs. un solo vaso</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · toma continua</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(7)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@autumatic4thepeople/video/7647942573947948302" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216902223708782/1216936479808765" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="7">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — es UNA SOLA TOMA CONTINUA a cámara, sin música ni cortes (ver Guión). Preparar el montón de frascos sobre la cama antes de grabar.</div>
+    </div>
+  </div>
+
+  <!-- REEL 8 -->
+  <div class="reel" data-reel="8">
+    <div class="reel-head">
+      <span class="reel-num">REEL 8</span>
+      <span class="reel-title">Stack de beneficios en 10 segundos — sin rostro</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">100% voz en off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(8)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@leslypocasangre/video/7597554294870543646" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216902223708782/1216936365180026" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="8">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="8-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Close-up de las manos sirviendo el scoop de polvo dentro del vaso de vidrio — mesa de noche con luz cálida y el tarro al lado. <strong>Sin rostro en cuadro</strong></div></div>
+      <div class="shot" data-id="8-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>El tarro girando para mostrar la etiqueta de frente, centrado y bien iluminado</div></div>
+      <div class="shot" data-id="8-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La cuchara revolviendo el vaso y el polvo disolviéndose</div></div>
+      <div class="shot" data-id="8-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>El vaso ya servido y el tarro juntos en cuadro; una mano levanta el vaso y sale de plano</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 9 -->
+  <div class="reel" data-reel="9">
+    <div class="reel-head">
+      <span class="reel-num">REEL 9</span>
+      <span class="reel-title">El recorrido del magnesio en la noche — sin rostro</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">100% voz en off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(9)">☰ Guión</button> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216902223708782/1216936365194465" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="9">0/18</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="9-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Plano cerrado del <strong>vaso ya servido</strong> sobre la mesa de noche (cuarto a media luz)</div></div>
+      <div class="shot" data-id="9-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>La mano entrando a cuadro para levantar el vaso</div></div>
+      <div class="shot" data-id="9-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>El sorbo en primer plano — solo boca y vaso, sin hablar</div></div>
+      <div class="shot" data-id="9-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span><strong>TOMA CLAVE:</strong> macro del polvo cayendo al vaso y disolviéndose al revolver, contra la luz de la lámpara. Grabarla varias veces hasta que quede limpia</div></div>
+      <div class="shot" data-id="9-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Respaldo del bloque gráfico (estómago → intestino): vaso vacío sobre la mesa de noche + la mano apagando la lámpara</div></div>
+      <div class="shot" data-id="9-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>El tarro girando despacio en la mano con la etiqueta legible</div></div>
+      <div class="shot" data-id="9-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Plano de la palabra <strong>glicinato</strong> en la etiqueta</div></div>
+      <div class="shot" data-id="9-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Plano cerrado del cuello y los hombros sobre la almohada, respirando — sin cara, luz muy baja</div></div>
+      <div class="shot" data-id="9-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Los hombros subiendo y bajando una vez</div></div>
+      <div class="shot" data-id="9-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La mano soltando el puño despacio sobre la cobija (remate visual del bloque)</div></div>
+      <div class="shot" data-id="9-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La mandíbula relajándose</div></div>
+      <div class="shot" data-id="9-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La lámpara apagándose</div></div>
+      <div class="shot" data-id="9-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>El celular quedando boca abajo en la mesa de noche</div></div>
+      <div class="shot" data-id="9-14"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Ella acomodándose en la cama, de espaldas a cámara</div></div>
+      <div class="shot" data-id="9-15"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Plano fijo y largo de la cama con ella dormida, quieta — <strong>grabar 20-30 s seguidos</strong></div></div>
+      <div class="shot" data-id="9-16"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Toma gemela de la primera: misma mesa de noche, mismo encuadre, ahora con el vaso vacío y la luz apagada</div></div>
+      <div class="shot" data-id="9-17"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>El tarro solo sobre la mesa de noche, con la lámpara al fondo</div></div>
+      <div class="shot" data-id="9-18"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Opcional: 2 segundos de ella mirando a cámara al final, sin decir nada</div></div>
+    </div>
+  </div>
+
+  <!-- BRIEF ADICIONAL 2 -->
+  <div class="reel" data-reel="99">
+    <div class="reel-head">
+      <span class="reel-num">ADICIONAL</span>
+      <span class="reel-title">"Vuelvo a sentir toda la experiencia humana" — trend de 2 clips</span>
+      <div class="reel-meta">
+        
+        <span class="tag">Trend · 2 clips</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(99)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4egbcbh/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216902223708782/1216933538775431" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+      </div>
+      <span class="reel-progress" data-reel-progress="99">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="99-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Replicar los <strong>dos clips exactos de la referencia</strong> (abrir ▶ Ref antes de grabar)</div></div>
+      <div class="shot" data-id="99-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text">Tener el tarro de glicinato a mano para el clip donde se toma</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · NALUA + NEW WEALTH · Rodaje Naty<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_naty_nalua16_20_newwealth6_9_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        reel.classList.toggle('hidden', allDone && shots.length > 0);
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      Object.keys(state).forEach(k => delete state[k]);
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Open first reel by default
+  const firstReel = document.querySelector('.reel');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "16": {
+    "title": "REEL 16 — NALUA · Naty",
+    "sub": "TOF · Pantalla verde · Ángulo: piel acartonada · Entrega 2",
+    "cols": [
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Si tu maquillaje siempre se ve así, acartonado, como con parches, no te preocupes que llegaste al video correcto. porque si yo pasé de esto… a esto, tu también lo puedes hacer",
+          "pantalla verde",
+          "foto creadora con maquillaje acartonado (se pasa por ia)",
+          "fondo: <em>[2 imágenes adjuntas en Asana]</em><br>foto flotante creadora con la piel que se vea con textura acartonada (hacerlo con ia)"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "y ojo que el problema no es tu base ni tu técnica. Es que la piel de abajo está grasosa, y por eso el maquillaje queda con esa textura",
+          "a cámara",
+          "",
+          "imágenes flotantes <em>[2 adjuntas en Asana]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Asi que sin mas preambulo, les diré lo que yo hice. Y lo que cambié fue el jabón con el que me lavo la cara. Este tiene ácido salicílico, que es lo que le saca la grasa al poro por dentro.",
+          "voz off",
+          "clip creadora lavandose la cara con el jabon<br><br>pov del jabon",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Me lo aplico una sola vez al día, enjuago con harta agua y listo",
+          "voz off",
+          "creadora mostrando el jabon a cámara",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Con la piel menos grasosa y más lisa, la base ya se queda pareja y no se me corta a media mañana.",
+          "voz off",
+          "clip creadora maquillada y mostrando su piel linda",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "además este kit trae dos cosas más para que tu piel se vea hermosa y sin acne, tiene un serum para las manchas y una crema que se pone cuando te salen granitos y quieres desinflamarlos",
+          "voz off",
+          "paneo de todo el kit<br><br>creadora mostrando el serum<br><br>creadora aplicandose el serum<br><br>creadora mostrando la crema<br><br>creadora aplicandose la crema",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "si lo quieres conseguir, lo puedes hacer en el link de abajo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "17": {
+    "title": "REEL 17 — NALUA · Naty",
+    "sub": "TOF · Pantalla verde · Ángulo: acné hormonal · Entrega 2",
+    "cols": [
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Si tu hijo adolescente ya empezo con este tipo de granitos en la cara y no sabes qué hacer, te tengo la solución.",
+          "pantalla verde",
+          "",
+          "fondo arriba: <em>[imagen adjunta en Asana]</em><br>abajo: <em>[imagen adjunta en Asana]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Mira cómo mi hijo paso de esto a esto",
+          "a cámara",
+          "foto de antes y después con granos",
+          "imagen flotante:<br>foto hijo con granitos<br>foto hijo sin granos"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "el acné es el peor enemigo en la adolescencia y lo peor es que a muchas personas cuando adultas también les vuelve ya sea por estrés cronico, las hormonas, mil cosas. Por eso cuando mi hijo empezo su tratamiento para mejorar su piel yo también lo acompañe en su proceso",
+          "a cámara",
+          "",
+          "<em>[2 imágenes adjuntas en Asana]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "por eso lo que empezamos a hacer fue usar este jabón, que le saca la grasa al poro y me bajó los brotes de la zona T.",
+          "voz off",
+          "clip creadora mostrando el jabon<br><br>clip creadora aplicandoselo",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Encima me pongo el serum de cacay, que es el que me fue aclarando las manchas y las marcas que dejan los granos, chicas es que era impresionante como tenía la cara de manchada, miren",
+          "voz off",
+          "clip creadora mostrando el serum<br><br>clip aplicandoselo<br><br>foto creadora con manchas",
+          "foto flotante de la cara con manchas"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "y por ultimo, donde me sale un granito, le pongo un toque de la crema para desinflamarlo, sin reventármelo.",
+          "voz off",
+          "clip creadora mostrando la crema<br>clip aplicandose la crema",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Y como no es nada agresivo, lo uso todos los días sin que la piel se me rebote, así fue su cambio y así fue el mio. Definitivamente es una rutina que no puede faltar en nuestra casa",
+          "voz off",
+          "clips creadora mostrando la piel bonita<br><br>foto creadora con acne<br><br>foto creadora sin acne<br><br>foto hijo con acne<br>foto sin acne",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "este combo se volvio en mi santo grial para el acné, asi que pruebenlo y despues me lo agradecen",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "18": {
+    "title": "REEL 18 — NALUA · Naty",
+    "sub": "TOF · Pantalla dividida · Entrega 2 — el b-roll de la mitad de arriba está en la columna Edición",
+    "cols": [
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Si tienes comedones cerrados, que se ven así —como montañitas en la piel, sin enrojecimiento?",
+          "a cámara<br>pantalla dividida",
+          "abajo: creadora hablando",
+          "arriba: <em>[2 imágenes adjuntas en Asana]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "a mi hijo le pasaba igual, y yo lo pude solucionar para que dejara de verse asi",
+          "pantalla dividida<br>a cámara",
+          "foto hijo con acne<br>foto hijo sin acne",
+          "arriba: antes y despues del hijo<br><br>abajo: creadora hablando"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "estos granos por mas que intentes no se van a reventar porque Es sebo y células muertas atrapadas en el poro, Por eso no salen por más que uno los apriete.",
+          "pantalla dividida<br>a cámara",
+          "arriba: fotos<br><br>abajo: creadora hablando",
+          "arriba: <em>[2 imágenes adjuntas en Asana]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Entonces el punto no es atacarlos por encima, hay que hacerlo de una manera mas eficaz",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "por eso cuando mi hijo empezo a sufrir estos granitos lo que le agregue a su rutina fue este jabón que tiene un activo que se mete en la grasa del poro y va aflojando ese tapón para que salga solo.",
+          "a cámara<br><br>pantalla dividida",
+          "clip creadora aplicandose el jabon",
+          "arriba: pov del jabon<br><br>clip creadora aplicandose el jabon<br><br>abajo: creadora hablando"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Y como esa zona queda destapada pero sensible, el serum es el que la va emparejando y borrando las marquitas que van quedando.",
+          "a cámara<br><br>pantalla dividida",
+          "",
+          "arriba: pov del serum<br><br>aplicandose el serum<br><br>abajo: creadora hablando"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "a el realmente ya no le salen casi granos pero cuando le sale uno que otro, el se aplica esta crema encima del granito y listo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "de verdad fue bendito, asi que si tu sufres de esos molestos granos, te dejo el dato aqui abajo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "19": {
+    "title": "REEL 19 — NALUA · Naty",
+    "sub": "MOF · UGC · Ángulo: acné ocasional · Entrega 2",
+    "cols": [
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Un mes. Eso fue lo que me tomó bajar los brotes que tenía en la cara.",
+          "voz off",
+          "clip creadora sorprendida con su piel radiante<br><br>clip creadora mostrando la piel bonita<br><br>video paneo del producto",
+          "poner video flotante del paneo como la referencia"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Yo lo hice como una prueba, a ver si de verdad servía y miren no más los cambios que tuve, solo Usé este tratamiento para los granitos que salen de vez en cuando",
+          "voz off",
+          "clip creadora mostrando la piel radiante<br><br>foto creadora con acne<br><br>otra foto creadora con acne",
+          "fotos flotantes de la creadora con acne"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "El jabón es el que saca la grasa acumulada del día, que es de donde salen los brotes.",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Y la crema es la puntual: va solo sobre el granito y lo desinflama sin que uno tenga que reventárselo.",
+          "voz off",
+          "creadora aplicandose la crema en un grano",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "y para completar Y el serum es el que se encarga de la marca que queda después de que salio el granito, esa manchita oscura que deja el grano cuando por fin se va.",
+          "a cámara con tomas de apoyo",
+          "pov del serum",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desde los primeros días ya se veía la diferencia, y al mes los brotes estaban muchísimo más bajos.",
+          "a cámara",
+          "foto creadora con acne<br><br>foto creadora sin acne",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Lo que más me gusta de la crema es que me salva en esos días donde tengo algo importante y justo me sale un granito en la peor parte. si lo quieres probar te dejo el link abajo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "20": {
+    "title": "REEL 20 — NALUA · Naty",
+    "sub": "BOF · POV · Voz en off con IA (como la referencia) · Entrega 2 — todo el reel es voz en off",
+    "cols": [
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "¿Tienes estos molestos granitos en tu cara?",
+          "VOZ OFF IA TIK TOK SIMILAR A LA REFERENCIA",
+          "",
+          "poner cancion de fondo similar a la referencia<br><em>[2 links de Pinterest en la tarea de Asana]</em>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "La rutina antiacné de Nalua es perfecta para que pases de tener una piel así, a tenerla radiante y sin granitos",
+          "",
+          "clip creadora mostrando todos los productos<br><br>foto creadora con acne<br><br>foto creadora sin acne",
+          "fotos flotantes del antes y despues"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "El jabón destapa los poros y baja los brotes.",
+          "",
+          "clip creadora aplicandose el jabon",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "El serum de cacay empareja la piel y aclara las marcas.",
+          "",
+          "paneo del serum",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Y la crema desinflama el granito puntual que salga.",
+          "",
+          "pov de la crema",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Por eso miles de mujeres lo estan probando ahora y les ha encantado sus resultados",
+          "",
+          "",
+          "clips creadora usando los productos"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Si quieres probarlo, consiguelo con descuento en el link de abajo",
+          "",
+          "paneo de todo el kit",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "6": {
+    "title": "REEL 6 — NEW WEALTH · Naty",
+    "sub": "TOF · A cámara con fondo oscuro y luz cálida + textos palabra por palabra · Entrega 1",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Puedes gastarte medio sueldo en tés, en gotas, en almohada nueva y en cortinas blackout. Pero si te sigues despertando a las tres de la mañana, con el cuello en piedra y de mal genio, estás tomando lo que no era.\"",
+          "A cámara",
+          "Sentada en el cuarto con la luz grande apagada y solo la lámpara prendida: fondo oscuro, cara iluminada de un lado. Tono provocador y rápido, sin pausas, mirada fija al lente. En \"estás tomando lo que no era\" niega con la cabeza una sola vez.",
+          "Corte seco desde negro. Textos sincronizados palabra por palabra —en blanco sobre el fondo oscuro, tipografía de la marca, sin cajas rojas ni saturación—: \"MEDIO SUELDO\", \"TÉS\", \"GOTAS\", \"3 DE LA MAÑANA\", \"CUELLO EN PIEDRA\", \"LO QUE NO ERA\". Viñeta oscura en los bordes."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Y lo peor: nadie te dijo que tu cuerpo lleva meses pidiéndote lo mismo. Te voy a decir las cinco señales, una por una.\"",
+          "A cámara",
+          "Baja la velocidad y sube la autoridad: postura recta, tono calmado de \"pon atención\". Pausa corta antes de \"una por una\".",
+          "Textos: \"NADIE TE DIJO\", \"5 SEÑALES\". Música instrumental sobria entra acá (tensa pero limpia, nada de infomercial)."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Uno: el párpado que te tiembla en las semanas pesadas. Dos: el cuello y los hombros duros, que el masaje te alivia dos días y vuelve. Tres: despertarte a las tres de la mañana sin razón, con la cabeza lista para trabajar.\"",
+          "A cámara",
+          "Ritmo enumerativo, marcando cada número con el dedo. En la uno se toca el párpado; en la dos se aprieta el trapecio; en la tres señala el reloj de la mesa de noche. Micro-pausa entre cada señal.",
+          "Un bloque de texto por señal, entrando seco y rápido: \"1· EL PÁRPADO QUE TIEMBLA\" → \"2· CUELLO Y HOMBROS DUROS\" → \"3· LAS 3 A. M.\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Cuatro: llegas a la casa y contestas mal por una pregunta boba. Y cinco: el antojo de dulce a las nueve de la noche, cuando ya cenaste y no tienes hambre.\"",
+          "A cámara",
+          "Mantiene el mismo ritmo. En la cuatro hace el gesto de cerrar la puerta del cuarto; en la cinco señala hacia la cocina. El tono se vuelve un poco más cómplice.",
+          "Continuación de los bloques: \"4· LA MECHA CORTA\" → \"5· ANTOJO DE DULCE EN LA NOCHE\". Cortes secos sincronizados con cada número."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Todo eso es el cuerpo pidiendo magnesio. Y la mayoría de los frascos que hay allá afuera traen la forma más barata: la que casi no se absorbe y te manda al baño. Por eso la gente lo compra, lo deja a los dos días y concluye que no le sirve.\"",
+          "A cámara",
+          "Tono de advertencia, ceja levantada. En \"la más barata\" hace el pellizco con los dedos. En \"lo deja a los dos días\" hace el gesto de tirar algo al cajón. No nombra marcas.",
+          "Textos: \"LA FORMA MÁS BARATA\", \"CASI NO SE ABSORBE\", \"LO DEJA A LOS DOS DÍAS\". Ritmo un poco más lento."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Ahora imagínate el cuerpo que sí logra bajar de revoluciones: te acuestas y no tienes que negociar con la cabeza, el cuello suelto, la mecha más larga y el descanso que por fin rinde.\"",
+          "A cámara",
+          "Cambia a tono aspiracional, sube la energía. En \"no tienes que negociar\" hace el gesto de bajar una perilla; en \"el cuello suelto\" rueda los hombros y los deja caer.",
+          "Beneficios entrando uno a uno: \"SIN NEGOCIAR CON LA CABEZA\", \"CUELLO SUELTO\", \"MECHA MÁS LARGA\", \"DESCANSO QUE RINDE\". Sin plazos ni promesas de días."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"¿El problema? Que el bueno cuesta más y casi nadie sabe cuál pedir. Por eso este es el que les mando a mis amigas cuando me preguntan.\"",
+          "A cámara",
+          "Tono de complicidad y criterio propio —recomienda como amiga que ya investigó, no como especialista—. En \"cuál pedir\" se encoge de hombros.",
+          "Textos: \"EL BUENO CUESTA MÁS\", \"NADIE SABE CUÁL PEDIR\". Corte seco hacia el bloque de producto."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Es el Glicinato de Magnesio de New Wealth. Glicinato es la forma que el cuerpo sí aprovecha y que no le cae mal al estómago. Un scoop en agua, una hora antes de dormir, y trae açaí, arándanos y un combo de vitaminas. Sin azúcar añadida.\"",
+          "Voz en off + pantalla verde con la etiqueta",
+          "En pantalla: close-up del tarro girando en la mano, la etiqueta legible, y el scoop entrando al vaso de agua. Ella no habla a cámara en este bloque.",
+          "Un solo corte a producto, como en la referencia. Textos: \"GLICINATO\", \"1 SCOOP EN AGUA\", \"SIN AZÚCAR AÑADIDA\". Subtítulos completos (es voz en off)."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Lo pides en la página de New Wealth, y también está en cientos de puntos de venta del país.\"",
+          "A cámara",
+          "Tono directo y tranquilo, sin afán ni gesto de \"toca abajo\". Sostiene el tarro a la altura del pecho, quieto.",
+          "Texto superpuesto: \"newhealthwellness.com\". Sin descuentos, sin \"por tiempo limitado\", sin flechas al botón ni mención de stock."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"O dime: ¿no tienes esa amiga que amanece impecable y jura que ella 'duerme normal'? Ya lo está tomando hace rato. Solo que no dijo nada. Porque esto no es dormir más: es que el cuerpo por fin cierre el día.\"",
+          "A cámara",
+          "Cierre cómplice, casi en secreto: se acerca al lente y baja el volumen de la voz en la última frase. Deja el tarro en la mesa de noche justo en \"cierre el día\".",
+          "Textos finales: \"YA LO ESTÁ TOMANDO\", \"NO ES DORMIR MÁS\", \"ES CERRAR EL DÍA\". Último frame con el tarro sobre la mesa de noche y el nombre de marca."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "7": {
+    "title": "REEL 7 — NEW WEALTH · Naty",
+    "sub": "TOF · Una sola toma continua con celular, estilo UGC sin música · Entrega 1",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"No necesito esto. No necesito esto. No necesito esto. Tampoco esto. Y esto menos.\"",
+          "A cámara",
+          "De pie contra una pared neutra del apartamento, con el cajón de la mesa de noche ya vaciado sobre la cama. Va cargando en los brazos, uno por uno y rápido: la caja de té, el gotero, un blíster, el spray de almohada y las sales de baño. Tono enérgico y seguro, sin pausas. Termina con los brazos llenos y a punto de que se le caiga todo.",
+          "Texto superpuesto centrado en blanco durante toda la apertura: <strong>\"¡¡¡Deja de comprar estas cosas!!!\"</strong>. Sonido natural de las cajas y los frascos rozándose, sin música. Toma continua desde el primer frame."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Esta es mi multitareas. El magnesio de New Wealth: magnesio, antioxidantes y un combo de vitaminas en el mismo vaso.\"",
+          "A cámara",
+          "Suelta todo sobre la cama de golpe —que se oiga— y se queda solo con el tarro en la mano. Lo acerca al lente para que la etiqueta se lea completa. Contraste: el desorden de frascos en la cama detrás, el tarro limpio adelante.",
+          "Toma cercana de la etiqueta. Texto superpuesto: <strong>\"TODO EN UN VASO\"</strong>. Mantener el sonido del montón cayendo."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Pero ojo con una cosa: no todos los magnesios son iguales. Este es glicinato. Búsquenlo, en serio.\"",
+          "A cámara",
+          "Señala con el dedo la palabra en la etiqueta mientras la dice. Tono de autoridad y complicidad. En \"búsquenlo\" mira fijo al lente.",
+          "Zoom o resalte sobre esa parte de la etiqueta. Texto superpuesto: <strong>\"glicinato\"</strong>. Sin gráficos médicos."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Trae vitamina D, que es la que trabaja en pareja con el magnesio. Açaí y arándanos, que son antioxidantes. Y trae semilla de uva negra: esa googléenla, es la de las piernas hinchadas.\"",
+          "A cámara",
+          "Enumera con los dedos cada ingrediente, ritmo acelerado. En \"esa googléenla\" se encoge de hombros con gesto casual.",
+          "Ingredientes apareciendo uno por uno: <strong>\"VITAMINA D + MAGNESIO\"</strong>, <strong>\"AÇAÍ Y ARÁNDANOS\"</strong>, <strong>\"SEMILLA DE UVA NEGRA 👀\"</strong>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Y no son cinco pastillas repartidas en el día. Es un scoop en un vaso de agua, una hora antes de dormir. Eso es todo.\"",
+          "A cámara",
+          "Destapa el tarro y muestra el scoop adentro a la cámara. En \"eso es todo\" abre las manos como cerrando el tema.",
+          "Toma de apoyo del interior del tarro y del scoop. Texto superpuesto: <strong>\"1 scoop · 1 vez al día\"</strong>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Y me costó cien mil pesos. Cien. No trescientos, no doscientos: cien mil, contra todo lo que tengo tirado en esa cama.\"",
+          "A cámara",
+          "Con la mano libre señala el montón de frascos sobre la cama y vuelve al tarro. Énfasis vocal creciente en la repetición de la cifra.",
+          "Texto superpuesto grande: <strong>\"$100.000\"</strong>. Comparación visual: el montón de la cama a un lado, el tarro solo al otro. Sin descuentos ni promociones."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Ahórrate el cajón entero. Está en la página de New Wealth. Tómate tu magnesio.\"",
+          "A cámara",
+          "Cierre firme, con el tarro al frente y el desorden todavía visible detrás. En \"tómate tu magnesio\" señala al lente una vez, sin sonrisa de comercial.",
+          "Texto superpuesto: <strong>\"newhealthwellness.com\"</strong>. Nada de flechas al carrito, envío gratis ni urgencia. Toma continua hasta el corte final, estilo UGC."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "8": {
+    "title": "REEL 8 — NEW WEALTH · Naty",
+    "sub": "TOF · Voz en off sobre close-ups del producto, sin rostro a cámara · ≈10-12 s · Entrega 1",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Si quieres dejar de dar vueltas en la cama, aflojar el cuello y los hombros, y despertarte sin sentir que te desconectaron a la fuerza…\"",
+          "Voz en off (locución femenina sobre imagen del producto)",
+          "Arranca en close-up de las manos —uñas arregladas, sin anillos que distraigan— sirviendo el scoop de polvo dentro del vaso de vidrio. Mesa de noche o mesón con luz cálida de lámpara y el tarro al lado. No aparece la cara en ningún momento. Movimientos suaves y continuos.",
+          "Desde el segundo cero, dos cuadros de texto fijos que se mantienen todo el video, en la tipografía de la marca sobre fondo oscuro translúcido (NO cajas rojas): \"1 scoop · 20 g · antes de dormir\" y \"Menos vueltas en la cama 🌙 cuello suelto ✨ descanso que rinde\". Música suave y sostenida."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"…aprovecha este magnesio en glicinato: un scoop de 20 gramos en agua, con açaí, arándanos y un combo de vitaminas. Y sin azúcar añadida.\"",
+          "Voz en off + demostración de producto en mano",
+          "Gira el tarro para mostrar la etiqueta de frente, centrado y bien iluminado. Luego un movimiento corto: la cuchara revolviendo el vaso y el polvo disolviéndose.",
+          "Corte a la toma del tarro en mano con la marca legible. Zoom/enfoque en la parte de la etiqueta donde se lee glicinato y en \"sin azúcar añadida\". Fondo desenfocado con la lámpara cálida detrás."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Lo pides en la página de New Wealth. Un vaso, una hora antes de dormir.\"",
+          "Voz en off",
+          "Cierra con el vaso ya servido y el tarro juntos en cuadro; una mano levanta el vaso y sale de plano, como si se lo fuera a tomar.",
+          "Producto en cuadro con la etiqueta visible hasta el final y texto superpuesto: \"newhealthwellness.com\". Sin urgencia, sin oferta ni carrito naranja."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "9": {
+    "title": "REEL 9 — NEW WEALTH · Naty",
+    "sub": "MOF · Voz en off sobre b-roll de casa + gráficos de edición · Sin narración a cámara · Entrega 1",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Te tomas el magnesio antes de dormir y tu cuerpo empieza a desacelerarse de formas que casi no notas.\"",
+          "Voz en off",
+          "Lo que graba ella en casa: plano cerrado del vaso ya servido sobre la mesa de noche, la mano entrando a cuadro para levantarlo, y el sorbo en primer plano —solo boca y vaso, sin hablar—. Cuarto a media luz, ritmo pausado.",
+          "Textos superpuestos en mayúsculas sincronizados con la voz. Si edición tiene material de animación del cuerpo, entra aquí como capa de apoyo — <em>[insertar referencia visual: animación anatómica]</em>. Sin música todavía."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Y como es polvo y no cápsula, no hay que esperar a que se abra nada: entra ya disuelto en el agua.\"",
+          "Voz en off",
+          "Lo que graba ella: macro del polvo cayendo al vaso y disolviéndose al revolver, contra la luz de la lámpara. <strong>Esta es la toma clave del video</strong> y reemplaza a la cápsula bajando de la referencia: grabarla varias veces hasta que quede limpia.",
+          "Cámara lenta suave sobre la disolución. Sonido real de la cuchara y del agua. Texto: \"polvo, no cápsula\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Llega al estómago y de ahí pasa al intestino, que es donde el cuerpo empieza a absorberlo.\"",
+          "Voz en off",
+          "No hay nada que grabar en casa para este bloque: es 100% gráfico. Si no hay animación disponible, se sostiene con la toma del vaso vacío sobre la mesa de noche y la mano apagando la lámpara.",
+          "Aquí va el recorrido gráfico — <em>[insertar referencia visual: estómago → intestino]</em>. Mantener un solo color de acento para \"el magnesio\" en toda la pieza."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Y ahí está la diferencia del glicinato: al venir de la mano de algo que el cuerpo ya reconoce, entra por otra puerta y no le cae mal al estómago.\"",
+          "Voz en off",
+          "Lo que graba ella: el tarro girando despacio en la mano con la etiqueta legible, y un plano de la palabra en la etiqueta.",
+          "Close-up de la etiqueta 1 segundo. Texto: \"glicinato\". Gráfico simple de dos puertas —una cerrada, una abierta— si edición lo quiere reforzar. Nada de diagramas médicos."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Desde la sangre viaja de a poco a todo el cuerpo. Y lo primero que se nota son los músculos.\"",
+          "Voz en off",
+          "Lo que graba ella: plano cerrado del cuello y los hombros sobre la almohada, respirando; sin cara, luz muy baja.",
+          "Transición fluida y lenta. <em>[insertar referencia visual: recorrido por los vasos]</em> si hay material. Aquí entra la música instrumental suave."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Los músculos que llevaban todo el día apretados empiezan a soltarse, y el cuerpo baja la tensión que traía de más.\"",
+          "Voz en off",
+          "Lo que graba ella: los hombros subiendo y bajando una vez, la mano soltando el puño despacio sobre la cobija, la mandíbula relajándose. Tres tomas cortas, todas en primer plano y en penumbra.",
+          "Sincronizar el puño que se abre con la palabra \"soltarse\" —ese es el remate visual del bloque—. Texto: \"el cuerpo baja la tensión\". Tono más suave, casi susurrado."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Las señales que mantienen el cuerpo en alerta empiezan a bajar de revoluciones, y ahí es cuando por fin se puede entrar en modo descanso.\"",
+          "Voz en off",
+          "Lo que graba ella: la lámpara apagándose, el celular quedando boca abajo en la mesa de noche, ella acomodándose en la cama de espaldas a cámara.",
+          "Ritmo aún más lento, cortes largos. <em>[insertar referencia visual: señales nerviosas desacelerando]</em> si hay animación. Texto: \"modo descanso\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"Y mientras el magnesio sigue circulando, la noche se vuelve más estable: menos vueltas, menos despertarse a las tres de la mañana.\"",
+          "Voz en off",
+          "Lo que graba ella: plano fijo y largo de la cama con ella dormida, quieta. Grabar 20-30 segundos seguidos para poder alargarlo en edición.",
+          "Un pulso muy suave del color de acento sobre la toma. Texto: \"menos vueltas · menos 3 a. m.\". Sin promesas de tiempo ni de resultados."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "\"El cuerpo entero queda más tranquilo. No porque lo hayan noqueado: porque tenía lo que necesitaba para apagarse solo.\"",
+          "Voz en off",
+          "Lo que graba ella: toma gemela de la primera del video —misma mesa de noche, mismo encuadre—, ahora con el vaso vacío y la luz apagada. El paralelo cierra la pieza.",
+          "Corte directo entre la toma del inicio (vaso lleno, luz prendida) y esta (vaso vacío, luz apagada): mismo cuadro, estado opuesto."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Ese es el Glicinato de Magnesio de New Wealth: un scoop en agua, una hora antes de dormir. Lo pides en su página.\"",
+          "Voz en off",
+          "Lo que graba ella: el tarro solo sobre la mesa de noche, con la lámpara al fondo. Opcional: dos segundos de ella mirando a cámara al final, sin decir nada.",
+          "Toma final en calma con el tarro en cuadro y texto superpuesto: \"newhealthwellness.com\". La música cierra en fade out. Sin descuentos ni urgencia."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "99": {
+    "title": "BRIEF ADICIONAL 2 — NEW WEALTH · Naty",
+    "sub": "Brief minimal · Trend: mismos dos clips de la referencia, misma música",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Concepto",
+          "Texto en pantalla: \"Cuando tomo mi glicinato de magnesio y vuelvo a sentir toda la experiencia humana\"",
+          "Sin diálogo",
+          "Mismos dos clips de la referencia",
+          "Misma música del audio de la referencia"
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est">${cell || ''}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto">${cell || ''}</td>`;
+        if (i === fmtCol) return `<td>${cell ? `<span class="guion-fmt ${fmtClass(cell)}">${cell}</span>` : ''}</td>`;
+        return `<td>${cell || ''}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
