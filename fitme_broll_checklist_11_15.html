@@ -11,7 +11,7 @@
   // Tema antes del primer paint para que no haya destello
   (function () {
     try {
-      var t = localStorage.getItem('broll_fitme_11_15_v1_theme');
+      var t = localStorage.getItem('broll_fitme_11_15_v2_theme');
       if (t) document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
   })();
@@ -235,7 +235,7 @@
   <div class="hero-inner">
     <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAgAElEQVR4nO2dbYxkaXXf//f6UltbFE1t0zS94/EwHmA0TNbrNYaFrNa42WDiF4zjCIgDipIPWIkVOQhZVhRFlmXlg5XwIeFDbMWJ4+SDk9ggmzi840QdFpYNJqvNZllPhmEYlqFpmnbTNEVRFNf35kOdp/vfZ269133uS52f1Oqnum5V37r1POeec57zAhiGYRiGYRiGYRiGYRiGYRiGYRiGsVoERZ+AYRg1It0BgJD+0gIQybgpP+6YFh23pl7TkHFErzl5I8MwjGXBcmWdBE4HwIaMmwC2SLi9WMahvMYJsDaAzaw3NgzDKJKQfmeNTWAZxspxp9k2UkCM+XukjuHHDTp2k8y7jvxANKwOHbdG4xZpZQ1571D/U8MwVoNITC0nhM6RUNkgodISgeME0veTzNiU94Ay2yJ6DZSQW5ilvplhGEaemIZlGGVhaKoxWabZrM9l/S0ip3aoduXYHGsCuJs0sYiOa5D8iPLSqDQmsAyjPLCfKCLTLJKdM/YFuZCApjzHxz1HHvNr2iSkIjLnQuVzikguhPR6HmPCa7S/a2mYwDKMchKSpuOElxMY2n/0Ihk3JFTArestEmwdJdhaVXQJVe6EDcNYXUzDMoxpGfqYIuW7YdOqQ2P2CzVJ0+HjIK/n4+4e8d562599Sa0Rr2mPiTKvpLJiAsswZiNSDuotGYcALpAw2CRB8nyK8I7kOPeaLRUJzikq7DMyqiplDcNYTUzDMupHuqN323jbvUlHRlPsjkHtlDWVCbdBx52j8Qvof7WVuTgqpCAyJWI8JrCMOsJCYJ0ESQTgPAmFc+Qz4l20phI+F2itrCmhZ3jEpLlhGJXBNCxjFXDzvEE5dADwPNKWdIS3jt62m3sJMIFl1JEBgETGTdqV6wB4C5mLW8p/xOtBVx9wmOAqEBNYRl1xAotTT1riJHea1KaFDlQLu1sYhlEZTMMy6khM49sAdkjTukE36p+gInIvBXBZ/q4L0hklwb4Uo34E2wk9OpQfF591nZ5rU6R6S4SWUWLMJDRWiWSKY4wSYxqWcUKapqEKimypkACOBB+1o8YkJCQSMdXc474aD+i4QRDk1oGOhdZNAEcyvovOYQ3AfSPqjRsFYn0JjRPSNI3IRHJJui6Bl1svNVR6yV0jFnQM4Ds0PiKBsSuCCgD2AezRccdBEPjThoZVGDYozeYygF8jQXzVdhPLgd01DMOoDGYSLouhQ9eh2ybxdR4oMylBsL3800lTfqhNvSadU6SCJzfp/M+RhrVGtZbuojFUuVwmIS0qkeNYc3LPca2mAYDjNE2zTMeBNh35ny1oRsb0fj3ZXXTR7udV2ynTtgrCBNbyaKg6Sc68CFXC7XXym/QAdHM6HxaaDQCvpAX4AIB75blztDvGJiHU/BjVr06PNcmYcZIx7ot56EITPiPXCQA+B+CWjA/FB5VkvPdsBNtAunNM38UegGsyjsQ8dInR9wO4NPf/MhbCBNbyyNKqQtJuuIyJlw4j6twa5Dh/PpU72VB+q60x7+ODPgmwRDVS0JU2l8cwFGIo9NKdBMCBPBOKwHTfYTz2fYxcWS2BdWfH21GMO2bUcw1VJ6mhBFOYx7Z6humXZYo26CfMEJq+BegktPaWZb42lIkZ07VIluy0j0lQ8diSoj1Tf4F11rfUVhn53EapQ9dDt0dy/poGgHtokm7Qa1qqy4l7fQzgj8k/MiCTcKG7tSxQrtN9H4CL8ngLwKvofC7SuXbUdeA64EXToC7CCYBH6Do9RObhsfiZnC/rv5NP7Mk0Tffde8whvNg/FgL4XRL2PwngR+W5cwAeXOCzGjNSf4F1loaqArlOf+f2SOMKu23RwubCbu0Rhd0GAD5Kr0kQbPczjpsX7gO3Rf6Vl8hid8dslkQgTSIkRz+Uc5/pia8pkfEXyQd1g0w6zKzZDjdB2Dx8hs7tolQTRUWuZ62wC24YRmUoXsM6bZ3kaCvfC5tZ3PyRo7CbGceB7tasBd1FrxnVRmltRIumKKPdEjvTHQeyG+hMiyfIXDme70INSdO0RWZfJLt/7jxeLjuSEHN1lHZSB5wZn8jn/DEy49YlGBUAdtM0vUaR9rsL+LcS0d6cifo19V1cqaESwLuwPXrcUyEm7u8NsVBykS3FC6w722Gvq9gfFx7gLoQzf+4lIbVO/qhWxq4XC0AfE2oPwIcpbmgHwfZgitdNQ4v8Jk0Av0zXaJXqjTfIVAeAN9H4tWQePg7gD2RBdcmMnA42D4c8KT9AuvMAgB+k87lcM4GVqM2GA3q8T9c4VmlNm3nJljpd3FFYwqth1ITppOCdZpvess9KitXb53ornY9j02p9RHukBoAXkobFO3kdMn90h1tfrZO6ZPYdyJ18MM9OoOz+8ZY5N9jcoJK/d6uo9VW4AU1DpObGJdKwbqdp6rSBfTZr5oiU7wH4sozvEnPfzbemJwsmUTflwYhxrObiNMfpTAXWsA5pxzZaelzcCKa9oCGp36HqasuLidsjObPNfRD2qbRo6zqS5yZFTuu/jTt+2ijsZfIM1Vr6MwD/RYUyzAoHSf40gJ+R8TqAh+k4qzd+J+wi2ALgcp+OAXyAvo9/KaERyFjQ03ATwL+ScUv8iS7A9KrqWZgXsTLNOEtgT/lOD2U8APBVEna7dE0Oyc/al8dZGQnMBQCvkPF52Z3OxTUxyx0gK4obSrpy8OT3qaaTLRJyHNsUqU4mVYXt+OF4Mb8VXw/eSGiukJ9qEbK0+YHKOlh0zrEGEpLQyyVIeMrzySrpA5WH+R2VUcAO9C4JwL6MT98vK+813ekrX1duREh3eCdpXK6Y7lzLZhsHVrr4pUgJMN1Zt2zR1fOgVXGnIs8cZ0VmoPvNgagtukmUYaOkqoRKI22TddBL09R9fwnmS6buyoKNVO0vzaicSn3MuDxMx4AEzEC0Iyc0jmku9qjUT5/cFUmGGThJo9LobITccImdjnW1SLLaayNDwxrX4jvLh6VbKlVVaO3SF/1BMTdAE3cWImUmv5OCQC/S9nlVr1UZaIm5ktDjY3n8cQAfkb/HUyal82LuAXgP+a/eJZH5yBAIezQ+JO3mWAmfr9HrD5X/qE/H8blyqAELTX0O2oeVdZz+jKNo01x9UZ5CK6LC+5AF47SlNVVxoJXx+lWHK2XuUSWBae9MGi5hclnieqB8Msb8RMqvdIUW+/+deaGdjYgHNbhoSvoVuwjYZHI+IufIdsLnEMA3ZNxX/rU9er/9M4It2HaaYVFEAJ4r42aeN1W7WxuGURkiSZh16PIdvgItqwRrTh+gO+INpXJPJE1TdqB3APwS+fcukzZgTvZ82KTd79eRFbEL4H1pmp44rKeIjk+UD/P3AXyKnmO/EGc7dJVj3GlbbJa693bH9Xw5uaekRdEBnTxlRmStjRbiUfJH3EKwPY/fiuOr3kxmiXUlzh82Dx+k+LanAXxoprCUoXnIptlHRh9cO5p0LXPd8TftyTCMyhAp88UE2HgGqvPLEan3E+/CKnQBokVdlfG6Ra0XSoM2nDbke3G7bE+kaXoSqpJjC7KqEqmg8Fz/ES8081mN5wjAY3TNnlJ1l6aBQzoeku1vFw5SdHniVWad/FkbAP4x+Z5+kao/WG7qnbRVX4BcwxqYxATWjCyn442V2i0fpwUXjdKgTUJjPG6Hh4PzZqWtsgQaed+VFiBWY/3YMeo6jKrNjjF15cuAi6VyGlZb7QAuq1RQdTlbepznb+6R7j312BjNvtRnd36reQL2HqFg3VdJhHDZFiwoCtv5bnbl87soaY7W5nwz/hwN8mnoMtSXye/RLlmxwTYl8yYA3khJwJ+hJPdVpqUqYnBtslzDGkblKBl3MhCfFUcqz8qapC+AmkGUTVg5Biop1jXP6FPaSKJiifizcFXXu1T110HJYomYkM47kcYjbmwxcUN0/qAXZaesC8UwDOMOIlUewzSsOzmkncAbAJ4lDWuiZpCmaUilnSG1x11S7FpBNw3+nm/L54KYuI/KOJbP2qPnuJoBm8OjfDrjCjVyW7UtipR+gZhjbsf6vhJoNW+kciwHaZq6nNEYQG9Fwxw2Kb/1hb7+aTRHZvaq0SeBdQjgCMH2rI0kWDBdKEl2gfuuj1X7949Rpv+zQRBMU7VgIdI0PU/VKM5JWIEzla9MeHneuDQpd002SYAO5vRj1oGW6qPgBTMJDcOoDBw4asIrmyMxjUBlZWfBaQluR2VNPeeDRCXSPkNa4y0prQI55pCO87V936PAzFjMUg5idg7wS6oEt69cSzZr76Vd3kPaiFg12kVoWNqHVbbdmjKwC+DTMr49Z2G+n6IvdauAm0MiAsGVcf49AJ+V5w6CILg94fW5EgTBIQlKSGsu5/97nK7d3wXwBhk3PQosZwImAO4nQf7n1BV61dggM95H7XrAtCrDMKqERbpnw9ekr4ryT7xeGfXZ11T3aB+wSdeXDi8xJXBzid0yw92Gd2lHc50c8z5r3bcoSLJMwa6+aagKuV6IVMMEMwmHsGC6La3moSK6xxGp2vivUVHdPuhSid1Dqd1/TOah290q83eeALhGwv9AMg0g9aveRUJr04PF4PyRW/Q4lBsUpijyVyc2AbxExt5MwmhESoVxtig/ayPTTkrWsJol0LAOyEHcC4Kg7JqVK+Nycp5pmurSPrqtlo85rNONVpVIdcTyggkpwzAqAyc/VyHSnc/viMwZ3R7JbdnHqr32EYBvy7hHGoduo8QVGQ4o0XdcrzlmXQrAhdRA1t2N8rxJcH7eEwDeLeO+6rpS9u95FPw9PwbgN6h43G+otnR5Xec2aVjnJAg4AZCkaXprhczCe6m11+aEY5dGVZOfE3IgQ4QPV1DgmJ5dAN+Vx9weqUvHDVSL7+MFuza7Wu2RcgznTaKE7jP0937VF1MQBCf+NjEPr1OTX1++ODZ/2NSv9LWdg4ZqoOwFMwlXg1VbTEZNKSr5WbfXvkbmVk91K+GEW96l+5Zqe5TVCTdRrbu76r27I9570bt1k2o/+Sw7fUs0Ssg1XaQMTtnpkaneE23LuQIuqIyCvOCy1nFF3CrzMWwUy9rlGoV3eI1059QcnwLLRTYfAfgoCQzecj+mSejMtuTkcbBd1snhBNZdHtXlRGKtnpTHnwuCoLZpI0EQnHRGFvPwKVpAHU8Ci/vxlX7XdQmwa6NDvitvlpqZhIZhVAYuL+OzPLKOEdqjoEaOwu6qAMekIip3BOBuqtfu68bQpUqgs5bAqTIJgM+TVtXwtHN1Q+0g1xldz6yQcursw9K1sfKEQw92pQYTVwkAjau4i9mQ6N+G5y/2hmz3Y8WqCPQA/DtaTL78hrGqh1VnoRWJ+etcHO0ihBb/Q5/CgAVRIv6o/oTXVI3QYziDg0M96rx4ziAR8SeCQ6o8+CBZsWqjPnM2R56AYRhGJYhoa99nPayItkJbNRScEWWz+/Rh/QWVO14ZDSuDqrgOqkQkUf3OT9iZcHxuJ1HEl1vGPnzLpqjmEjGNV5IVM9N80vCUYjaSugsNwzBqRFGBo2ERxb88wiVpfIZicJ3zVQhkNPwRSTC0MwV9tV7jjaQzAsunecgLq44Ci5OzfZpmvIuzsiahkQsuydz1IPSZwXESQWAmoWEYlSEC8D0Z+44ij+h33QSnS+KOPcettKlc7fGKRbsb+fN8Mgl9aVgxz2Mu4OfTJIxq7sPqS4pMQxKgfV3XF1FX6T2q3GAYi+Ii3V2yt68KDT1Jck9QdNTqCuBba12FcBGjOIqaXwkLLE6R8UmofteNpCAz23tjAGNlKEJgJVpgsUnoM9LdlVetY6T7odRUd6avD6EVSjux8/L4U66DsmHMxbBoHyeUX6I67r5MQlfqO4bdhXPFhTb4TJExDcvIk6JMwth8WCuAa/DpsJQVY0EKt4SKMgl14Ggo6ueQYNvTaeSGU2Nd0bNjMgubOd4oLlDhugGA19P4cYt+N2akIWEMrrN2i0xBX8KrB+BLbBIWkdUfqjgs0AWoQ4Q216xvqX6BedIm3+AWgIsy7pXh7mhUjoh8zK0CClKC4rBi2CQ2DKNKaA2rqFIzEUnuabsrl5mE2j7FUrrYqdKXqbtLnmwA+HEZdwE8k6ZpT85tLwiC7oTXG4Yr9R2SaeibvlgrA2TUdPcd5OhoUuR7r+oCS5zbrn35AMBn6fNtehJY5wG8VcZHAP4P+dI+SYUbDWMUTYlsj2TOFrFJ59q5nQgsI3+K6vajg3Pr2+jTyIui3UZn5qvWqopeVHVdTN9SHafd5/Q1GUK5QzbFRN0Q89Cdz0ntriAI6vodGLMTUgcinx3MoWRBzLuEuu9fEfB2qa8dNV/EAP4DfdkPUDR6I8fkbw7yWwfwz+h8PgHgWXn8aQAfcM+laXpg8VqG0AZwBcBzPLf1Yll0JD7gPgps87VqjNJii/AZFtF+zDAW4WSdmA8rf7RQ4kYRRQkNFli6sUAjTdOshPhV68FnDPm+ApOekeXDKiLSnQmVSVirjsVBECBN00P60wepFdcDALY9T4YIwCsAXJXHDwF4u4y7AB49aW47jI53Hbr3KRjWWA1aEnzsWtb5ql13SHJgn91EUQnu9qBYrKSOpkoQBAOc5vbtUzT6hYJOaY36y62TT+1YCv+5OtrX6IZWx0KLxngiinBvelybA5p3ww2hYDtBHYWDYRj1JVIJsUWZhIU3aPTIddGyIHevq6RhvnTCa/OA8zrbYqY6P1uHAky/nKapK7ncleRuyPx5luaRhUbUh4bkpDY8hzU4TR8Avqmd7iywippo7oLU0iRU3KDxhggw58e7VMDnZ4dqBOB+eu6VNH6WasTfptf0xM+18h2na0iTBFbkcZPumG7qZ3zadRcOpYJSdrKo0kLX88bmkeGFImu6M6saF3QM4KZ89raYWu46lK10dIM2CzpUKrevWoodqSh6bjU2sNCIkpPuaI3btzkI5XQ/U8MtIh9Fo0AfVlMWaO1NQtay0jR9HMCT8tSmVHJwfRrvIwFRBrbkx/GI/E5kG9rNnf8hQhgAPi+PIc8f1CyLoY5wIYIOmYS+SMQc/H/yeJeVqVoLB8Mw6oVFupeHhCqDhiqnsuwms46cd3foFsV7DQD00jR1n4nzxWxnsTzwd1nknJsY6V5U8rPbIWvL/18lIRrT9d8F8E4ZNwD8CvmJLhYYZDqJkIQSALyBBO1AXA6J/H6CPu/HaSdoj5KxjWLZoO7O5yYcmxd7snsOCm8AMpzuRd3lyq5B5ILyZ8UUNhCJszrT8VhC+Cazpp5zwsvF1vTouG7G641iiVSDmCKIqeTRGZ+nTZTykoy5mdRBuJ8xPdI0HfWZLOl6tbnDJNSBo76Ly4ESK2u/SziGhL6LGMB7ZZcGEsD5Khl3JGHZUfbrxWEa99Edc520rT0AX5bxMYCn6Vo8RWESsfm6cqdD7ocXFjS/viHBySCXAlCSSPeQ1NCVFViiRXCSNLeZ70uZD4hf4TXq5WW+Zu7cmsoPd4nGB+SrcGZxX+bDDRVFbwIrX1rUc0Cb977oUWWQM+6QMk90wzCMM2gfVlG+kqjO5WWWwAGAz8m1+ToA1yY7kmBT5xxtU0hBlWjQ3TwG8MNU+75PpuN+mqYut6wr18XN156Zi0uhBeAeGvuiT/Knr9wjJ0SuzgzSnUQ1JIg8TX6OdI9NYGXmHD4lP0jTtAXgMfl7E8CvylY0pNrD1h1vWH64PtcFqRjheBtdi89IjS4A+AKAP6VwnFtmLi6FdeoYvuVxPR7Sd3mMYDuzDd3KC4caYIvUWBkmmYQ+WclYrDlx6nIo5TfcdevQd8oacljhiqG64S4nYG/SXbkrsWwJmRdwLaIsNGJquD6az/UYc021UQdpgTWgYD6f/pDnUu8xiw0bT4/MIgB4F02sKxSdfAnAT8m4IaERVSySyAngr6EaXQmAX5ZxLOaim/AfpgTsXYqaNibjkvBBYTU+uEE3mpG9A7I0LKPEiKbAjshjnIZCHNMC7ypNrA7oPo7cy7JD/ldumGA3wNkoUsOamB447ssssgu0MR+JMoX69BybSRFd67qY4qMSsJsAmiLQEyXsLYoeANId/Zei5kMyyS2VZRK6Se7L5+F2Cb9nu4QLc5vU6ZtUdz0Sc9EJqh8R1R/SMceZAGHFwiJYQF2hib5Jro1dug7fAPB+0jwPKpCn6QOWAy8gt4LPwn23VaJ8JlkmYRG1uSNphw0TWPMhmkJXfdm3MDQXI1m4IQmtl8gxDYo6r+q1Dym0AySMIZ/b+WL2paCguylbn8VTOCNhTf3NB11xaSTjbiJVnaCGYawgWsOKScPyVco2pK4cMCGaCwmFP4QShOqSSz9PJlNTTCvI93GRnPjNipmLjpYEoyaiaf0tAN+V53aoK/d+EAT7Y96nngxruHM4TFP5N33xddKw+qMOyhJY7mCfJqFzkpoPKwckZeWA/nRSFE3MRSeI1gC8iXxZP0P+jM2KCqwOmYSJVIxw3A3gSzJ+ggoKrhrrtOO6VtDO6h6Z6CN9WCYcDMOoDOMi3X1qWGGNtterCIdCHJGZfpscoD1KQo7IVAyVGVFm9Bxbp8+3maapc9bH7JBfgdCHhsqKKILBNNYdCyxnOzp1zFctnJDUUYt090wQBCd+SymU94f09H+iCXyJ6lmdA/DzMm4CeFAJsDLD4TrvoMXxWYmWB4AvAvitFelm7XyVbpd1fcLxeXGDXBVTR7obK4yuEkEdbpCxIcOLuKoLWjcN5TzMVaLsN5kTyvLFVOaCrTCcnModnWPa3UHGji/PsTJ/z5GKjm87wZymad1rbRWVjsNMVXhBC6zvFtCpxflLWvI/yzypVw2eQLukql9z9bnku7tAi/1VynS8X8bO9C/r9/tSCjjdIy0yAfA7JKDryDkA98rYlytIhy8c0C7tSNlTlvIyIUn5sk7olUM5m/tqgu3jNCzigHxDHZUy48zIsmjzo2iTHy4C8DJaD2U/90UIVdkeX59V53Xq+ZWJCQfDMCrDuMBRn0mhK90xp+K4KHo3lz4jOz4QbetRGbcAvJxMx/vI/GiruldF05adT6dhvVZqyScAbgRBsDvFe1SJF1GAsK/vYSBaOofUzOzDmqrq35IJSWDBhFa1EGc0RyY/6QZiLrKp+AiFsLRVK/QyCawWRcQnAF4tlR4S8WXVSWCFEsrg/He+Gk/E4ko4DR0Jtie+yISDYRiVIUvDKjLS3Zzu9YI3cZwJ4EzCpylQcFPVYNpQdeqLnhPn5TwSABtpmjptMAbQr0EkfBFO91g085mCc7MK+BUR1tCiLtRFT05jSYi56HyifQAfo6f/xA3SNL1ANbnOSxS9S/d5uGBzMQTwCzJ2qUsuvOOIasdXlVCuubv+vkzCvly7zP6DozDhYBhGZchS/4qMwzIBuprw7nSPTMdQxk7r152cfM+XUM7B5dv5qhm3XIY13DkNideer2vqKovOZMmVxSRsKj+WsVocUCT5NUlEdguHTcKflVZfEF+XL1PRzclEzsf52/6MIv6rRIOEblvCS3wnr/elFpm7UU0l/MtSXgamYa0uQRDoO+0Rhr6tUOrSt+nvRUbOu+qcTmDdU8A5LIuIQoqiAq5noqLbp5I3JiAMw6gM49p8+bTPW1QLy4So4Uika7Obp/+RIudfLrt3bs6seZo7mxShvw/gKvU8vF6Rqg5NSVCPZO35aunHDAA8Sy6oucIaEukPOPUbLIFQ+QhMYBnAafL1SZ31NE0HlPbTA/BG8n/6qjLAaUSbFCEey7lVQWBFcr0aFFLkGxciMpPAMuFgGEZlmNTmy5fGYxqWMQ19mh+7AB4TLaEB4A0egx4dLQq4HAB43PP/nxe3eeBquRehYbkikC4PdWaTMCkwrKGREQ9iGGcIguCks3Wapk/IhHeL76ECGilsAHidjHsA3leR2KwmFV28y6MPi6MQ+nLT4cq1EzHhYBhGZShTxVGYADVmIBatxmnox6QptD2ZObrdWVVw1+xuzzuE7HIazCNvxhXw8x3WkBQUwGZUk66EPEB2vB6j6O1XAtjycA5rAF5B51MVodUA8GIRtg2PHb271IF8X2TNTHKmbJHuhjEVEu80wGm4Q48Wnq+5y512fFboXZSQNit8KgiJ2tQDgu2ZvisTEoZhVIayJD+zHR0h3TkNc5hRAhsryQDApyis4bIqv5wXkexQuvGmdM9OABxLjmQZaUo4hssO8GUSHlLg7+48mnBZTELT9IxFSGQxuJvtxHZRS4Jvtg1qa+b8sWUVWBFF7PsMJRpQ3NW355ExJigMw6gM47rmFBEAx85AfT6GMY4jNW+KoE1KQHfCsX4ZulncuTXFHFzzrGH1KDf0aJ43KEu1BoZ3XvomsIwpcCahm89FzZkOtazbn+J4n7CvqiXn2qHnfNAF8BUZH5hJaBhGrSmL050por60UX3KkodahnPIgktKNws6T3a6z7UxMi6soSiTsEHb01VIJDXKAXeZLmIxhpSpUcaqI2uS8AzJAihCwB9JyWuICb9wWEMZCEeMDcOYHy6UWdS6T2ZtnKopo8CqPFIytyhhezIRatCReBbKYhIa07EUgdVf1MZcAmwSFnUOi9KRSGK3iF7qaTHdpN2pLrWCrzsRgKvko+lMOD4PEqkYUbRLZRQdAFdk/OKClJVDSljvLzvSvSjq4HR3xf3dZ1n39Fn2VOT1quC27H0X8NMk6qdMcLhQUXODq8HMFXpSVYFgGMYKMq4eVhHBdyGAnwDwEnn8F0h3nIkTU3SsU7+d2t1V531Mx3XPqOfBto/P0aI2ShGAn/N0V3s5gC/L+Lq0Uaolyk/YAPBqMgXXR79y6ThNKhaTx7lUyhbw3AbwAzLe9Bws6tYf13CPFzUJE1UR8C8XP9eZCaX4mrO1D8knMwBwm9Ttr5KQOiBh1qP346qU8KimN2VSuK32hz1lxG/INcIKbKiw6yCSCg2u5ZYvH5aOW9QLsky0ZH5Aro/PlvROeH8bwaslMbEAABS1SURBVHZvwvFjMZPQMIzKkOV0XyhOYkFCclY73DnGoqW489pQqua3ZDwgbcuZkaedOtIdrnjoNLSEakxDtLKE3ptN0WQKs3IgWl/ksdYQRO13Wsa9aZq6QMEYwF5FuhJPSxvAeWqi2qFmqr60y5jcD11loZTtWjfo+vhsh8bumoV3/bMi3bPGPmH/w7kxX7z+e9ZxibKVD8hkPCZzM5YdNjfZvkIX9ykAT9D7TXPRj8WH5ASwL/PgvPxAvr+HZdwH8KEKh4lksSWdnxsAnithJL4bQvQocrtb8mR9jnRve7xGe3TDn6tCA5OlYRWNvpCLXlieQKyhDVQ97obyibhrM+//L7oQ4jI+Q5lxkdvPKfBz3pF7W+Jg3aLChZaan1x3xyzky0lozDtLvHPXJE3oeXRtWsosDae48Akdm9XOyFc3bdY4mrKzBgCDKpqHaZo21PfyPBXz5puEboiDktzwx1GEYE+WaWFkmYSsgdQB/oxbStpfpudG3QneR6bUEYCnp5iYxwCuybglO3fOf7DuyYdwBcCvy/iIMuVjMXGrGAX/SgD3yfiHALyNOob7blMPcTF8PMMHWg7SHb5Br0vGBVReYd48K/XbQS2+5qaM5WXyZJ58szZpYtN+yXznjZZ9l5mSSG3vN8kpXFUTkUuktNV3UwRJAU1b5qUoF8FSNyKqOnENw1hBsiLdedvft9+ljGyJKQJRb5+eUlviCOg/JQf/TwK4mNO5Mqz2dwD8Q/p+P5Gm6ZfkuWtqF7RbpONY/FRca/xNZE6/msz4TkE+WF4juwB2Mv5eFjbIVL6nIG10D8AXZXy46JudfuHD2KJTAZXuFOEoLiMtAPfKeKp25Lzg0zRN5Atzk2WhSN8Z4Q0G11I9ls/hwkf6IoRREjcAx+JFAH6EYssekPCFImHBdExhDWW4dpoWmdBFbUx8k8IZFg6rWVUhZBhGBRmnUjvHceh5V6Fs8O5KH0AD6c5pK7TJUe+JmF3u+u1TAJ8OrfBBKMGlzkTl8Ic+gOuiFbrOL+6u2CXtMAmCYCbzJ03TkHb0INfVffYOaXxtud7u2KvK0V40u7TDelNpDeXRstIdUAYAPGdcMMdkCi5sXYwTQrESWEV94KLZIh+KSw+apRVaDOCTtFDfQmZN23NlAZAQcIvrNQDeLONjiYh3N6tP02S7RdvT8+x6hirC+jItpssAfljGG3JOXNerLJZAAuAZ8vn9OfcfLGHQ6IbMXxRU1BBy03NVQ44nHDuRVdWavBEEgSuFUrZwEY56njTO8/+P+r9lLuLoKpmUPbq9dkwSWGVZXEWio+PbKrh2mmvEkfZHZFJsFaBhZcEpSWukQW0pk/Wkm1Gapqzej6qwqUvArNHj82TivbAEzuFxcDf0Lmmd5erufCeNOWIIlwHPhaV2k59kErpaUqusiTXpS78A4A00Uf9oyknLfo4/APCojP86gHcUrE1wQGETwN+g5/6m0gxZUB/S37sjdpQ50DNSdZjGaXZlm2836eb0YQDvl7+XOVjU+SpfJo83Jhy/LBJVr32XarRZLqEn9GKayVHuTAYxDQcljo4O1WfjMU+2gYpeDukxC92mElhrJdSepiEhrXOgyhKVmTKY1kutb1/FyWMYxooyySTsZtx1V5ktAH+HtImPnSkIGGxPY6Nfp2BD0PZ9W5J5y3oT4fNqKBNjnLnhy4m/TGJV6vg3JXHXhaiUtUif5gcoM2BzwrHLYiDz21kPc7XzGsWkOKyy7WwVTUNVfJhpy11Mw54zCdM0PZRigaGkTlSFVbiJcYraLdooOapQaZ4mbZT4cv8kqpDhNBV6p6YqdzzDMKpDbgJ92kh3Y0hEQaQA8CDV+Lk2R1utXQkqheygPUjfyX0liexeFThHcA/AB8jKuE1Bj5M3SoZR5hzVf9bxHGz70tA6ZAr6mkuxrIlc2gWawJoNLbD+Kk3k41kFVhAEuy56PE3TDoAfo53ICyawvBLT7u1tAL9Pi203CIJZFx6Hi+jMAF+7w+sU6e6rwGEs0e257ISbMDIMozKM07C6cvd3DlbeZRjXsIGdsXUXiFukBa0j3eGcw96MzkZXhsZpWLzT0lGaXd2vqy8GIwIcb1I56XniiEJZL+47S5QT/+aSzv8sw5LIei026LEPEt5YWrY/a5zAugHgP9MHvyF/D2WhumTodUqsbEhrLtDr6ry43qRaiLm6P4cSvjDLl3UM4HdkHMl7uGv51wA46Vfn6+kbrkbxPpnvkMXGQmXWRRcB+GkAPyqPOT3liGrtL5uQChu6se+k54HceLv0eGlME9aQFcmsQx5G9QSsO0tLFpaQhxinEfFlbspZR+7IeVswfCFS64vzSX1R5M0tlzk7S/KzTmiMJ4zd41EXbdqLWRWNgtXx4e905/TZ2WNR9E2Bbxh1j4HKk1HzeNRcn47hdz2u4sTpeGi6nf6vJcYplWS9FBLW8KxqBfWREa8blbgairnonttQGfkb9F7fT++zQebmGlUzcH40d1zLYzDcKPj/vxnAIzL+JIB3k7mxP+OXGAP4E3r/HaqhdQHAO2XszPOir0NV6Ep9fSekfpv8Vkeq5visi64hyeLOb/QWKemsOQDwv2Q8APDZZbS/EppS/LBJa8Q3A3EfLa1oHzN6og/TTFhbmvyP77zL9FQTUueE5EJukbQad3Y3d2duKBu4zKYRJ/Z2yCSY+ZwpIh44jYhnYZ+VaGxMxjmE3Zzap5vyYNYqqhm0SWC1R4Sl9FX0+bK/wwb5jouYHy4cakCPl0ZRd2bt9/pL5RvLMoUiMjFDJUw1ZTA3z5oFi5mHIF8ilMCK1U3COIv2tS6vesCdN+hoSkFx9vtafG6sDHkILJ4MXCtqoIqJuQTgUBVtY1OvoWqP83Frqm353fSaDr03H7dG79cgjU+XPmnPIQSaKkr975Mj9z10x+nNUcjsUGkFv0nn/Tq6k1+lncWZy+DUiH2ae7cAPEXa1aMcELpgqZgOmepNAD8v1zySWlRZtAG8XcZdOVc3x44XNKEiCrXx7evkWml78rngc5dwds7eHRJ18Zdnyw6dlm06fw6taKlFy1Uz71UNDVxsWYPukFBF+5IphRbHvFyUbW2XCPq79PlnbnUUBMGxi6hP03SPhL1bHM5X2FGVE1ZVYLE/6mkA/5Xm45NLMP0cLWpQ0gLwkLrBZtEA8FoZH8u58eJeVGCt0424iO8/lmt/SI+XhpkQxiph873iVHV3yfm2nBqqNTn390jUbm6x5e6ALQDPp+PWlenIZilHCzeV+Qo6zr1mQOcxAHA/aVbPIN1xu0LxlK3Csj6/e/0t2mV6HjmR1zI0zTLtsM4D+5/6oqG4v+3S3fw6XZPPUy2raWvwZzP0Na2Tln6JgkObUzrRQzW3Xk6Pn0S643JTkzmSpJ3lwfPaB5yH2csIb1oaVZy0DhZSy24GwEJJm5ub9NxFuoYvVLugfNwvyu8EwL8B8CR9BhcdPy0J+QUGKtzkQ3Q+Fyk6vgXg5+hzXVSpPlWBF8K+tNuKRXi9l+bBM0sMFWBCAFfkB9Ka7B+oHe9pYLPxbTSX/zVllCRzuA8iKdrn3AK+WvP16EZ5oOphLZVqCqy8d1J412bRgMKzLGySjGoppVqJrSJnPrun1ltlq6JannPJaY1WU2DlDzvas8Is3HN9Mhe/o0zHHh3Hd5tYvV9ecKpJRKp6KKbUqJQivTua9dwy0J99XFaFg+/cXfpM/aWmMp29YYE0FecS4J3mRdAR8bwrHs+zQZPxnr5gN0VumMDKItg+DXxLd/q0i4MJC3iaSXJWYC3pTiQNW3lBXyPzAgB+i87vHPnfzpOJ0wTwQ+RnuUDH8e5TOKe5wYLkiCb3oer1d4NuFP+bTKYb1H06VhUBRgm5edDZG/9ISliHYmbfL8/pfMF5/s8Fevx2AH9Fxl8A8C9mfL+G1HB3vktf9dSOZDcWkjmQm9AygTWJOx2fpTW7xAzS7bjOkKZpqPx/fXUnZw0yb20wK0A4pp9EnV+fzj0G0Pdk+nH0eGPJviG+yUULam9Falde+j+YwFpNRmUTODPSZR0MRgiLkF4/7eLQWhAH0GqhNFDnlP9iuDNqnc3A58wQxb4IZ3Nx0x1en9m7yXear0Wm5MAElrFsElHh3Y5al0o7RwAeG5N1wNUonKkYkvaR9b94InPLpz4JpYEq7dKl17Dp2M2lielw0a/RbvCWRK07IfV62mHNs4PyRUr236J6/32J1s/aDeeIdldUgAOifcBz6KtmEhpLQ0woNgG7ykc3ETErnX9Ep1ax4NLaG7e0j0vWLqtJPrpz4qty6+OKp8XPBfcGIsAg2ui1Ea8J1Y2krb4bHwwAfEPG3Ty1rPJsgxqGYUzANCxjXnTZn1EaVpavDHn7OjIZ5qCypnSVTNtLAF4m403KDEBBN/Y1AD8u4+Eu3Gnhv2PZyYZ8HmdGdgryYfUpUPdwwrELYQLLmBkx5disnCdeqCjYfH29FI8EgFdKX0iUJCB0A8BbZbwP4H+q3VsnsDjZf7OgNd2jQojdPH1YRX8phuETm+8VxzQso36c3erXNdXOkeC6p+BSLNOiSwcdUJI0m7l5VDCdhkTt8uaGCSyjjrBJdwXAw/J4HcAvkQBrl3gNcCzYlrQGc0Lh1yTRHWIGXpXxvQV9nmPaxcytUgNMRTYMo0qU9e5iGMuCHdR92XHjBGPu8gQa8+NmxjG+4XNqUqxVU8Vh+UInq1uku2HMCS+gZ6nmWENF8m+Q/6et/FkvknEI4BdIQDQKWDcuwt59pp+lEAz2Ya17PDdOrVq0RdrUmMAy6sfZnLvuSUrL0Bl/m57jev8dimdqyiJ0Wk1/ilrteaKrY5xXTR9cyk7LoxZ4tpDkaVxYrpgPyzCMymAalrFqsLnChQx7ZNZEVHcrBPB+agP3INUPK4rzZL5yob+mx/CMQzK1Zy3zPTcmsIzVYWgqaoE1nmE6zCaZW1slEFjnKLqdTTOfvQiPKWn+m57+p5mEhmFUB9OwDGMyR2J2haJVuA4xnHhcJEUkaffJ2e8tl9QElmGMY1gi+zHgxDzskK/rEoA3Fnp+/lvSO/YA3JTxTPXUFsFMQsMwKoNpWIYxG33aFeuqumBlTqBeNrGvhGfGBJZhTI8zD5+Sx68BcJ+MXVfoVbFa9qUVGXLqsp3Jqlxcw1icYVjEsfhv9mSh9uSnSkUMl8GAuh15iXKHCSzDMKqEmYSGMRvcaPYGgPdQrt8/Vw1X67y+vg7gloxzrePO1PmCGsby4Wj5dOeAege2VUftuq+trtp88IKZhIZhVIa63wUMI09ipVV9ljpE3y95h3WC8zB7FuluGFViWANquKWf7kQAflvWVAPAr1DL+LpYMjEJrUOqaOGtx2RdLqRhGCuAaViGsTx6tEN4RAGVLSqxXFVcGRu3S+q/c7cJLMNYGrH4sCAC679JPXlINPxrCzy3ZRBLeWkXJJprh+dRmMAyjGUwDHcYOp/TnUQWtCsQWJcoeM4fTFTtfC+YD8swjGnRrb28YxqWYSyfGMAOmYhfoR3DBnVqrhKxmLgulMFbsChjAsswlk8i1QxcYbtdigpvjnld2eHYK+/+K5hJaBhGlTANyzDygX08NwF8UMbPVzW0mhVRHBLV2stbSRnGBJZhLBvdTizduU6NK7YAvEPGIUXGl51YTNyvy+NCdj6rINkNwzAA07AMwwvc7LQP4LqMG1JW2a3DsisQ36Fk70Kc7iawDCN/+kpgvVvGbQD/RIU5lFVoubAGl/Dcm3B8LpjAMoy8OVv0L6HQgLAoTWVOYjpfCxw1jBUhpt8D0r4aJdawEvopDBNYhuGXAYAnZdwC8F6KiH8IwCsKPLcsnIByJqFL6LZId8OoPcH2qUmY7rhQARf9XogQmIEB+a4K0bTKqn4ahmHcgWlYhlEcMYAnKMzhHgAbMm4BuFjguUE0Klci51A1jLWwBsNYKYLtGOnONfrLVQpxWC+BwIrFTE1EcPWljn1hmEloGEZlMA3LMIolIcVhl3YQzwN4gI4rIuQhFs0qIU2rUExgGUaRnA0qfYwE1gMAHpFxKL4t30nSPWlH7yo1FB7kagLLMMpDooJKnUZTpOumFAGjDhNYhlEeWDAMRKuBaFadAjSshARn4doVTGAZRqngNJ1rAH5dxusA/imAC/I48qR19QDcEGH1raKK9jEmsAyjLAyj4IekO30q+leUhuPK4nyvDMIKFtZgGEaVMA3LMMpJX8wxSMv7P5LyypAu0i/1dA5fEu2qXwYtywSWYZSRYDs+cbqnOwMAnwPwNXn2fk9n4VJznMAqfKfQTELDMCqDaViGUX5iaRXmGrPeoE7SLUqYzuP/HtLuZeEalgkswyg7wXYfwOMnj9MdblxxIUeB1ZOCfQNVHrkwzCQ0DKMymIZlGNXjiLrXtNTu3aLR8Ikax2UxB2ECyzAqyYcA7Mj4EeltCFnP5xZc1xy+cCR+M1e0r3ChZQLLMKpHj/xJPF6Wiyeh3/GZCPyCMR+WYRiVwTQsw6geA9KqPiOJ0RBz8Fdp13Ceon8H5B+7vaTzXRomsAyjagxNNFf075iaWCwjXopbefUnHOsdMwkNw6gMpmEZRrXpUwR8KLuHHRk/PEdQ6TG93zfLsDPImMAyjCozjIIf1s0a1tD6KIC2CKwrcwisLtXhOpxwrHfMJDQMozKYhmUY9SGWXb6uKCN7Ul4ZEhHfnuI9+vJ6lNHpbgLLMOpDF8AnyHK6n0IUrgB4xRTvcQjgCzLeMx+WYRj5MOxxOIzPSndCygPEDIInUZHupcJ8WIZhVAbTsAyjniQA/j1Vb3grgDUZNwGcH6Gw7AF4RsZHns51akzDMow6MjQPuyJ0jmQ8UGk9WSRTHlcIJrAMY3VIpmg9Xzq/FWMmoWHUF9aQngTwb2X8gwD+noQ6QMmBb1LgaGkK9zlMYBlGXRm2ChuS7tyUtBtIuMNb1fp31laPfFeJmJalwUxCwzAqg2lYhrEaDCiCfR/AU2IShgAuyc4hlBlYKnMQJrAMY2XoksAaAPg9CXloAPjbALbkueMy7g46TGAZxirAvqh0ByKUQvk5G91eMr8VYz4swzAqw/8HuSWFIGJXIRsAAAAASUVORK5CYII=" alt="Social Ecom Agency">
     <h1>FITME · Tomas de Apoyo · Reels 11-15</h1>
-    <div class="sub">Rodaje Valen Marcano — Kit Dúo Ballance · Entrega 1</div>
+    <div class="sub">Rodaje Valen Marcano — Kit Dúo Ballance · Entrega 1 · v2 (briefs 11-13 actualizados)</div>
   </div>
 </div>
 
@@ -265,17 +265,21 @@
   <div class="reel" data-reel="11">
     <div class="reel-head">
       <span class="reel-num">REEL 11</span>
-      <span class="reel-title">"Si llevas meses con el periodo irregular…" — Ciclo irregular</span>
+      <span class="reel-title">"¿Tú nunca empiezas? ¿Ya ni te provoco?" — Deseo apagado · Baño / arréglate conmigo</span>
       <div class="reel-meta">
         <span class="tag tof">TOF</span>
         <span class="tag">UGC</span>
-        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4NEAjRq/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1217005156576784" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@shoppingwithcharlstyn/video/7654068985180245262" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1217034945148860" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
       </div>
-      <span class="reel-progress" data-reel-progress="11">—</span>
+      <span class="reel-progress" data-reel-progress="11">0/5</span>
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Setup</span><strong>Baño, frente al espejo, celular apoyado.</strong> Continuidad de maquillaje: arranca <strong>a medio maquillar</strong> (delineador de labios) y termina <strong>ya maquillada</strong> — grabar en orden</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span>B-roll corto: <strong>los dos tarros entrando en cuadro</strong> sobre el mesón del baño</div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4</span>Cada tarro en mano, <strong>girando la etiqueta hacia la cámara</strong> (MYO &amp; D-CHIRO y BIOTIFUL por separado)</div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4</span>Toma cerrada: <strong>el scoop cayendo al agua</strong> y la cuchara revolviendo. <em>Este momento se ve completo, sin cortes — es el que hace creíble que se lo toma a diario</em></div></div>
+      <div class="shot" data-id="11-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span><strong>Packshot de los dos tarros juntos</strong> (ella los levanta, uno en cada mano)</div></div>
     </div>
   </div>
 
@@ -283,24 +287,23 @@
   <div class="reel" data-reel="12">
     <div class="reel-head">
       <span class="reel-num">REEL 12</span>
-      <span class="reel-title">"Si cada vez que comes terminas inflamada…" — Inflamación / digestión</span>
+      <span class="reel-title">"Amor, hoy no. Me duele la cabeza" — Nunca tengo ganas · Cama / luz de ventana</span>
       <div class="reel-meta">
         <span class="tag tof">TOF</span>
-        <span class="tag">Pantalla verde</span>
-        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4NErvcU/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1217005156576788" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@abbbyyoo/video/7649147881076673822" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1217034945148862" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
       </div>
-      <span class="reel-progress" data-reel-progress="12">0/8</span>
+      <span class="reel-progress" data-reel-progress="12">0/7</span>
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Clip creadora <strong>inflamada</strong></div></div>
-      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Foto creadora <strong>muy inflamada</strong></div></div>
-      <div class="shot" data-id="12-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Clip <strong>POV</strong> creadora inflamada</div></div>
-      <div class="shot" data-id="12-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1</span>Clip creadora con el <strong>estómago inflamado</strong></div></div>
-      <div class="shot" data-id="12-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span><strong>POV preparando</strong> la bebida</div></div>
-      <div class="shot" data-id="12-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span>Clip creadora <strong>tomándolo</strong></div></div>
-      <div class="shot" data-id="12-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span>Clip creadora <strong>desinflamada</strong></div></div>
-      <div class="shot" data-id="12-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span>Foto creadora inflamada + foto creadora desinflamada (<strong>par antes/después</strong>)</div></div>
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Setup</span><strong>Sentada en la cama con luz de ventana</strong>, celular apoyado</div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook 1</span><strong>Echando el polvo en un vaso transparente</strong> con agua y revolviendo (se ve mientras habla — llevar vaso transparente)</div></div>
+      <div class="shot" data-id="12-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2 · inserto</span>Imagen de una <strong>caja de pastillas anticonceptivas</strong> (entra 1 segundo en la esquina superior derecha) — <em>fotografiarla en set si no hay recurso</em></div></div>
+      <div class="shot" data-id="12-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4 · pop-ups</span>Serie de 4 imágenes sincronizadas: <strong>granitos en la mandíbula</strong>, <strong>pelitos en el mentón</strong>, <strong>mechón de pelo en el cepillo</strong>, <strong>pancita baja</strong>. <em>El brief dice [insertar referencia visual] — definir en set cuáles se capturan</em></div></div>
+      <div class="shot" data-id="12-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 7</span>Toma de apoyo del <strong>tarro de Biotiful en la mesa de noche</strong>, sin texto encima</div></div>
+      <div class="shot" data-id="12-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA 2</span><strong>Levanta primero un tarro y después el otro</strong>, girando las etiquetas frente a la cámara</div></div>
+      <div class="shot" data-id="12-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA 2</span><strong>Packshot de los dos tarros juntos</strong> con el nombre del kit</div></div>
     </div>
   </div>
 
@@ -308,21 +311,22 @@
   <div class="reel" data-reel="13">
     <div class="reel-head">
       <span class="reel-num">REEL 13</span>
-      <span class="reel-title">"Yo viví años inflamada porque todo me caía mal" — Fibra / bacterias buenas</span>
+      <span class="reel-title">"No puedo creer que la enfermera tenía razón" — Señales hormonales · Sofá de la sala</span>
       <div class="reel-meta">
         <span class="tag tof">TOF</span>
         <span class="tag">UGC</span>
-        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4NE8rnJ/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1217005156576790" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@abbbyyoo/video/7663339172471557406" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1217034392490013" target="_blank" onclick="event.stopPropagation()">✎ Asana</a>
       </div>
-      <span class="reel-progress" data-reel-progress="13">0/5</span>
+      <span class="reel-progress" data-reel-progress="13">0/6</span>
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Fotos creadora <strong>inflamada</strong> (van como fotos flotantes en edición)</div></div>
-      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1</span>Clip creadora <strong>inflamada</strong></div></div>
-      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA (voz off)</span>Clip <strong>preparando el producto</strong></div></div>
-      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre (voz off)</span>Clip <strong>tomando el producto</strong></div></div>
-      <div class="shot" data-id="13-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre (voz off)</span>Clip creadora <strong>desinflamada</strong></div></div>
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Setup</span><strong>Sofá de la sala, celular en ángulo bajo, luz de día</strong></div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook 1 · pop-ups</span>Serie de 4 imágenes sincronizadas: <strong>granitos en la mandíbula</strong>, <strong>pelitos en el mentón</strong>, <strong>marca de la media en el tobillo</strong>, <strong>pancita baja</strong>. <em>El brief dice [insertar referencia visual] — definir en set cuáles se capturan</em></div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1</span>Toma cerrada al <strong>vaso con la bebida ya preparada y la cuchara</strong> revolviendo. <em>Primer momento de producto del video: el vaso tiene que verse bien</em></div></div>
+      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4</span>Toma de apoyo del <strong>tarro de Biotiful</strong> (encima va «probióticos + fibra»)</div></div>
+      <div class="shot" data-id="13-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 5</span><strong>Captura de las reseñas</strong> de la página de FITME con las estrellas — <em>se saca de la web, no se graba</em></div></div>
+      <div class="shot" data-id="13-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA 1</span><strong>Packshot de los dos tarros</strong> (los sostiene hacia la cámara, uno en cada mano)</div></div>
     </div>
   </div>
 
@@ -393,7 +397,7 @@
 </div>
 
 <script>
-  const STORAGE_KEY = 'broll_fitme_11_15_v1';
+  const STORAGE_KEY = 'broll_fitme_11_15_v2';
   const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
@@ -504,7 +508,7 @@
   const GUIONES = {
   "11": {
     "title": "REEL 11 — Valen Marcano",
-    "sub": "TOF · UGC · Ángulo: ciclo irregular",
+    "sub": "TOF · UGC · Deseo apagado / desconexión con la pareja · Copy Juan",
     "cols": [
       "Estructura",
       "Texto",
@@ -516,60 +520,60 @@
       {
         "cells": [
           "Hook",
-          "Si llevas meses —o años— con el periodo irregular, para el scroll un segundo.",
-          "a cámara",
-          "",
-          ""
+          "«¿Tú nunca empiezas? ¿Ya ni te provoco?» Esa frase mi novio no me la vuelve a decir. De su boca no sale otra vez.",
+          "A cámara",
+          "Baño, frente al espejo, celular apoyado. Arranca ya maquillándose (delineador de labios en la mano), tono cómplice, como si le contara un chisme a la mejor amiga. En «no me la vuelve a decir» niega con el dedo sin dejar de mirarse al espejo.",
+          "Corte seco al primer frame, sin intro. Texto superpuesto arriba: «¿Tú nunca empiezas?» en blanco, solo los primeros 3 segundos. Subtítulo de la frase completa."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Porque cuando el ciclo se desordena así o desaparece, es tu cuerpo mandándote una señal.",
-          "a cámara",
-          "",
-          ""
+          "Y ojo, no vengo a echarle la culpa a nadie, porque si tú llevas años con la pastilla anticonceptiva, eso te cambia por completo cómo te sientes contigo misma. Vengo a decirte que ya entendí qué me estaba pasando. Yo antes me preguntaba «¿qué tengo?» y terminé resignándome, como si no hubiera nada que hacer. Lo vivía como una tarea más del día.",
+          "A cámara",
+          "Sigue con el delineador, estilo «arréglate conmigo». Tono confesional, baja la voz en «una tarea más del día» y hace una pausa mirándose al espejo. <strong>Una sola toma continua, sin cortes</strong>, para que se sienta real.",
+          "Sin texto superpuesto ni música, solo su voz. Subtítulos únicamente en «terminé resignándome» y «una tarea más del día»."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Yo pasé por esto más de un año. Andaba con la toalla en el bolso 'por si acaso'",
-          "a cámara",
-          "",
-          ""
+          "Hablando con una amiga me soltó: «¿y no será que tienes las hormonas desordenadas?». Me puse a leer y resulta que a la mayoría de nosotras nos pasa y ni cuenta nos damos. Otra amiga, la fitness del grupo, me empezó a nombrar suplementos, pero ella sabe que a mí las pastillas me dan pereza. Y ahí me contó que FITME sacó un kit de dos polvos que se disuelven en agua: el Kit Dúo Ballance.",
+          "A cámara",
+          "Cambia el delineador por el rímel, sigue arreglándose. Cambio de energía: de resignada a curiosa. En «las pastillas me dan pereza» hace cara de fastidio. En «se disuelven en agua» ya tiene los dos tarros del kit sobre el mesón del baño, todavía sin señalarlos.",
+          "Zoom sutil en «hormonas desordenadas». <strong>B-roll corto de los dos tarros entrando en cuadro sobre el mesón.</strong> Subtítulo en «Kit Dúo Ballance»."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "y lo que aprendí tarde y te quiero decir de una: es que esto se atiende, y se atiende con tu médica. No es para dejarlo pasar, no es normal",
-          "a cámara",
-          "",
-          ""
+          "Son dos: el de inositoles, que es lo mismo que le mandan a las mujeres con ovario poliquístico, y el Biotiful, que trae bacterias buenas, fibra y magnesio. Uno sabe a maracuyá y el otro a manzana. Un scoop en agua y ya está.",
+          "A cámara / Producto en mano",
+          "Toma cada tarro y gira la etiqueta hacia la cámara al nombrarlo. Después sirve un scoop en un vaso con agua y lo revuelve a cuadro: ese momento se ve completo, es el que hace creíble que se lo toma todos los días.",
+          "<strong>Toma de apoyo cerrada al scoop cayendo al agua y a la cuchara revolviendo.</strong> Texto superpuesto pequeño con el nombre de cada tarro cuando lo levanta: «MYO &amp; D-CHIRO» / «BIOTIFUL»."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "dentro de mi proceso este té se volvió parte de mi rutina. Chicas, cada cuerpo es un mundo, pero a mí este té me sirvió de una forma que no me imaginaba. Llevo tomándolo un mes y mi ciclo se reguló",
-          "a cámara",
-          "",
-          ""
+          "No había terminado ni el primer tarro y ya me sentía otra: más energía, menos altibajos, dejé de amanecer peleando con el mundo. La barriga se me desinfló, los días del periodo dejaron de ser un drama... y bueno, ahora la que empieza soy yo. Mi novio hasta preguntó qué me estaba tomando.",
+          "A cámara",
+          "<strong>Ya maquillada</strong>, energía completamente distinta a la del inicio: rápida, riéndose. En «ahora la que empieza soy yo» levanta las cejas y se muerde el labio, sin agregar nada más. Es el remate del video: plano cerrado.",
+          "Aquí acelera: dos o tres jump cuts entre frases. Freeze frame de medio segundo en «ahora la que empieza soy yo». Subtítulos completos en este bloque."
         ],
         "broll": false
       },
       {
         "cells": [
           "CTA",
-          "así que si tienes el ciclo irregular, esto te puede servir bastante",
-          "a cámara",
-          "",
-          ""
+          "Está en la página de FITME y ahorita el kit está en promo. Yo ya voy por el segundo. Te lo dejo por acá abajo, pero mira el precio antes de que se acabe. Después me cuentas... y tu novio también.",
+          "A cámara / Producto en mano",
+          "Levanta los dos tarros juntos, uno en cada mano. En «por acá abajo» señala hacia abajo con la barbilla. Tono pícaro, cierra con un guiño.",
+          "<strong>Packshot de los dos tarros juntos</strong> + texto superpuesto con el precio en promo ($216.000, antes $242.000) y flecha hacia el link. Corte seco al final, sin despedida."
         ],
         "broll": false
       }
@@ -577,7 +581,7 @@
   },
   "12": {
     "title": "REEL 12 — Valen Marcano",
-    "sub": "TOF · Pantalla verde · Inflamación / digestión",
+    "sub": "TOF · UGC · «Nunca tengo ganas» / señales de hormonas desordenadas · Copy Juan",
     "cols": [
       "Estructura",
       "Texto",
@@ -589,60 +593,100 @@
       {
         "cells": [
           "Hook",
-          "Si cada vez que comes cualquier cosa terminas inflamada o sientes que todo te cae mal... créeme que no es normal",
-          "pantalla verde",
-          "clip creadora inflamada<br><br>foto creadora muy inflamada<br><br>clip pov creadora inflamada",
-          ""
+          "«Amor, hoy no. Me duele la cabeza. Mañana madrugo. ¿Y si solo nos abrazamos?»",
+          "A cámara",
+          "Sentada en la cama con luz de ventana, celular apoyado. Mientras habla está <strong>echando el polvo en un vaso transparente con agua y revolviendo</strong>. Imita las excusas con voz aguda y quejumbrosa, cara de fastidio exagerada, burlándose de sí misma.",
+          "Jump cuts rápidos entre excusa y excusa. Texto superpuesto centrado: «Yo era de las de \"una vez al mes\"». Subtítulos completos."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Hook",
+          "Estuve siete años en una relación y les cuento un secretito: a tu amiga nunca le provocaba. Nunca. Me tocaba prepararme mentalmente, si me entienden.",
+          "A cámara",
+          "Deja el vaso a un lado, se acerca al celular y baja la voz, como confesando algo que no debería estar contando.",
+          "Sin gráficos, plano cerrado al rostro. Un frame a negro antes de esta línea para marcar el cambio de tono."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Yo pensaba que simplemente había comidas que no me sentaban bien. Pero llegó un punto en el que literalmente todo me caía pesado. Incluso me hice una endoscopia porque quería saber qué estaba pasando.",
-          "a cámara con tomas de apoyo",
-          "clip creadora con el estómago inflamado",
-          ""
-        ],
-        "broll": true
-      },
-      {
-        "cells": [
-          "Cuerpo",
-          "Ahí entendí que también tenía que empezar a cuidar mi intestino y mis hábitos diarios. No era solo dejar de comer ciertas cosas.",
-          "a cámara",
-          "",
-          ""
+          "Se puso tan feo que llegué a pensar «¿será que no me gustan los hombres?». Y no, porque yo sé que no era eso. Y me tocó preguntarme: ¿este es el tipo de relación que quiero tener los próximos diez años? Una vez al mes y encima ni presente.",
+          "A cámara",
+          "Tono reflexivo y honesto, sin actuar. Abre las manos en «¿este es el tipo de relación que quiero tener?» y sostiene la mirada.",
+          "Cuando dice «yo sé que no era eso» entra un segundo, en la esquina superior derecha, <strong>la imagen de una caja de pastillas anticonceptivas</strong>."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Por eso empecé a usar este Kit que había visto ya varias reseñas por TikTok. Y chicas, en mi caso, me ha gustado porque es muy fácil de tomar todos los días y personalmente me ha ayudado a sentirme mucho más ligera después de las comidas.",
-          "pantalla verde",
-          "pov preparando la bebida<br><br>clip creadora tomándolo<br><br>clip creadora desinflamada<br><br>foto creadora inflamada, foto creadora desinflamada",
-          ""
+          "Hasta que una amiga me hizo el clic: «¿y si no eres tú? ¿Y si son tus hormonas?». Porque aparentemente la mayoría de nosotras andamos con las hormonas desordenadas y ni nos enteramos.",
+          "A cámara",
+          "Cambio de expresión: se le abren los ojos, como si lo estuviera entendiendo otra vez en vivo.",
+          "Texto superpuesto lateral en blanco: «spoiler: no eras tú». El ritmo se frena aquí, un solo plano sin cortes."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Si tú también llevas tiempo sintiendo que todo te cae pesado, te dejo el link para que lo pruebes",
-          "a cámara",
-          "",
-          ""
+          "Y puede ser también por eso que te están saliendo granitos en la mandíbula, que te salen pelitos en el mentón, que el pelo se te está poniendo más flaco, o esa grasita de aquí abajo que no se va con nada.",
+          "A cámara",
+          "Va señalando su propio cuerpo en el orden exacto en que lo nombra: mandíbula, mentón, pelo, barriga baja. Ritmo rápido, sin pausas entre una y otra.",
+          "<strong>Serie de imágenes pop-up sincronizadas palabra por palabra:</strong> granitos en la mandíbula (arriba izq.), pelitos en el mentón (arriba der.), mechón de pelo en el cepillo (abajo der.), ilustración de pancita baja (abajo izq.). <em>[insertar referencia visual]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Ahí me habló de los inositoles, que es lo mismo que le mandan a las mujeres con ovario poliquístico. Yo normalmente no soy de meterme en temas de salud, pero cuando empecé a ser yo la que insistía... ahí supe que algo tenían.",
+          "A cámara",
+          "Tono de amiga contándote, no de experta. En «la que insistía» levanta las cejas y suelta una risa corta.",
+          "Aparece una infografía sencilla sobre su rostro: «¿Qué son los inositoles?» con tres íconos — hormonas (balanza), ánimo (carita), energía (rayo). <em>[insertar referencia visual]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y el otro tarro trae bacterias buenas, fibra y magnesio. Ese es el de la barriga y el del mal genio de esos días.",
+          "A cámara",
+          "Sigue tomando de su vaso entre frases, sin darle importancia: es una rutina, no un ritual.",
+          "<strong>Toma de apoyo del tarro de Biotiful en la mesa de noche</strong>, sin texto encima."
         ],
         "broll": false
       },
       {
         "cells": [
           "CTA",
-          "",
-          "",
-          "",
-          ""
+          "Solo digo: pueden seguir siendo las que nunca empiezan nada por los próximos diez años, o se ponen a mirar qué está pasando con sus hormonas. Yo llevo un par de meses en esto y nunca me había sentido tan tranquila conmigo misma. Con mi pareja estamos mejor que nunca y por fin siento que volví a ser yo.",
+          "A cámara",
+          "Tono cercano y directo, mirada fija al celular. Sonríe con seguridad, sin exagerar. Es el bloque más quieto del video.",
+          "Se frena todo: un solo plano largo sin cortes. Subtítulos completos."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Háganme el favor y miren el link de lo que estoy tomando, aquí abajo. Es el Kit Dúo Ballance de FITME. Yo literal echo un scoop en mi agua todos los días y ya. El de inositoles sabe a maracuyá y el otro a manzana, o sea, ni se siente.",
+          "A cámara / Producto en mano",
+          "Levanta primero un tarro y después el otro frente a la cámara, girando las etiquetas. Señala hacia abajo en «aquí abajo».",
+          "<strong>Packshot de los dos tarros juntos</strong> con el nombre del kit superpuesto."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Eso sí, hace poco se les acabó y tocó esperar semanas. Si todavía ves el precio de promo ahí abajo, es que quedan. Si no, se te pasó y después no digas que no te avisé.",
+          "A cámara",
+          "Tono de urgencia genuina, cómplice, como cuando le pasas un dato bueno a una amiga. Se encoge de hombros al final.",
+          "Texto superpuesto con el precio en promo ($216.000, antes $242.000) + flecha animada hacia el link. Corte seco."
         ],
         "broll": false
       }
@@ -650,7 +694,7 @@
   },
   "13": {
     "title": "REEL 13 — Valen Marcano",
-    "sub": "TOF · UGC · Fibra y bacterias buenas",
+    "sub": "TOF · UGC · Las señales que no sabías que eran hormonales · Copy Juan",
     "cols": [
       "Estructura",
       "Texto",
@@ -662,70 +706,90 @@
       {
         "cells": [
           "Hook",
-          "Yo viví años diciendo: que mantenía inflamada porque todo me caía mal.",
-          "a cámara",
-          "fotos creadora inflamada",
-          "poner fotos flotantes"
+          "No puedo creer que la enfermera tenía razón. Bendita ella que me dijo: si te salen granitos aquí en la mandíbula, si te salen pelitos en el mentón, si las medias te dejan marca en los tobillos, si tienes esta pancita de aquí abajo...",
+          "A cámara",
+          "Sentada en el sofá de la sala, celular apoyado en ángulo bajo, luz de día. Habla rápido y con energía, señalándose cada parte del cuerpo en el orden exacto en que la nombra. Gestos amplios hacia la cámara.",
+          "Texto superpuesto: «No puedo creer que tenía razón...» + <strong>imágenes pop-up sincronizadas palabra por palabra</strong>: granitos en la mandíbula, pelitos en el mentón, marca de la media en el tobillo, ilustración de pancita baja. <em>[insertar referencia visual]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Hook",
+          "¡La abrazaría! Porque todo eso era yo. Cara hinchada como bola de boliche, antojos a toda hora, comía por ansiedad, era ridículo. Y nunca, pero nunca, estaba de humor para nada.",
+          "A cámara",
+          "Mantiene el tono de amiga por videollamada. En «cara hinchada como bola de boliche» se infla los cachetes. En «nunca estaba de humor» pone los ojos en blanco.",
+          "Sin música ni efectos, se deja crudo para que se sienta real. Subtítulos completos, con «bola de boliche» resaltado."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Y como mucha gente, pensé que simplemente tenía el estómago delicado. Entonces empecé a quitar comidas, a dejar los lácteos... pero seguía igual.",
-          "a cámara",
-          "clip creadora inflamada",
-          ""
+          "Menos mal le hice caso y empecé a tomarme esto todos los días, porque estoy segura de que me salvó la relación.",
+          "A cámara",
+          "Levanta el vaso con la bebida ya preparada y la revuelve mientras habla. <strong>El vaso tiene que verse bien: es el primer momento de producto del video.</strong>",
+          "<strong>Toma cerrada al vaso y a la cuchara.</strong> El ritmo baja un poco aquí, después vuelve a acelerar."
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "pero lo que no sabía era que la mayoría de mujeres consume muy poca fibra. Y la fibra no solo ayuda a la digestión, también alimenta las bacterias buenas del intestino, que hacen parte del bienestar femenino",
-          "a cámara",
-          "",
-          ""
+          "Los inositoles que trae... digamos que me volvieron las ganas. Y no de comer.",
+          "A cámara",
+          "Gesto de énfasis al nombrarlo y enseguida mira hacia otro lado riéndose, como si hubiera dicho de más.",
+          "Captura o gráfico sobre los inositoles y el equilibrio hormonal femenino, con la frase clave resaltada en amarillo. <em>[insertar referencia visual]</em>"
         ],
         "broll": false
       },
       {
         "cells": [
           "Cuerpo",
-          "Por eso dejé de pensar solamente en qué comida tenía que quitar y empecé a construir una rutina más completa. Ahí fue cuando incluí esta bebida en diferentes momentos del día.",
-          "a cámara",
-          "",
-          ""
+          "Y el magnesio del otro tarro, para el estrés y el mal genio.",
+          "A cámara",
+          "Tono convencido y rápido, como enumerando de memoria.",
+          "Gráfico simple «Magnesio»: 1. Descanso, 2. Tensión de esos días, 3. Calambres. <em>[insertar referencia visual]</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y las bacterias buenas con la fibra, que son las que me tienen la barriga en paz. Mi prima las toma es por el estreñimiento.",
+          "A cámara",
+          "Se toca la barriga en «en paz». Mantiene el ritmo rápido del bloque anterior.",
+          "<strong>Toma de apoyo del tarro de Biotiful</strong> + texto superpuesto pequeño: «probióticos + fibra»."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y no me crean solo a mí: la marca lleva nueve años y las reseñas están ahí, léanlas.",
+          "A cámara",
+          "Gesto de honestidad, manos abiertas, mirando directo a la cámara.",
+          "Captura de las reseñas de la página de FITME con las estrellas, con un círculo dibujado a mano encima."
         ],
         "broll": false
       },
       {
         "cells": [
           "CTA",
-          "esto contiene fibra y bacterias buenas para acompañar mi rutina digestiva.",
-          "voz off",
-          "clip preparando el producto",
-          ""
+          "Solo les digo que el kit está en promo ahorita y no sé cuánto les dure ese precio.",
+          "A cámara / Producto en mano",
+          "Tono de urgencia, sostiene los dos tarros hacia la cámara, uno en cada mano.",
+          "<strong>Packshot de los dos tarros</strong> + texto superpuesto: «$216.000 (antes $242.000)»."
         ],
-        "broll": true
+        "broll": false
       },
       {
         "cells": [
-          "",
-          "No fue que un día me tomé esto y todo cambió. Lo que sí noté con la constancia fue que empecé a sentirme menos pesada y mucho más consciente de lo que mi cuerpo necesitaba.",
-          "voz off",
-          "tomando el producto<br><br>clip creadora desinflamada",
-          ""
-        ],
-        "broll": true
-      },
-      {
-        "cells": [
-          "",
-          "Si tú también sientes que todo te cae mal, antes de seguir quitando alimentos, revisa cómo está tu consumo de fibra",
-          "a cámara",
-          "",
-          ""
+          "CTA",
+          "¿Ves el link acá abajo? Ojalá todavía alcances. Si no, se te pasó y después no digas que no te avisé. Ya te lo dejé ahí.",
+          "A cámara",
+          "Señala hacia abajo con gesto de urgencia y se encoge de hombros al final.",
+          "Flecha animada hacia el link + corte seco al final, sin despedida."
         ],
         "broll": false
       }
@@ -733,7 +797,7 @@
   },
   "14": {
     "title": "REEL 14 — Valen Marcano",
-    "sub": "MOF · Pantalla dividida · Sin voz — el texto va en pantalla",
+    "sub": "MOF · Pantalla dividida · Sin voz — el texto va en pantalla · Copy Luisa",
     "cols": [
       "Formato",
       "Audiovisual",
@@ -792,7 +856,7 @@
   },
   "15": {
     "title": "REEL 15 — Valen Marcano",
-    "sub": "BOF · Comercial · Bajada de precio del Kit Dúo Ballance",
+    "sub": "BOF · Comercial · Bajada de precio del Kit Dúo Ballance · Copy Luisa",
     "cols": [
       "Estructura",
       "Texto",
