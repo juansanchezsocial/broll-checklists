@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloque 2 · Airbnb (mañana)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_rodaje05ago_b2_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  /* Brief marcado como grabado: se apaga y se va al final de la lista. */
+  .reel.recorded { opacity: 0.4; border-color: var(--border); box-shadow: none; transition: opacity .25s ease; }
+  .reel.recorded:hover { opacity: 0.78; }
+  .reel.recorded .reel-num, .reel.recorded .reel-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .reel.recorded .reel-progress { opacity: 0.7; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+  .rec-btn { border-color: var(--border-strong); color: var(--muted); }
+  .rec-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .reel.recorded .rec-btn { background: var(--accent-solid); border-color: var(--accent-solid); color: var(--accent-ink); font-weight: 700; }
+  .briefs-text { font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; margin-left: auto; }
+  .briefs-text b { color: var(--accent); }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 21px; }
+    .reel-head { flex-wrap: wrap; gap: 8px; }
+    .reel-num { min-width: auto; }
+    .reel-title { flex-basis: 100%; order: 3; }
+    .reel-progress { margin-left: auto; }
+    .theme-btn { top: 12px; right: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>Bloque 2 · Airbnb (mañana)</h1>
+    <div class="sub">Miércoles 5 de agosto · Cali · Cámara: Cristian · Copy: Luisa</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="nalua">NALUA — Línea Rizos — Sandra Lorena</div>
+    <div class="chip" data-filter="beautyboost">Beauty Boost — Colágeno — Sandra Lorena</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <span class="briefs-text" id="briefsText"></span>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="nalua">
+  <div class="creator-title">
+    <h2>NALUA — Línea Rizos — Sandra Lorena</h2>
+    <span class="count">8:00 AM · Reels 41–45</span>
+  </div>
+  <!-- REEL 41 -->
+  <div class="reel" data-reel="41">
+    <div class="reel-head">
+      <span class="reel-num">REEL 41</span>
+      <span class="reel-title">"Si tienes el pelo crespo, ondulado y con mucho frizz o seco... prueba esto." — Frizz + cabello reseco</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">POV + Solo texto</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(41)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@ashleylamarca/video/7426178644457917727?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1217136583359367" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(41)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="41">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="41-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>La creadora está <strong>sentada en una silla de su habitación</strong>, con el cabello seco, esponjado y con frizz, mirando a cámara.</div></div>
+      <div class="shot" data-id="41-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 1</span>Sentada en la misma silla, aplica el aceite, solo se ve el gotero, no el tarro en el cuero cabelludo, medios y puntas, mientras se hace un masaje, y hace gestos de que se va a dormir.</div></div>
+      <div class="shot" data-id="41-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 2</span>Ella haciendo gestos de que lavo bien el cabello(lo tiene humedo)</div></div>
+      <div class="shot" data-id="41-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 3</span>Cepilla el cabello lentamente, aún sentada.</div></div>
+      <div class="shot" data-id="41-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 4</span>Aplica el definidor , el producto cae desde arriba y ella lo pone por secciones, de medios a puntas.</div></div>
+      <div class="shot" data-id="41-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 5</span>Hace scrunch en todo el cabello mientras sigue sentada.</div></div>
+      <div class="shot" data-id="41-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Resultado</span>Se muestra el antes: muy marcado</div></div>
+      <div class="shot" data-id="41-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Resultado</span>y el resultado final, aún sentada en la silla, moviendo el cabello de un lado a otro.</div></div>
+      <div class="shot" data-id="41-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Tomas de apoyo a producto</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 42 -->
+  <div class="reel" data-reel="42">
+    <div class="reel-head">
+      <span class="reel-num">REEL 42</span>
+      <span class="reel-title">""Van a decir que exagero… el aceite de batana me quito los pedazos calvitos."" — Caída del cabello</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC + B-Roll</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(42)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@madelineboyerr/video/7670146546138107166?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1217136583359369" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(42)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="42">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="42-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Ella poniendose aceite con el gotero, sin mostrar el tarro</div></div>
+      <div class="shot" data-id="42-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Tomar fotos del cabello, diferentes angulos y zonas de entrada, de mitad superior de la cabeza, etc</div></div>
+      <div class="shot" data-id="42-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Identificación</span>Aplicando el aceite en el cuero cabelludo por secciones.</div></div>
+      <div class="shot" data-id="42-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Identificación</span>Mas imagenes negativas del cabello de ella, diferentes angulos, para mostrar puntas quebradizas, cabello poroso, etc</div></div>
+      <div class="shot" data-id="42-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Complemento</span>Aplicación del definidor sobre el cabello húmedo y scrunch.</div></div>
+      <div class="shot" data-id="42-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cierre</span>Muestra los productos</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 43 -->
+  <div class="reel" data-reel="43">
+    <div class="reel-head">
+      <span class="reel-num">REEL 43</span>
+      <span class="reel-title">"Disculpe mami, que? Venga le muestro que mi pelo definido  si es muy diferente" — Frizz, cabello sin definicion</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Respondiendo comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(43)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@destineewrayy/video/7561870860924046600?is_from_webapp=1&sender_device=pc" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1217136583359371" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(43)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="43">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="43-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Identificación</span>Lado derecho: muestra ese lado, se toca el cabello.</div></div>
+      <div class="shot" data-id="43-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Identificación</span>Lado izquierdo: Ella se pone el definidor, no se ve el tarro, solo la textura de la crema en las manos y empieza a definir (demorarse un poquito en la definicion, para ponerlo en cam rapida)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 44 -->
+  <div class="reel" data-reel="44">
+    <div class="reel-head">
+      <span class="reel-num">REEL 44</span>
+      <span class="reel-title">""Si estas quedandote calva  por tanta plancha, keratina o tintes… empieza hair oiling."" — Cabello maltratado por procedimientos químicos</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC dinámico</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(44)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/FB63lkcc0RtbwOrTxcOg?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1217136583359373" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(44)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="44">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="44-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Close up del kit completo sobre una superficie limpia y estética.</div></div>
+      <div class="shot" data-id="44-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 1</span>Aplicación del aceite sobre el cuero cabelludo por secciones.</div></div>
+      <div class="shot" data-id="44-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Comparación</span><strong>izquierda</strong> cabello seco, opaco, con frizz;</div></div>
+      <div class="shot" data-id="44-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Comparación</span><strong>derecha</strong> cabello brillante, definido y con movimiento.</div></div>
+      <div class="shot" data-id="44-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Resultado</span>Mismo video anterior, misma locacion y misma ropa, pero ahora </div></div>
+      <div class="shot" data-id="44-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Resultado</span>Muestra baby hairs, muestra la vida del cabello, etc</div></div>
+      <div class="shot" data-id="44-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Paso 2</span>Close up de la textura del definidor saliendo del envase.</div></div>
+      <div class="shot" data-id="44-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Aplicación</span>Ella haciendo scrunch y definiendo el cabello.</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 45 -->
+  <div class="reel" data-reel="45">
+    <div class="reel-head">
+      <span class="reel-num">REEL 45</span>
+      <span class="reel-title">""Si vale la pena comprarlo, desde que lo uso, la caida se ha disminuido."" — Zonas despobladas + Frizz</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Respondiendo comentario + Comercial</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(45)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/4OGTnlpmgYRA5kqwErw0?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216707649205146/1217136583359375" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(45)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="45">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="45-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>izquierda aceite,</div></div>
+      <div class="shot" data-id="45-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>centro</div></div>
+      <div class="shot" data-id="45-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>creadora con el kit,</div></div>
+      <div class="shot" data-id="45-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>derecha definidor.</div></div>
+      <div class="shot" data-id="45-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina</span>Mostrar un antes, zonas despobladas</div></div>
+      <div class="shot" data-id="45-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina</span>y luego el despues</div></div>
+      <div class="shot" data-id="45-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Creadora mostrando ambos productos y el resultado final.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="beautyboost">
+  <div class="creator-title">
+    <h2>Beauty Boost — Colágeno — Sandra Lorena</h2>
+    <span class="count">10:00 AM · Reels 26–30</span>
+  </div>
+  <!-- REEL 26 -->
+  <div class="reel" data-reel="26">
+    <div class="reel-head">
+      <span class="reel-num">REEL 26</span>
+      <span class="reel-title">"a partir de los 25, el cuerpo empieza a producir menos colágeno. Sí, así como escuchas, as…" — dejar de producti colageno después de los 25</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">ugc</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(26)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/U16ZvTxQo3whgjCEj9Wx?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216842229266159/1217168804901080" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(26)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="26">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 27 -->
+  <div class="reel" data-reel="27">
+    <div class="reel-head">
+      <span class="reel-num">REEL 27</span>
+      <span class="reel-title">"¿Sabías que el colágeno de tu cuerpo empieza a bajar como un 1% cada año? Sí, todos los añ…"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">ugc</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(27)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZS4apAg12/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216842229266159/1217168804901082" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(27)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="27">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="27-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina PM</span>prepafando el coalgeno en una taza</div></div>
+      <div class="shot" data-id="27-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina PM</span>pov del producto</div></div>
+      <div class="shot" data-id="27-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina PM</span>clip creadora tomando</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 28 -->
+  <div class="reel" data-reel="28">
+    <div class="reel-head">
+      <span class="reel-num">REEL 28</span>
+      <span class="reel-title">"Tres cosas que necesitas saber antes de comprar colágeno."</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">ugc</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(28)">☰ Guión</button> <a class="ref-btn" href="https://www.tiktok.com/@candynutri/video/7512594054018878738?_r=1&_t=ZS-98bxjwyZ9Np" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216842229266159/1217168804901084" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(28)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="28">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="28-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>paneo del colageno</div></div>
+      <div class="shot" data-id="28-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>clip preparandolo</div></div>
+      <div class="shot" data-id="28-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>clip diferentes creadoras tomandolo</div></div>
+      <div class="shot" data-id="28-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina AM</span>creadora mostrando que no tiene azucar</div></div>
+      <div class="shot" data-id="28-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina AM</span>creadora preparando el producto</div></div>
+      <div class="shot" data-id="28-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Integración</span>creadora tomandolo</div></div>
+      <div class="shot" data-id="28-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Integración</span>paneo de la bebida preparada</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 29 -->
+  <div class="reel" data-reel="29">
+    <div class="reel-head">
+      <span class="reel-num">REEL 29</span>
+      <span class="reel-title">""Jenny escribe: 'ojalá alguien me hubiera hablado de este colágeno antes'. Jenny, para eso…"</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">respondiendo coemntarios</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(29)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/d4jEAeo61XBH2V4bgXTb?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216842229266159/1217168804901086" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(29)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="29">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="29-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>arriba: creadora tomando el producto</div></div>
+      <div class="shot" data-id="29-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>abajo: paneo de la bebida preparada</div></div>
+      <div class="shot" data-id="29-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina PM</span>clip creadora tomando el producto</div></div>
+      <div class="shot" data-id="29-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Integración</span>paneo del los tres coalgenos con el batidor</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 30 -->
+  <div class="reel" data-reel="30">
+    <div class="reel-head">
+      <span class="reel-num">REEL 30</span>
+      <span class="reel-title">"Deja de deslizar y escúchame con atención, porque el colágeno de beauty boost está a punto…"</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(30)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/HXuCGE8XkWNsK3pv6MXD?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216842229266159/1217168804901088" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="ref-btn rec-btn" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(30)">✓ Grabado</button>
+      </div>
+      <span class="reel-progress" data-reel-progress="30">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="30-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Rutina AM</span>paneo de los tres colagneos con el mezclador</div></div>
+      <div class="shot" data-id="30-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Integración</span>clip creadora msorando el colganeo a cámara</div></div>
+      <div class="shot" data-id="30-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Integración</span>clip creadora tomandolo</div></div>
+      <div class="shot" data-id="30-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">—</span>paneo del producto</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · Rodaje miércoles 5 de agosto · Bloque 2 — Airbnb AM · Sandra Lorena<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_rodaje05ago_b2_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      if (reel.classList.contains('recorded')) {
+        el.textContent = 'grabado';
+        el.classList.add('done');
+        return;
+      }
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+
+    const totalReels = document.querySelectorAll('.reel').length;
+    const recReels = document.querySelectorAll('.reel.recorded').length;
+    const briefsEl = document.getElementById('briefsText');
+    if (briefsEl) briefsEl.innerHTML = '<b>' + recReels + '</b> / ' + totalReels + ' briefs grabados';
+  }
+
+  // === Marcar el BRIEF COMPLETO como grabado ===
+  // Es independiente de los checkboxes de tomas: el PM puede darlo por grabado
+  // aunque queden tomas sin marcar (o marcarlas todas y aun así no darlo por cerrado).
+  const REC = '__rec_';
+
+  function sortRecorded() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const reels = Array.from(block.querySelectorAll('.reel'));
+      reels.sort((a, b) => {
+        const ra = a.classList.contains('recorded') ? 1 : 0;
+        const rb = b.classList.contains('recorded') ? 1 : 0;
+        if (ra !== rb) return ra - rb;                    // los grabados, al final
+        return (+a.dataset.order) - (+b.dataset.order);   // el resto, en su orden original
+      });
+      reels.forEach(r => block.appendChild(r));
+    });
+  }
+
+  function toggleRecorded(num) {
+    const reel = document.querySelector('.reel[data-reel="' + num + '"]');
+    if (!reel) return;
+    const on = !reel.classList.contains('recorded');
+    reel.classList.toggle('recorded', on);
+    if (on) {
+      reel.classList.remove('open');
+      state[REC + num] = true;
+    } else {
+      delete state[REC + num];
+    }
+    save();
+    sortRecorded();
+    updateProgress();
+    applyFilter();
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        const rec = reel.classList.contains('recorded');
+        reel.classList.toggle('hidden', rec || (allDone && shots.length > 0));
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      document.querySelectorAll('.reel.recorded').forEach(r => r.classList.remove('recorded'));
+      Object.keys(state).forEach(k => delete state[k]);
+      sortRecorded();
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Restaurar los briefs ya marcados como grabados y dejarlos al final
+  document.querySelectorAll('.creator-block').forEach(block => {
+    block.querySelectorAll('.reel').forEach((r, i) => { r.dataset.order = i; });
+  });
+  document.querySelectorAll('.reel').forEach(reel => {
+    if (state[REC + reel.dataset.reel]) reel.classList.add('recorded');
+  });
+  sortRecorded();
+
+  // Open first reel by default (el primero que no esté grabado)
+  const firstReel = document.querySelector('.reel:not(.recorded)');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "41": {
+    "title": "REEL 41 — NALUA",
+    "sub": "TOF · POV + Solo texto · Frizz + cabello reseco",
+    "cols": [
+      "Estructura",
+      "Texto superpuesto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "<strong>Si tienes el pelo crespo, ondulado y con mucho frizz o seco... prueba esto. </strong>",
+          "Tomas de apoyo",
+          "La creadora está <strong>sentada en una silla de su habitación</strong>, con el cabello seco, esponjado y con frizz, mirando a cámara.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 1</strong>",
+          "<strong>1. 🌙 La noche anterior: Aceite de Batana.</strong>",
+          "Tomas de apoyo",
+          "Sentada en la misma silla, aplica el aceite, solo se ve el gotero, no el tarro en el cuero cabelludo, medios y puntas, mientras se hace un masaje, y hace gestos de que se va a dormir.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 2</strong>",
+          "<strong>2. Lavalo bien.</strong>",
+          "Tomas de apoyo",
+          "Ella haciendo gestos de que lavo bien el cabello(lo tiene humedo)",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 3</strong>",
+          "<strong>3. Desenredarlo humedo y una sola vez.</strong>",
+          "Tomas de apoyo",
+          "Cepilla el cabello lentamente, aún sentada.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 4</strong>",
+          "<strong>4. 🤍 Aplica el definidor.</strong>",
+          "Tomas de apoyo",
+          "Aplica el definidor , el producto cae desde arriba y ella lo pone por secciones, de medios a puntas.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 5</strong>",
+          "<strong>5. ✨ Haz scrunch.</strong>",
+          "Tomas de apoyo",
+          "Hace scrunch en todo el cabello mientras sigue sentada.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Resultado</strong>",
+          "<strong>6. 😍 Déjalo secar... y mira la diferencia.</strong>",
+          "Pantalla dividida\nTomas de apoyo",
+          "Se muestra el antes: muy marcado \ny el resultado final, aún sentada en la silla, moviendo el cabello de un lado a otro.",
+          "La pantalla se divide de forma diagonal en la parte de arriba esta el antes y abajo el despues"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "<strong>Solo dos productos y Rizos definidos, suaves y con menos frizz.</strong>",
+          "Tomas de apoyo",
+          "Tomas de apoyo a producto",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "42": {
+    "title": "REEL 42 — NALUA",
+    "sub": "TOF · UGC + B-Roll · Caída del cabello",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "<strong>\"Van a decir que exagero… el aceite de batana me quito los pedazos calvitos.\"</strong>",
+          "A cámara \nTomas de apoyo",
+          "Ella poniendose aceite con el gotero, sin mostrar el tarro\n-Tomar fotos del cabello, diferentes angulos y zonas de entrada, de mitad superior de la cabeza, etc",
+          "Superponer las imagenes negativas de ella, y alterarlas con AI, poner lados medianamente despoblados"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Identificación</strong>",
+          "<strong>\"Yo tuve una crisis fuerte, y el pelo lo tenia super seco, quebradizo, poroso.\"</strong>",
+          "Voz en off",
+          "Aplicando el aceite en el cuero cabelludo por secciones.\n-Mas imagenes negativas del cabello de ella, diferentes angulos, para mostrar puntas quebradizas, cabello poroso, etc",
+          "Superponer las imagenes especificas y alterarlas con AI, que el cabello se vea quebradizo, poroso, seco."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina</strong>",
+          "<strong>\"Y de verdad la terapia con aceite de batana y romero, me ha ayudado mucho, me pongo unas goticas por secciones, masajeo el cuero cabelludo y lo dejo actuar toda la noche.\"</strong>",
+          "A camara",
+          "Se distribuye el aceite por varias partes, se masajea con los dedos, y se hace una trenza",
+          "Cortes rápidos siguiendo cada paso."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Complemento</strong>",
+          "<strong>\"Al otro día me lavo el pelo y siempre termino con el definidor, y el cabello me queda divino suave y sin frizz.\"</strong>",
+          "Voz en off",
+          "Aplicación del definidor sobre el cabello húmedo y scrunch.",
+          "Mostrar cómo el rizo va tomando forma."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Cierre</strong>",
+          "<strong>\"Lo mejor es que no tengo que echarme mil cosas, son solo estos dos productos, y listo..\"</strong>",
+          "Voz en off",
+          "Muestra los productos",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "<strong>Yo se lo desesperante que es ver el cabello cayendose, y de verdad este kit le va a devolver la vida, intentalo</strong>",
+          "A camara",
+          "Los productos visibles y ella mostrando sus resultados, el cabello seco,  suave y con vida.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "43": {
+    "title": "REEL 43 — NALUA",
+    "sub": "TOF · Respondiendo comentario · Frizz, cabello sin definicion",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "<strong>Disculpe mami, que? Venga le muestro que mi pelo definido  si es muy diferente</strong>",
+          "Respondiendo comentario",
+          "La creadora mira el comentario y sonríe.",
+          "<strong>Superponer el comentario grande:</strong> \"Yo la verdad no le encuentro funcion al definidor.\" <strong>Desde este momento poner una línea vertical dividiendo la pantalla.</strong>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Experimento</strong>",
+          "<strong>\"Este lado lo voy a dejar como normalmente amanece, no le puse nada... y este sí, de por si ya dormi con aceite de batana y me lo lave, y si se ve la diferencia.\"</strong>",
+          "A camara",
+          "Lado derecho: Super esponjado con mucho frizz, alterar, despeinar,\nLado izquierdo: mas manejable, y ella empieza a humedecerlo",
+          "Mantener la línea divisoria durante todo el video. Colocar un rótulo: <strong>\"Sin hidratacion\"</strong> / <strong>\"Con hidratacion\"</strong>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Identificación</strong>",
+          "<strong>\"MIRAME este lado, un nido de pajaros parezco, y eso que antes estaba peor, porque me he decolorado mucho.</strong>\n<strong>En este otro lado, voy a definir, y chicas es muy importante que el producto no les deje el cabello tieso, sino que mantenga el rizo, pero que les humecte</strong>",
+          "Voz en off",
+          "Lado derecho: muestra ese lado, se toca el cabello.\nLado izquierdo: Ella se pone el definidor, no se ve el tarro, solo la textura de la crema en las manos y empieza a definir (demorarse un poquito en la definicion, para ponerlo en cam rapida)",
+          "<strong>Cuando ella empieza a definir, ponerlo en camara rapida</strong>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Resultado</strong>",
+          "<strong>\"Amiga, la verdad, la diferencia es notable, si tu no ves la diferencia necesitas cambiar urgente de productos\"</strong>",
+          "A cámara",
+          "Lado derecho: Igual, muy esponjado\nLado izquierdo:, super definido, la diferencia es COMPLETAMENTE VISIBLE, se agarra el pelo,se hace scrunch, etc",
+          "Hacer zoom alternando ambos lados para resaltar la diferencia. Texto: <strong>\"¿Cuál lado escogerías?\"</strong>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "<strong>Yo los mios los amo, este aceite de verdad para el crecimiento, para el brillo, PERFECTO, y el definidor, la textura ligerita, ligerita.</strong>\n<strong>Tu tambien deberias usar para que empieces a ver los cambios</strong>",
+          "A camara",
+          "Ya todo el cabello definido y seco, y mostrar  los productos y el resultado del cabello",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "44": {
+    "title": "REEL 44 — NALUA",
+    "sub": "MOF · UGC dinámico · Cabello maltratado por procedimientos químicos",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "<strong>\"Si estas quedandote calva  por tanta plancha, keratina o tintes… empieza hair oiling.\"</strong>",
+          "Voz en off\nTomas de apoyo",
+          "Close up del kit completo sobre una superficie limpia y estética.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 1</strong>",
+          "<strong>\"Primero, aceite de batana. Lo uso la noche anterior para nutrir el pelo desde la raíz.\"</strong>",
+          "Voz en off\nTomas de apoyo",
+          "Aplicación del aceite sobre el cuero cabelludo por secciones.",
+          "Transición tipo <strong>slide</strong> hacia la siguiente toma. mismos efectos de la referencia"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Comparación</strong>",
+          "<strong>\"Nure el pelo, y dejas de estar pelo en pausa.\"</strong>",
+          "<strong>Pantalla dividida:</strong> \nVoz en off",
+          "<strong>izquierda</strong> cabello seco, opaco, con frizz; \n<strong>derecha</strong> cabello brillante, definido y con movimiento.",
+          "Mantener ambas mitades durante 2-3 segundos. Texto: <strong>\"Antes, ponerlo en gris / Después.\"</strong>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Resultado</strong>",
+          "<strong>“ Hata pelito nuevo te empieza a salir...\"</strong>",
+          "Voz en off\nTomas de apoyo",
+          "Mismo video anterior, misma locacion y misma ropa, pero ahora \nMuestra baby hairs, muestra la vida del cabello, etc",
+          "Transición donde la imagen del lado derecho se expande hasta llenar toda la pantalla. Slow motion."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Paso 2</strong>",
+          "<strong>\"Después de lavarlo, termino con el definidor para darle forma sin dejarlo pesado.\"</strong>",
+          "Voz en off",
+          "Close up de la textura del definidor saliendo del envase.",
+          "Plano macro de la textura."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Aplicación</strong>",
+          "<strong>\"Y eso es todo, hablame de este pelatzo.\"</strong>",
+          "Voz en off",
+          "Ella haciendo scrunch y definiendo el cabello.",
+          "Cortes rápidos mostrando diferentes ángulos del proceso."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Prueba visual</strong>",
+          "<strong>\"Por eso es que aqui amamos el kit de nalua, y yo de ti tambien me lo voy pidiendo .\"</strong>",
+          "Voz en off",
+          ".",
+          "<strong>Efecto de desplazamiento horizontal- ver la ref (slide)</strong> entre cada creadora. Alternar: aceite → definidor → aceite → definidor → aceite → definidor.\nAlternar clips de diferentes mujeres usando el aceite y el definidor, con distintos tipos de rizos y texturas\ny despues terminar con tomas a producto"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "45": {
+    "title": "REEL 45 — NALUA",
+    "sub": "BOF · Respondiendo comentario + Comercial · Zonas despobladas + Frizz",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "<strong>\"Si vale la pena comprarlo, desde que lo uso, la caida se ha disminuido.\"</strong>",
+          "Voz en off\nPantalla dividida en tres",
+          "izquierda aceite, \ncentro \ncreadora con el kit, \nderecha definidor.",
+          "<strong>-Revisar la ref</strong>\n<strong>Pantalla dividida en tres:</strong> izquierda aceite, centro creadora con el kit, derecha definidor.\n <strong>Superponer comentario:</strong> \"¿Sí vale la pena comprar los dos?\""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina</strong>",
+          "<strong>\"El aceite de batana y romero cuida el cuero cabelludo y ayuda con esas zonas donde siento menos densidad. El definidor controla el frizz y deja los rizos mucho más bonitos.\"</strong>",
+          "Voz en off\nTomas de apoyo",
+          "Mostrar un antes, zonas despobladas\ny luego el despues",
+          "Pantalla completa. Alternar tomas de la creadora usando el kit."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Prueba social</strong>",
+          "<strong>\"Y no soy la única, miren cuántas mujeres ya lo incluyeron en su rutina.\"</strong>",
+          "Voz en off\nTomas de apoyo",
+          "",
+          "Tomas de banco:\nChica usando el aceiteTomas de apoyo del aceiteOtra chica usando el definidorTomas del definidor\nAlternar <strong>mujer → producto → mujer → producto</strong> con transición de desplazamiento horizontal (slide)."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "<strong>\"Aprovechen que el kit tiene 25% OFF y llévense la rutina completa desde la página web.\"</strong>",
+          "Voz en off\nTomas de apoyo",
+          "Creadora mostrando ambos productos y el resultado final.",
+          "Superponer <strong>25% OFF</strong>, resultado antes/después y cierre con el kit."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "26": {
+    "title": "REEL 26 — Beauty Boost",
+    "sub": "TOF · ugc · dejar de producti colageno después de los 25",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook </strong>",
+          "a partir de los 25, el cuerpo empieza a producir menos colágeno. Sí, así como escuchas, así de rápido",
+          "",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo </strong>",
+          "Por eso es después de cierta edad ves a muchas tomandolo",
+          "",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Rutina PM </strong>",
+          "Y como nunca es tarde para empezar, yo no me podía quedar atrás, así que me puse averiguar cual era el mejor y resulta que es el hidrolizado, ya que ese es el que el cuerpo absorbe mejor",
+          "",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Rutina AM </strong>",
+          "así que empece a usar este que a parte de ser hidrolizado, no tiene azucar",
+          "",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Integración </strong>",
+          "a mi me ha encantado pero lo que me terminó de enamorar fue el sabor. El de coco en el café queda como un mocachino… ya es mi vicio de la mañana.",
+          "",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "Si ya estas a la edad, de empezar a tomarlo, consiguelo en este link en descuento",
+          "",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "27": {
+    "title": "REEL 27 — Beauty Boost",
+    "sub": "TOF · ugc",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual (Pantalla dividida)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook </strong>",
+          "¿Sabías que el colágeno de tu cuerpo empieza a bajar como un 1% cada año? Sí, todos los años un poquito.\"",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo </strong>",
+          "\"Y uno tan pendiente de aplicarse mil cosas, y se olvida de cuidarse por dentro. Por eso yo empecé a tomar colágeno, así de simple.\"",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Rutina PM </strong>",
+          "este que yo tomo se lo pongo  el café . Es hidrolizado, eso quiere decir que el cuerpo lo aprovecha fácil, ademas no tiene azúcar y sabe rico.\"",
+          "voz off",
+          "prepafando el coalgeno en una taza \npov del producto \nclip creadora tomando",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina AM </strong>",
+          "si tu también quieres empezar con el colganeno, consiguelo abajo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "28": {
+    "title": "REEL 28 — Beauty Boost",
+    "sub": "TOF · ugc",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual (Pantalla dividida)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook </strong>",
+          "Tres cosas que necesitas saber antes de comprar colágeno.",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo </strong>",
+          "el colágeno es de las proteínas más importantes del cuerpo, y con los años uno empieza a producir menos. Por eso tantas lo suman a su rutina.",
+          "voz offf",
+          "paneo del colageno \nclip preparandolo \nclip diferentes creadoras tomandolo",
+          "poner clips diferentes creadoras tomandlo"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina PM </strong>",
+          "Uno: no todos los colágenos son iguales debe decir que es  hidrolizado porque ese es el que el cuerpo aprovecha fácil",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Rutina AM </strong>",
+          "\"Dos: revisa que no venga cargado de azúcar ni de esos rellenos para que rinda. Este no trae ni lo uno ni lo otro.\"",
+          "voz off",
+          "creadora mostrando que no tiene azucar \ncreadora preparando el producto",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Integración </strong>",
+          "\"Y tres, la que nadie mira: que sepa rico. Porque si sabe mal, no te lo vas a tomar. El de coco queda cremoso en el café.\"",
+          "voz off",
+          "creadora tomandolo \npaneo de la bebida preparada",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "y si me preguntas cual cumple estas tres cosas, es definitivamente este",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "",
+          "consiguelo ahora con descuento en el link de abajo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "29": {
+    "title": "REEL 29 — Beauty Boost",
+    "sub": "MOF · respondiendo coemntarios",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual (Pantalla dividida)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook </strong>",
+          "\"Jenny escribe: 'ojalá alguien me hubiera hablado de este colágeno antes'. Jenny, para eso estoy aquí",
+          "a cámara",
+          "",
+          "Jenny: ojalá alguien me hubiera hablado de este colágeno antes 💬\""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo </strong>",
+          "Karen dice: 'eso seguro sabe a tierra'. Ay Karen… es sabor coco y queda cremoso en el café. Nada de tierra, de nada.\"",
+          "voz off",
+          "arriba: creadora tomando el producto\nabajo: paneo de la bebida preparada",
+          "Karen: seguro sabe a tierra 💬"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina PM </strong>",
+          "Melisa escribe: 'es que yo no dejo el dulce'. Nadie te lo pide, Mel. No tiene azúcar y te da igual el gustico.\"",
+          "a cámara con apoyo",
+          "clip creadora tomando el producto",
+          "Mel: yo no dejo el dulce"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina AM </strong>",
+          "natalia dice 'llevo un año con esto'. Y no es la única, ya somos más de cinco mil.",
+          "a cámara con apoyos",
+          "",
+          "Natalia: llevo un año con esto\nponer clips de otras creadoras tomando el producto"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Integración </strong>",
+          "Y andre pregunta por la promo: así que aquí te la recuerdo, te llevas tres colágenos con el mezclador de regalo. PEro Corre que se acaba 👇\"",
+          "a cámara con apoyo",
+          "paneo del los tres coalgenos con el batidor",
+          "Andrea: Y la promo?"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "30": {
+    "title": "REEL 30 — Beauty Boost",
+    "sub": "BOF",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual (Pantalla dividida)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook </strong>",
+          "Deja de deslizar y escúchame con atención, porque el colágeno de beauty boost está a punto de quitar su descuento.",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo </strong>",
+          "si, me estas escuchando bien, el mismo colageno que muchas famosas han probado. Asi que El tiempo está corriendo, y cuando llegue a cero, se acabó.",
+          "a cámara con tomas de apoyo",
+          "",
+          "poner estas imagenes flotantes"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Rutina PM </strong>",
+          "Todavía lo vas a poder comprarlo, pero a precio completo y sin el regalo",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Rutina AM </strong>",
+          "Porque ahoritica te llevas los tres colágenos y te llega gratis este mezclador eléctrico",
+          "voz off",
+          "paneo de los tres colagneos con el mezclador",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Integración </strong>",
+          "asi que si estabas pensando en comprarlo después, el momento es ahora.",
+          "voz off",
+          "clip creadora msorando el colganeo a cámara \nclip creadora tomandolo",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "",
+          "\"Así que Corre por tus tres colágenos con el mezclador , te dejo el link aquí abajo 👇\"",
+          "a cámara con apoyo",
+          "paneo del producto",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est">${cell || ''}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto">${cell || ''}</td>`;
+        if (i === fmtCol) return `<td>${cell ? `<span class="guion-fmt ${fmtClass(cell)}">${cell}</span>` : ''}</td>`;
+        return `<td>${cell || ''}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
