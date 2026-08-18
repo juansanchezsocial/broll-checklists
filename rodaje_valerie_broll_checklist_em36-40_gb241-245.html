@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodaje · Tomas de Apoyo · Enfoque Mind 36–40 + The Gummy Box 241–245</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_rodaje_valerie_em36_40_gb241_245_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  /* Brief marcado como grabado: se apaga y se tacha, PERO se queda en su posición.
+     El apagado va por elemento (no opacity en la card) para que el switch siga legible. */
+  .reel.recorded { border-color: var(--border); box-shadow: none; background: var(--card-2); }
+  .reel.recorded .reel-num, .reel.recorded .reel-title,
+  .reel.recorded .tag, .reel.recorded .ref-btn, .reel.recorded .caret,
+  .reel.recorded .reel-progress { opacity: 0.42; transition: opacity .25s ease; }
+  .reel.recorded:hover .reel-num, .reel.recorded:hover .reel-title,
+  .reel.recorded:hover .tag, .reel.recorded:hover .ref-btn,
+  .reel.recorded:hover .caret, .reel.recorded:hover .reel-progress { opacity: 0.8; }
+  .reel.recorded .reel-num, .reel.recorded .reel-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+  /* Switch estilo iOS: da el brief completo por grabado */
+  .rec-switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: transparent; border: none; padding: 4px 2px 4px 6px; margin: 0;
+    font-family: Poppins, "Open Sans", sans-serif; -webkit-tap-highlight-color: transparent;
+  }
+  .rec-switch-txt {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--muted); transition: color .18s ease; white-space: nowrap;
+  }
+  .rec-track {
+    position: relative; width: 42px; height: 25px; border-radius: 100px; flex-shrink: 0;
+    background: var(--card-2); border: 1px solid var(--border-strong);
+    transition: background .22s ease, border-color .22s ease;
+  }
+  .rec-knob {
+    position: absolute; top: 50%; left: 2px; width: 19px; height: 19px; border-radius: 50%;
+    background: #fff; transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .24s cubic-bezier(.4,.15,.25,1.2);
+  }
+  .rec-switch:hover .rec-track { border-color: var(--accent-solid); }
+  .rec-switch:focus-visible { outline: 2px solid var(--accent-solid); outline-offset: 3px; border-radius: 100px; }
+  .reel.recorded .rec-switch-txt { color: var(--accent); }
+  .reel.recorded .rec-track { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .reel.recorded .rec-knob { transform: translateY(-50%) translateX(17px); }
+  .briefs-text { font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; margin-left: auto; }
+  .briefs-text b { color: var(--accent); }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  /* ===== Tablet ===== */
+  @media (max-width: 900px) {
+    .guion-table { min-width: 720px; }
+  }
+
+  /* ===== Móvil =====
+     El audiovisual suele abrir esto en el celular en pleno set: targets grandes,
+     nada de scroll horizontal y el guión se lee como fichas, no como tabla. */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 26px 16px 22px; }
+    .logo { width: 44px; height: 44px; margin-bottom: 11px; }
+    h1 { font-size: 21px; }
+    .sub { font-size: 13px; }
+    .theme-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
+
+    .bar-inner { padding: 10px 14px; }
+    .toolbar { gap: 7px; }
+    .chip, .reset-btn { padding: 8px 14px; font-size: 13px; }
+    .reset-btn { margin-left: 0; }
+    .briefs-text { margin-left: 0; flex-basis: 100%; order: 9; font-size: 12px; }
+
+    .wrap { padding: 4px 14px 64px; }
+    .creator-block { margin-top: 26px; }
+    .creator-title h2 { font-size: 17px; }
+
+    /* Header del reel en 3 renglones: nº+progreso · título · tags/botones/switch */
+    .reel { border-radius: 13px; }
+    .reel-head { flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 13px 14px; }
+    .reel-num { order: 1; min-width: auto; font-size: 12.5px; }
+    .reel-progress { order: 2; margin-left: auto; }
+    .caret { order: 3; }
+    .reel-title { order: 4; flex-basis: 100%; font-size: 15px; }
+    .reel-meta { order: 5; flex-basis: 100%; gap: 8px; align-items: center; }
+    .reel-meta .rec-switch { margin-left: auto; }
+    .ref-btn { padding: 8px 14px; font-size: 12px; }
+    .rec-switch-txt { font-size: 12px; }
+    .rec-track { width: 46px; height: 27px; }
+    .rec-knob { width: 21px; height: 21px; }
+    .reel.recorded .rec-knob { transform: translateY(-50%) translateX(19px); }
+
+    /* Tomas: fila alta y checkbox grande para marcar con el pulgar */
+    .reel-body { padding: 2px 14px 12px; }
+    .shot { padding: 15px 2px; gap: 12px; }
+    .checkbox { width: 26px; height: 26px; border-radius: 8px; }
+    .shot-text { font-size: 15px; }
+  }
+
+  /* ===== Guión en pantalla chica =====
+     La tabla SIGUE siendo tabla: se desliza de lado para ver las columnas (decisión
+     del usuario, 2026-08-11 — las fichas apiladas no funcionaron en set).
+     La primera columna queda fija a la izquierda para no perder el tiempo/estructura. */
+  @media (max-width: 700px) {
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal { border-radius: 0; border: none; min-height: 100%; display: flex; flex-direction: column; }
+    .modal-head { position: sticky; top: 0; z-index: 3; background: var(--card); padding: 14px 16px; }
+    .modal-head h3 { font-size: 15.5px; }
+    .modal-close { width: 38px; height: 38px; font-size: 19px; }
+    .modal-body { max-height: none; padding: 12px 12px 40px; }
+
+    .guion-table-wrap { border-radius: 10px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .guion-table { min-width: 760px; font-size: 13.5px; }
+    .guion-table td { padding: 11px 12px; }
+    .guion-table td.g-texto { font-size: 14px; }
+
+    /* Columna 1 anclada mientras se desliza el resto */
+    .guion-table th:first-child, .guion-table td:first-child { position: sticky; left: 0; z-index: 2; }
+    .guion-table th:first-child { z-index: 4; background: var(--card-2); }
+    .guion-table td:first-child { background: var(--card); box-shadow: 1px 0 0 var(--border); }
+    .guion-table tr.is-broll td:first-child { background: var(--broll-bg); }
+    .guion-table tr.is-broll td.g-est { box-shadow: inset 3px 0 0 var(--accent-solid), 1px 0 0 var(--border); }
+
+    .guion-hint { display: flex; }
+    .guion-legend { font-size: 12.5px; align-items: flex-start; }
+  }
+
+  /* Aviso de deslizamiento — solo visible en móvil */
+  .guion-hint {
+    display: none; align-items: center; gap: 7px; margin: 0 0 9px;
+    font-size: 12px; color: var(--muted); font-family: Poppins, sans-serif;
+  }
+  .guion-hint span { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>Rodaje · Tomas de Apoyo · Enfoque Mind 36–40 + The Gummy Box 241–245</h1>
+    <div class="sub">Valerie Restrepo · Enfoque Mind (Melena de León) + The Gummy Box (Magnesio)</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="enfoquemind">ENFOQUE MIND</div>
+    <div class="chip" data-filter="gummybox">THE GUMMY BOX</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <span class="briefs-text" id="briefsText"></span>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="enfoquemind">
+  <div class="creator-title">
+    <h2>ENFOQUE MIND</h2>
+    <span class="count">Reels 36–40 · Valerie Restrepo</span>
+  </div>
+  <!-- REEL 36 -->
+  <div class="reel" data-reel="36">
+    <div class="reel-head">
+      <span class="reel-num">REEL 36</span>
+      <span class="reel-title">"Era apenas martes y ya me sentía destruida del cansancio"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · Voz en off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(36)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/vKozJfiy4NaV1Mb9j1be?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216891531904044/1217562872213883" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(36)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="36">0/16</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="36-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>clip creadora con mucho cansancio</div></div>
+      <div class="shot" data-id="36-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>clip creadora trabajando con cansancio</div></div>
+      <div class="shot" data-id="36-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>foto creadora cansada con ojeras (pasarla por ia)</div></div>
+      <div class="shot" data-id="36-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>clip creadora enfocada trabajando</div></div>
+      <div class="shot" data-id="36-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>clip creadora haciendo ejercicio pedir clip</div></div>
+      <div class="shot" data-id="36-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1</span>clip creadora dando vueltas en la cama</div></div>
+      <div class="shot" data-id="36-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1</span>clip creadora tomando pastillas y bostezando</div></div>
+      <div class="shot" data-id="36-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1</span>clip creadora con mucho cansancio</div></div>
+      <div class="shot" data-id="36-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2</span>clip creadora trabajado enfocada</div></div>
+      <div class="shot" data-id="36-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2</span>clip creadora corriendo o haciendo ejercicio</div></div>
+      <div class="shot" data-id="36-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span>clip creadora trabajanado</div></div>
+      <div class="shot" data-id="36-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3</span>clip creadora leyendo</div></div>
+      <div class="shot" data-id="36-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4</span>clip creadora comiendo gomitas</div></div>
+      <div class="shot" data-id="36-14"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4</span>pov de las gomitas</div></div>
+      <div class="shot" data-id="36-15"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4</span>pov gomitas en la mano</div></div>
+      <div class="shot" data-id="36-16"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>clip creadora con las gomitas y señalando link abajo</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 37 -->
+  <div class="reel" data-reel="37">
+    <div class="reel-head">
+      <span class="reel-num">REEL 37</span>
+      <span class="reel-title">"Cuello y hombros tensos, duermes mal, te irritas fácil… eso no es normal"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(37)">☰ Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7671750981738138910&language=en-US&currency=USD&region=US&dateRange=%5B%222026-07-18%22%2C%222026-08-16%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216891531904044/1217562872213885" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(37)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="37">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="37-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook (lista de señales → causa)</span>video crearoa con el cuello tensionado mientras trabaja</div></div>
+      <div class="shot" data-id="37-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook (lista de señales → causa)</span>clip creadora con mucho cansancio</div></div>
+      <div class="shot" data-id="37-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook (lista de señales → causa)</span>clip creadora sintiendose muy irritada puede ser una toma de ella enviando un audio como si estuviera alegando</div></div>
+      <div class="shot" data-id="37-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Me pasaba a mí (ejemplo + síntomas)</span>clip creadora con mucho cansancio</div></div>
+      <div class="shot" data-id="37-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Me pasaba a mí (ejemplo + síntomas)</span>clip creadora muy irritada, puede sr agrrandose la cabeza tirando algo</div></div>
+      <div class="shot" data-id="37-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hasta que probé esto (producto + ingredientes)</span>pov de las gomitas sin que se vea la marca</div></div>
+      <div class="shot" data-id="37-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hasta que probé esto (producto + ingredientes)</span>clip creadora comiendo las gomitas</div></div>
+      <div class="shot" data-id="37-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hasta que probé esto (producto + ingredientes)</span>clip creadora trabjando enfocada</div></div>
+      <div class="shot" data-id="37-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hasta que probé esto (producto + ingredientes)</span>clip creadora meditando o sntiendose muy relajada</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 38 -->
+  <div class="reel" data-reel="38">
+    <div class="reel-head">
+      <span class="reel-num">REEL 38</span>
+      <span class="reel-title">"Vivía con el cuerpo tensionado y la mandíbula apretada del puro estrés"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(38)">☰ Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7660534901875248414&language=en-US&currency=USD&region=US&dateRange=%5B%222026-07-18%22%2C%222026-08-16%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216891531904044/1217562872213887" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(38)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="38">0/13</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="38-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>arriba: creadora con el cuerpo tensionado</div></div>
+      <div class="shot" data-id="38-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>abajo: creadora dando vueltas en la espalda</div></div>
+      <div class="shot" data-id="38-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>arriba: creadora con la mandibula tensionada</div></div>
+      <div class="shot" data-id="38-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>abajo: creadora muy estresada</div></div>
+      <div class="shot" data-id="38-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1 (producto)</span>arriba: creadora dando vueltas en la espalda</div></div>
+      <div class="shot" data-id="38-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1 (producto)</span>abajo: creadora agarrandose la cabeza muy estresada</div></div>
+      <div class="shot" data-id="38-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3 (lista de mejoras)</span>cip creadora haciendo ejercicio o meditando</div></div>
+      <div class="shot" data-id="38-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3 (lista de mejoras)</span>clip creadora levantandose super relajada</div></div>
+      <div class="shot" data-id="38-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 3 (lista de mejoras)</span>clip creadora trabajando enfocada</div></div>
+      <div class="shot" data-id="38-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4 (extra sorpresa)</span>clip creadora acostada y masajeandose la espalda porque le duele mucho</div></div>
+      <div class="shot" data-id="38-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 4 (extra sorpresa)</span>clip creadora estirandose en la espalda sin sentir ningun dolor</div></div>
+      <div class="shot" data-id="38-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Modo de uso</span>arriba: creadora comiendo gomas</div></div>
+      <div class="shot" data-id="38-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Modo de uso</span>abajo: pov de dos gomas en la manos</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 39 -->
+  <div class="reel" data-reel="39">
+    <div class="reel-head">
+      <span class="reel-num">REEL 39</span>
+      <span class="reel-title">"No era flojera ❌ era el cuerpo reventado del estrés" — antes/después</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">POV · Texto en pantalla</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(39)">☰ Guión</button> <a class="ref-btn" href="https://www.kalodata.com/video/detail?id=7648147635605359903&language=en-US&currency=USD&region=US&dateRange=%5B%222026-07-18%22%2C%222026-08-16%22%5D" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216891531904044/1217562872213889" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(39)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="39">0/15</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="39-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 1 (Antes)</span>clip creadora tensionada de la espalda</div></div>
+      <div class="shot" data-id="39-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 1 (Antes)</span>clip creadora irritada</div></div>
+      <div class="shot" data-id="39-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 1 (Antes)</span>foto creadora muy cansada</div></div>
+      <div class="shot" data-id="39-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 2 (Antes – más síntomas)</span>clip creadroa muy cansada</div></div>
+      <div class="shot" data-id="39-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 2 (Antes – más síntomas)</span>clip creadora con mal genio</div></div>
+      <div class="shot" data-id="39-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 2 (Antes – más síntomas)</span>clip creadora muy tensa de la espalda</div></div>
+      <div class="shot" data-id="39-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 3 (Después)</span>clip creadora enfocada trabajando</div></div>
+      <div class="shot" data-id="39-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 3 (Después)</span>clip creadora haciendo ejercicio</div></div>
+      <div class="shot" data-id="39-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 3 (Después)</span>clipc readora estirandose</div></div>
+      <div class="shot" data-id="39-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 4 (Después – contraste)</span>clip creadora traqnuila</div></div>
+      <div class="shot" data-id="39-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 4 (Después – contraste)</span>clip creadora despetandose despues de dormir bien</div></div>
+      <div class="shot" data-id="39-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 5 (Producto)</span>clip creadora msotrando las gomas</div></div>
+      <div class="shot" data-id="39-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 5 (Producto)</span>clip creadora comiendo las gomitas</div></div>
+      <div class="shot" data-id="39-14"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 5 (Producto)</span>pov de las gomitas</div></div>
+      <div class="shot" data-id="39-15"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Escena 6 (CTA)</span>paneo de las gomtias</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 40 -->
+  <div class="reel" data-reel="40">
+    <div class="reel-head">
+      <span class="reel-num">REEL 40</span>
+      <span class="reel-title">"Sí, existen unas vitaminas que te ayudan a concentrarte… y vienen en gomitas"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · A cámara con apoyo</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(40)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/0Fwqe2PuwBaPS2LHh5T6?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216891531904044/1217562872213891" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(40)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="40">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="40-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>clip creadora trrabajando enfocada</div></div>
+      <div class="shot" data-id="40-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>pov de las gomitas</div></div>
+      <div class="shot" data-id="40-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 1 (el contraste)</span>clip creadora tomando un supeento en agua y haciendo gesto de desagrado</div></div>
+      <div class="shot" data-id="40-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2 (qué es)</span>paneo de las gomitas</div></div>
+      <div class="shot" data-id="40-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2 (qué es)</span>creeadora comiendo las gomitas</div></div>
+      <div class="shot" data-id="40-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2 (qué es)</span>clip creadora mostrando las gomas a cámara</div></div>
+      <div class="shot" data-id="40-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo 2 (qué es)</span>clips creadora trabajando o haciendo ejercicio</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="gummybox">
+  <div class="creator-title">
+    <h2>THE GUMMY BOX</h2>
+    <span class="count">Reels 241–245 · Valerie Restrepo</span>
+  </div>
+  <!-- REEL 241 -->
+  <div class="reel" data-reel="241">
+    <div class="reel-head">
+      <span class="reel-num">REEL 241</span>
+      <span class="reel-title">"No tenía ni idea de que las ojeras son una señal de alarma tan grande"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · A cámara + b-roll</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(241)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/TH8gJ4vLoe7bIaUirOC5?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1217568954769543" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(241)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="241">0/11</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="241-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>Plano cerrado frente al espejo del baño: se acerca, se estira la piel de debajo del ojo con el dedo, gira la cara a un lado y al otro.</div></div>
+      <div class="shot" data-id="241-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Intenta abrir bien los ojos frente al espejo y no le dan (plano corto).</div></div>
+      <div class="shot" data-id="241-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Se pone corrector debajo del ojo y muestra que la sombra sigue ahí.</div></div>
+      <div class="shot" data-id="241-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Bosteza sentada en el comedor con el computador abierto — <strong>el bostezo se graba real, no actuado</strong>.</div></div>
+      <div class="shot" data-id="241-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>Ella dando vueltas en la cama con la luz de la calle entrando por la persiana.</div></div>
+      <div class="shot" data-id="241-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>Mirando el celular de madrugada.</div></div>
+      <div class="shot" data-id="241-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>Corte al espejo en la mañana.</div></div>
+      <div class="shot" data-id="241-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 6</span>Saca el frasco de la mesita de noche y lo sostiene con la etiqueta hacia el lente.</div></div>
+      <div class="shot" data-id="241-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 6</span>Plano cenital del frasco abierto sobre el mesón con las gomitas regadas.</div></div>
+      <div class="shot" data-id="241-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 6</span>El dedo recorre los tres ingredientes en la etiqueta mientras los nombra.</div></div>
+      <div class="shot" data-id="241-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 7</span>Demo seguido: destapa el frasco sentada en la cama, cuenta las tres gomitas en la palma a cuadro, se las come, deja el frasco en la mesita y apaga la lámpara.</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 242 -->
+  <div class="reel" data-reel="242">
+    <div class="reel-head">
+      <span class="reel-num">REEL 242</span>
+      <span class="reel-title">POV audio-trend: "Te ves descansada" — cambié la melatonina por gomitas</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Audio-trend · POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(242)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/YQXNvLyS8l3VMjmzR7LC?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1217568954698568" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(242)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="242">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="242-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>TOMA POV continua, sin cortes, de 8 segundos</strong>: la creadora acostada en la cama en la mañana, con luz natural, estirándose y sonriendo. El frasco de gomitas a la vista en la mesita de noche. Una sola toma, nada más.</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 243 -->
+  <div class="reel" data-reel="243">
+    <div class="reel-head">
+      <span class="reel-num">REEL 243</span>
+      <span class="reel-title">"Si te da calambre a las 3 de la mañana, si el párpado te tiembla solo…"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">IA · Animación 3D — SIN RODAJE</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(243)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/sP9o0F3KGRbz6ly24efQ?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1217568954698585" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(243)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="243">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Reel 100% <strong>animación 3D generada con IA</strong> — no requiere rodaje en set.</div>
+    </div>
+  </div>
+
+  <!-- REEL 244 -->
+  <div class="reel" data-reel="244">
+    <div class="reel-head">
+      <span class="reel-num">REEL 244</span>
+      <span class="reel-title">"Pensé que había botado 80 mil pesos…"</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC · Voz en off</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(244)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/3mgSmXJoRL5pMfAZHSAq?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1217568815821979" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(244)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="244">0/11</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="244-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>La mano sostiene el frasco de gomitas sobre el lavamanos del baño con el agua corriendo, como si fuera a vaciarlo (broma visual de "plata botada"); luego retira el frasco del chorro y cierra la llave.</div></div>
+      <div class="shot" data-id="244-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>Hero shot del frasco sobre la mesa de noche con luz cálida de lámpara, la mano lo gira para que se vea la etiqueta.</div></div>
+      <div class="shot" data-id="244-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>Plano corto del celular mientras desliza reseñas con el dedo.</div></div>
+      <div class="shot" data-id="244-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Saca de la cocina un tarro de polvo y una cuchara, sirve en un vaso con agua y hace cara de fastidio al olerlo (sirve cualquier tarro de polvo, no se lee la etiqueta).</div></div>
+      <div class="shot" data-id="244-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Mastica las gomitas de pie en el mesón, cara de alivio.</div></div>
+      <div class="shot" data-id="244-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>Destapa el frasco sentada en la cama, saca tres gomitas y las cuenta a cuadro una por una sobre la palma, y se las come.</div></div>
+      <div class="shot" data-id="244-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>Primer plano de la etiqueta del frasco, el dedo recorre los tres ingredientes mientras se nombran.</div></div>
+      <div class="shot" data-id="244-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>Plano general de ella acostándose y apagando la lámpara de la mesita.</div></div>
+      <div class="shot" data-id="244-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 5</span>Primeros planos bien iluminados del frasco sobre el mesón junto a la ventana, girándolo para que se lean los sellos de la etiqueta.</div></div>
+      <div class="shot" data-id="244-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 6</span>Toma corta y limpia del frasco solo sobre la mesita de noche, con la lámpara apagándose detrás.</div></div>
+      <div class="shot" data-id="244-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Packshot del frasco de frente sobre la mesita de noche. Mirada a cámara opcional al cerrar, sin hablar, con gesto de "buenas noches".</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 245 -->
+  <div class="reel" data-reel="245">
+    <div class="reel-head">
+      <span class="reel-num">REEL 245</span>
+      <span class="reel-title">Respuesta a comentario: "¿No pueden bajarles el precio?"</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC · Respuesta a comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(245)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/rPUHEb6MXXfJ6QDu1OGY?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1209865781035270/1217568954768314" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(245)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="245">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara con los frascos en el mesón (ver Guión).</div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · Enfoque Mind Entrega 3 · The Gummy Box Entrega 7<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_rodaje_valerie_em36_40_gb241_245_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      if (reel.classList.contains('recorded')) {
+        el.textContent = 'grabado';
+        el.classList.add('done');
+        return;
+      }
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+
+    const totalReels = document.querySelectorAll('.reel').length;
+    const recReels = document.querySelectorAll('.reel.recorded').length;
+    const briefsEl = document.getElementById('briefsText');
+    if (briefsEl) briefsEl.innerHTML = '<b>' + recReels + '</b> / ' + totalReels + ' briefs grabados';
+  }
+
+  // === Marcar el BRIEF COMPLETO como grabado ===
+  // Es independiente de los checkboxes de tomas: el PM puede darlo por grabado
+  // aunque queden tomas sin marcar (o marcarlas todas y aun así no darlo por cerrado).
+  // El brief grabado NO se reordena: se queda en su sitio y solo se tacha
+  // (decisión del usuario, 2026-08-11 — mover la tarjeta desubica al equipo en set).
+  const REC = '__rec_';
+
+  // Mantiene el estado accesible del switch iOS alineado con la clase .recorded
+  function syncSwitches() {
+    document.querySelectorAll('.reel').forEach(reel => {
+      const sw = reel.querySelector('.rec-switch');
+      if (sw) sw.setAttribute('aria-checked', reel.classList.contains('recorded') ? 'true' : 'false');
+    });
+  }
+
+  function toggleRecorded(num) {
+    const reel = document.querySelector('.reel[data-reel="' + num + '"]');
+    if (!reel) return;
+    const on = !reel.classList.contains('recorded');
+    reel.classList.toggle('recorded', on);
+    if (on) {
+      reel.classList.remove('open');
+      state[REC + num] = true;
+    } else {
+      delete state[REC + num];
+    }
+    save();
+    syncSwitches();
+    updateProgress();
+    applyFilter();
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        const rec = reel.classList.contains('recorded');
+        reel.classList.toggle('hidden', rec || (allDone && shots.length > 0));
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      document.querySelectorAll('.reel.recorded').forEach(r => r.classList.remove('recorded'));
+      Object.keys(state).forEach(k => delete state[k]);
+      syncSwitches();
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Restaurar los briefs ya marcados como grabados (en su posición original)
+  document.querySelectorAll('.reel').forEach(reel => {
+    if (state[REC + reel.dataset.reel]) reel.classList.add('recorded');
+  });
+  syncSwitches();
+
+  // Open first reel by default (el primero que no esté grabado)
+  const firstReel = document.querySelector('.reel:not(.recorded)');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "36": {
+    "title": "REEL 36 — Enfoque Mind",
+    "sub": "TOF · UGC · Voz en off · Ángulo: cansancio extremo",
+    "cols": [
+      "Estructura",
+      "Texto (palabra por palabra)",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "era apenas martes y yo ya me sentía destruida del cansancio. Y ahora llego al final del día entera, sin esa sensación de estar muerta.\"",
+          "voz off",
+          "clip creadora con mucho cansancio\nclip creadora trabajando con cansancio\nfoto creadora cansada con ojeras (pasarla por ia)\nclip creadora enfocada trabajando\nclip creadora haciendo ejercicio pedir clip",
+          "pasar la foto por ia y que se vea muy cansada con ojeras"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 1",
+          "\"Yo probé de todo para no andar tan cansada: dormir más, tomar vitaminas, acostarme temprano… y igual me levantaba SIEMPRE CANSADA",
+          "Voz en off",
+          "clip creadora dando vueltas en la cama\nclip creadora tomando pastillas y bostezando\nclip creadora con mucho cansancio",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 2",
+          "\"Había escuchado full de la Melena de León, que es un hongo que ayuda a enfocarse mejor y a tener energia pero nadie me dijo lo rápido que se notaba los cambios",
+          "Voz en off",
+          "clip creadora trabajado enfocada\nclip creadora corriendo o haciendo ejercicio",
+          "https://co.pinterest.com/pin/288441551157513698/\nhttps://co.pinterest.com/pin/731694270729246365/\nclip creadora trabajando enfocada"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 3",
+          "lo que más me sorprendió: llego a la noche sin sentirme reventada, para alguien como yo que a las 2 de la tarde ya no daba más es un cambio increible",
+          "voz offf",
+          "clip creadora trabajanado\nclip creadora leyendo",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 4",
+          "yo tomo la melena de leon en gomitas , me como dos en la mañana y listo , estas me gustan porque tienen otros ingredientes naturales",
+          "voz off",
+          "clip creadora comiendo gomitas\npov de las gomitas\npov gomitas en la mano",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "te dejo el enlace aquí abajo para que las pruebes",
+          "voz iff",
+          "clip creadora con las gomitas y señalando link abajo",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "37": {
+    "title": "REEL 37 — Enfoque Mind",
+    "sub": "TOF · UGC · A cámara · Ángulo: tension en la espalda por estres",
+    "cols": [
+      "Estructura",
+      "Texto (palabra por palabra)",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (lista de señales → causa)",
+          "\"Si andas con el cuello y los hombros tensos, duermes mal, te levantas cansada y te irritas fácil … eso no es normal: tu cuerpo tiene estrés y ni lo has notado",
+          "a cámara",
+          "video crearoa con el cuello tensionado mientras trabaja\nclip creadora con mucho cansancio\nclip creadora sintiendose muy irritada puede ser una toma de ella enviando un audio como si estuviera alegando",
+          "poner videos flotantes mirar ref y mirar la columna de audiovisual"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Me pasaba a mí (ejemplo + síntomas)",
+          "\"A mí me pasaba todo eso al tiempo. Me levantaba ya cansada,, y explotaba con cualquier cosa que me dijeran en el trabajo",
+          "pantalla verde",
+          "clip creadora con mucho cansancio\nclip creadora muy irritada, puede sr agrrandose la cabeza tirando algo",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Hasta que probé esto (producto + ingredientes)",
+          "\"Hasta que probé esto , Son gomitas con Melena de León, la melena es un hongo que ayuda a que la cabeza baje el ritmo y suelte esa tensión, mental y musucular",
+          "pantalla verde",
+          "pov de las gomitas sin que se vea la marca\nclip creadora comiendo las gomitas\nclip creadora trabjando enfocada\nclip creadora meditando o sntiendose muy relajada",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Por qué sirve + resultados",
+          "desde que las tomo, duermo mejor, ando más tranquila y me levanto sin ese estres acumulado en mi espalda .",
+          "a cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA (urgencia)",
+          "yo las consegui en este link pero se agotan rapido, ahora mismo vi que hay stock ya pedi mi tercer tarrito",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "38": {
+    "title": "REEL 38 — Enfoque Mind",
+    "sub": "TOF · Pantalla dividida · Ángulo: estres",
+    "cols": [
+      "structura",
+      "Texto (palabra por palabra)",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Vivía con el cuerpo tensionado, la mandíbula apretada y durmiendo mal del puro estrés. Y yo pensaba que era normal",
+          "pantalla divdida",
+          "arriba: creadora con el cuerpo tensionado\nabajo: creadora dando vueltas en la espalda\narriba: creadora con la mandibula tensionada\nabajo: creadora muy estresada",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 1 (producto)",
+          "Pero eso es tu cuerpo diciendote a gritos que tienes estrés por eso empecé a tomar la melena de leon, que ayuda a calmar el estres y a enfocarte mejor",
+          "pantalla dividida",
+          "arriba: creadora dando vueltas en la espalda\nabajo: creadora agarrandose la cabeza muy estresada",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 2 (escepticismo)",
+          "\"No te voy a mentir, empecé a tomarlasen gomitas pero no le tenía tanta fé pensaba que era puro hype de TikTok. Pero sí he notado la diferencia en cómo me siento durante el día.\"",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo 3 (lista de mejoras)",
+          "\"Ando más tranquila menos tensa y ahora Duermo mucho mejor.",
+          "Voz en off",
+          "cip creadora haciendo ejercicio o meditando\nclip creadora levantandose super relajada\nclip creadora trabajando enfocada",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 4 (extra sorpresa)",
+          "\"Pero espérate, que lo mejor es en la noche: ustedes no me lo preguntaron pero yo mantenia con tanta tension en la espalda que ni podia dormir bien, ahora duermo como un bebé",
+          "a cámara con apoyo",
+          "clip creadora acostada y masajeandose la espalda porque le duele mucho\nclip creadora estirandose en la espalda sin sentir ningun dolor",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Modo de uso",
+          "yo me como dos gomitas en la mañana y ojo que no tienen azucar",
+          "pantalla dvidida",
+          "arriba: creadora comiendo gomas\nabajo: pov de dos gomas en la manos",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Si tú también estás sobreviviendo a punta de estres estrés, pruebalas ahora",
+          "A cámara",
+          "Frasco + web + packs; flecha al link.",
+          "Overlays: \"envío gratis\" · \"garantía 30 días\" · flecha. CTA en pantalla y voz."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "39": {
+    "title": "REEL 39 — Enfoque Mind",
+    "sub": "MOF · POV · Texto en pantalla · Ángulo: cansancio todo el día",
+    "cols": [
+      "Estructura",
+      "Texto en pantalla",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Escena 1 (Antes)",
+          "\"No era flojera ❌ era el cuerpo reventado del estrés\"",
+          "Texto en pantalla + música",
+          "clip creadora tensionada de la espalda\nclip creadora irritada\nfoto creadora muy cansada",
+          "poner la misma musica\nfoto creadora pasarla por ia y que se le vean ojeras"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Escena 2 (Antes – más síntomas)",
+          "\"Cansada todo el día 😮‍💨 tensa y de mal genio 😤\"",
+          "Texto en pantalla + música",
+          "clip creadroa muy cansada\nclip creadora con mal genio\nclip creadora muy tensa de la espalda",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Escena 3 (Después)",
+          "\"15 DÍAS DESPUÉS 🙏😍\"",
+          "Texto en pantalla + música",
+          "clip creadora enfocada trabajando\nclip creadora haciendo ejercicio\nclipc readora estirandose",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Escena 4 (Después – contraste)",
+          "\"Con energía 🔋 tranquila 😌 y durmiendo bien 😴\"",
+          "Texto en pantalla + música",
+          "clip creadora traqnuila\nclip creadora despetandose despues de dormir bien",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Escena 5 (Producto)",
+          "\"Esto fue lo que usé 🙏\" → \"Enfoque Mind · Melena de León, frutos rojos y espinaca\" → \"2 gomitas en la mañana\"",
+          "Texto en pantalla + música",
+          "clip creadora msotrando las gomas\nclip creadora comiendo las gomitas\npov de las gomitas",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Escena 6 (CTA)",
+          "\"Link abajo 👇con envío gratis\"",
+          "Texto en pantalla + música",
+          "paneo de las gomtias",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "40": {
+    "title": "REEL 40 — Enfoque Mind",
+    "sub": "TOF · UGC · A cámara con apoyo",
+    "cols": [
+      "Estructura",
+      "Texto (palabra por palabra)",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Sí, existen unas vitaminas que te ayudan a concentrarte y rendir más. Y lo mejor: es que vienen en gomitas",
+          "A cámara con apoyo",
+          "clip creadora trrabajando enfocada\npov de las gomitas",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 1 (el contraste)",
+          "\"Porque si me toca tragarme otra pastilla gigante, o revolver otro polvo que sabe a remedio, ¡paso! Esto es distinto.\"",
+          "a cámara con apoyo",
+          "clip creadora tomando un supeento en agua y haciendo gesto de desagrado",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 2 (qué es)",
+          "\"Son gomitas con Melena de León, un hongo que ayuda a tu cabeza a enfocarse, más frutos rojos y espinaca. Todo lo que tu cerebro necesita, en algo que de verdad te provoca comerte.\"",
+          "voz off",
+          "paneo de las gomitas\ncreeadora comiendo las gomitas\nclip creadora mostrando las gomas a cámara\nclips creadora trabajando o haciendo ejercicio",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo 3 (beneficios rápidos)",
+          "no tienen azucar y tienen registo INVIMA.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo 4 (remate con actitud)",
+          "Por eso muchas personas lo estan usando ahora y han notado los cambios",
+          "voz off",
+          "",
+          "clips diferentes creadoras comiendo las gomitas\nfotos flotantes"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Si andabas esperando algo así, ya está disponible. Dale al link: y llevalas con envio gratis a todo el país.\"",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "241": {
+    "title": "REEL 241 — The Gummy Box",
+    "sub": "TOF · UGC · A cámara + b-roll · Ángulo: Falta de sueño que se te nota en la cara (ojeras, ojos hinchados, bostezos)",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"No tenía ni idea de que las ojeras son una señal de alarma tan grande.\"",
+          "A cámara",
+          "Talking head en el cuarto, con la luz natural de la ventana. Recién levantada, sin maquillaje, el pelo como amaneció. En \"señal de alarma\" se toca debajo de los dos ojos con los índices.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Esta soy yo a las seis y media de la mañana, después de ocho horas en la cama. Y aunque en las fotos salga bien, mi cara cuenta otra historia.\"",
+          "A cámara + b-roll",
+          "Corte a plano cerrado frente al espejo del baño: se acerca, se estira la piel de debajo del ojo con el dedo, gira la cara a un lado y al otro.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"Los ojos chiquitos, que no me abren del todo. Las ojeras moradas que ningún corrector me tapa. Y los bostezos: en la reunión de las nueve, en el almuerzo, manejando.\"",
+          "A cámara + b-roll",
+          "Tres tomas cortas, una por síntoma: (1) intenta abrir bien los ojos frente al espejo y no le dan; (2) se pone corrector debajo del ojo y muestra que la sombra sigue ahí; (3) bosteza sentada en el comedor con el computador abierto. El bostezo se graba real, no actuado.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"Y la cosa es que no es normal amanecer así habiendo dormido ocho horas. Esa es la creencia más equivocada que tenemos: que con estar acostadas el tiempo suficiente ya descansamos.\"",
+          "A cámara",
+          "Vuelve al talking head pero con encuadre distinto al del hook (de pie en la cocina, apoyada en el mesón), para que el corte se sienta. Tono de \"te voy a decir algo que a mí me cayó tarde\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Uno puede pasar la noche entera en la cama y no bajar nunca del todo: el cuerpo se queda con el motor prendido, no entra en el sueño profundo, y a la mañana siguiente eso se ve. Se ve en los ojos hinchados, en la piel apagada, en que uno se ve más cansada de lo que está.\"",
+          "Voz en off",
+          "En pantalla: ella dando vueltas en la cama con la luz de la calle entrando por la persiana; mirando el celular de madrugada; corte al espejo en la mañana. No habla a cámara, la voz va sobre las tomas.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 5",
+          "\"¿Y entonces qué hace uno?\"",
+          "A cámara",
+          "Pausa. Mirada directa a cámara, sin hacer nada más. Es el respiro antes de la solución.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 6",
+          "\"Yo llevo un tiempo tomando unas gomitas con magnesio, pasiflora y manzanilla. El magnesio es el que le da con qué frenar al cerebro cuando uno ya se acostó pero la cabeza sigue andando; la pasiflora y la manzanilla son las que le bajan el volumen al día.\"",
+          "A cámara + b-roll",
+          "Saca el frasco de la mesita de noche y lo sostiene con la etiqueta hacia el lente. Corte a plano cenital del frasco abierto sobre el mesón con las gomitas regadas. El dedo recorre los tres ingredientes en la etiqueta mientras los nombra.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 7",
+          "\"Y es solo eso: tres gomitas, media hora antes de acostarme, sin agua ni nada. Se pegan al ritual que uno ya tiene de irse a la cama, por eso no se me olvidan como se me olvidaban las pastillas.\"",
+          "A cámara + b-roll",
+          "Demo seguido: destapa el frasco sentada en la cama, cuenta las tres gomitas en la palma a cuadro, se las come, deja el frasco en la mesita y apaga la lámpara.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Así que la próxima vez que te levantes y te veas esa cara en el espejo, que esa sea la vez que haces algo distinto. Están en la tienda web.\"",
+          "A cámara",
+          "Vuelve al espejo del baño, mismo encuadre del principio, ahora con el frasco en la mano. Mirada directa a cámara al cerrar.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "242": {
+    "title": "REEL 242 — The Gummy Box",
+    "sub": "TOF · Audio-trend · POV · Ángulo: Falta de sueño — cambiar la melatonina por gomitas",
+    "cols": [
+      "Estructura",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "TEXTO EN PANTALLA",
+          "TOMA POV continua, sin cortes, de 8 segundos: la creadora acostada en la cama en la mañana, con luz natural, estirándose y sonriendo. El frasco de gomitas a la vista en la mesita de noche. Una sola toma, nada más.",
+          "Igual que la referencia. Usar el mismo audio viral (8 seg), sin voz y sin subtítulos.\nTexto centrado en pantalla, las dos líneas apiladas, tipografía limpia y sin animaciones:\n\"Te ves descansada\"\n\"Gracias. Es que cambié la melatonina por unas gomitas de magnesio y ahora caigo más rápido que un bebé con tetero.\"\nCierra en la misma toma, sin packshot."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "243": {
+    "title": "REEL 243 — The Gummy Box",
+    "sub": "TOF · IA · Animación 3D — SIN RODAJE · Ángulo: Falta de sueño — los síntomas que se te notan en el cuerpo",
+    "cols": [
+      "Estructura",
+      "Texto (cantado)",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Si te da calambre en la pantorrilla a las tres de la mañana, si el párpado te tiembla solo,\"",
+          "Animación 3D (IA)",
+          "Personaje 3D femenino en pijama, primer plano, cara cansada y ojos apagados. Luz tenue, colores desaturados. Se agarra la pantorrilla con gesto de dolor y después se toca el párpado con el dedo.",
+          "Texto blanco en mayúsculas y negrita entrando de golpe con la primera nota, sincronizado palabra por palabra: \"SI TE DA CALAMBRE A LAS 3 DE LA MAÑANA\" → \"SI EL PÁRPADO TE TIEMBLA SOLO\". Arranca la canción en tono melancólico."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"si amaneces con la mandíbula cansada de apretarla, con el cuello que no gira y con las piernas que no se quedan quietas apenas te acuestas… puede que andes bajo de magnesio.\"",
+          "Animación 3D (IA)",
+          "Sigue el mismo tono apagado. El personaje se señala físicamente cada zona conforme se canta: la mandíbula, el cuello (intenta girarlo y no puede), las piernas moviéndose solas bajo las cobijas.",
+          "Cortes cortos entre síntoma y síntoma. El texto se sigue apilando línea por línea, blanco y en mayúsculas. La última línea, \"PUEDE QUE ANDES BAJO DE MAGNESIO\", entra sola y se sostiene un beat más."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"déjame contarte por qué me pasé a estas gomitas\"",
+          "Animación 3D (IA)",
+          "Cambio de tono visual: la luz se vuelve cálida y dorada, los colores se saturan. Aparece el frasco de gomitas en manos del personaje.",
+          "Transición suave, nunca corte duro. La canción cambia de melancólica a optimista justo aquí. Product reveal con la etiqueta legible. Texto sincronizado."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"o sea, traen magnesio junto con manzanilla y pasiflora, esas dos que las abuelas dan en agua desde siempre para que el cuerpo entienda que ya se acabó el día\"",
+          "Animación 3D (IA)",
+          "Imágenes simbólicas del uso de toda la vida: una abuela sirviendo una taza de agua de manzanilla en una cocina cálida. Después, las flores de manzanilla y pasiflora flotando alrededor del frasco.",
+          "Texto sincronizado con cada ingrediente cuando se nombra: \"MAGNESIO\", \"MANZANILLA\", \"PASIFLORA\". Nada de gráficos técnicos ni moléculas."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"y es solo tres gomitas cada noche, a lo largo de unas semanas\"",
+          "Animación 3D (IA)",
+          "El personaje se come las tres gomitas sentado en la cama y apaga la lámpara de la mesita.",
+          "Gráfico de calendario de pared con hojas arrancables: las páginas pasan rápido y cada noche se marca con una X, mostrando unas cuatro semanas seguidas. Efecto de sonido de las hojas pasando, prácticamente el único SFX del video."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 5",
+          "\"uno se empieza a dormir sin pelear con la almohada y amanece sintiéndose otra vez uno mismo\"",
+          "Animación 3D (IA)",
+          "Efecto clave: una energía dorada y suave baja desde la cabeza por todo el cuerpo del personaje, que se afloja en la cama.",
+          "Disolvencia donde la cara tensa del principio se superpone brevemente sobre la cara descansada, para subrayar el cambio. Colores cálidos y saturados. Texto sincronizado."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 6",
+          "\"y saben rico, no a pastilla. No tienen azúcar, tienen registro INVIMA y no te sueltan el estómago\"",
+          "Animación 3D (IA)",
+          "Plano cercano de las gomitas cayendo en cámara lenta sobre la palma. Luego el frasco girando para que se lean los sellos de la etiqueta.",
+          "Cada claim entra como texto sincronizado con su línea: \"SABEN RICO\", \"SIN AZÚCAR\", \"REGISTRO INVIMA\", \"AMABLE CON EL ESTÓMAGO\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 7",
+          "\"y si no me equivoco, ahorita están más baratas en la tienda web, con garantía de noventa días. Así que si no te sirven, devuelves el frasco y te regresan la plata\"",
+          "Animación 3D (IA)",
+          "Captura de la página del producto en pantalla, con el combo de tres frascos visible. Después, el frasco vacío en la mano como prueba de lo fácil que es devolverlo.",
+          "Recuadro verde brillante con palomita resaltando \"GARANTÍA 90 DÍAS\" para dirigir la mirada. Texto sincronizado con el resto de la línea."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Así que dale clic abajo y llévate el tuyo antes de que se acabe la oferta\"",
+          "Animación 3D (IA)",
+          "El personaje señala hacia abajo con el dedo, reforzando el \"clic abajo\". Frasco visible en la otra mano.",
+          "Texto final grande: \"DALE CLIC ABAJO ANTES DE QUE SE ACABE LA OFERTA\" + \"SOLO EN LA TIENDA WEB\". Cierra con la energía visual alta y colores cálidos, packshot del frasco."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "244": {
+    "title": "REEL 244 — The Gummy Box",
+    "sub": "MOF · UGC · Voz en off",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Pensé que había botado 80 mil pesos, pero creo que encontré la forma más fácil de quedarme dormida sin dar vueltas.",
+          "Voz en off",
+          "En pantalla: la mano sostiene el frasco de gomitas sobre el lavamanos del baño con el agua corriendo, como si fuera a vaciarlo — es la broma visual de \"plata botada\". En \"pero creo que encontré\", retira el frasco del chorro y cierra la llave.",
+          "Corte seco entre el frasco y el lavamanos, ritmo rápido. Subtítulos completos.\nTexto superpuesto grande: \"¿79 mil pesos botados?\".\nMúsica instrumental acústica suave de fondo."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Las compré después de ver todo lo que la gente contaba. Las reseñas decían que con el magnesio dejaban de dar vueltas, que no se despertaban a las tres de la mañana y que amanecían sin ese cansancio encima. Me dio curiosidad y dije: las pruebo.\"",
+          "Voz en off",
+          "En pantalla: hero shot del frasco sobre la mesa de noche con luz cálida de lámpara, la mano lo gira para que se vea la etiqueta. Después, plano corto del celular mientras desliza reseñas con el dedo.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"Antes el magnesio me tocaba tomarlo en polvo: vaso, cuchara, y un sabor tan feo que terminé dejándolo botado en un cajón. Ahora me demoro diez segundos.\"",
+          "Voz en off",
+          "En pantalla: saca de la cocina un tarro de polvo y una cuchara, sirve en un vaso con agua y hace cara de fastidio al olerlo (si no tiene magnesio en polvo, sirve cualquier tarro de polvo de la cocina, no se lee la etiqueta). Corte: mastica las gomitas de pie en el mesón, cara de alivio.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"Son tres gomitas, treinta minutos antes de acostarme, sin agua ni nada. Se mastican y ya.\"",
+          "Voz en off",
+          "En pantalla: destapa el frasco sentada en la cama, saca tres gomitas y las cuenta a cuadro una por una sobre la palma, y se las come. El momento de comérselas queda claro a cuadro porque después hay salto a la noche.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Traen la combinación perfecta entre magnesio, pasiflora y manzanilla.\nEl magnesio es el que hace que los frenos naturales del cerebro respondan, para que la cabeza baje las revoluciones, y la pasiflora y la manzanilla son las que le avisan al cuerpo que ya es hora de apagarse.\"",
+          "Voz en off",
+          "En pantalla: primer plano de la etiqueta del frasco, el dedo recorre los tres ingredientes mientras se nombran. Luego plano general de ella acostándose y apagando la lámpara de la mesita.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 5",
+          "\"Y no es una gomita dulce cualquiera. Acá viene en la forma amable con el estómago, la que no suelta el intestino. No tienen azúcar, tienen registro INVIMA y traen garantía de noventa días. Eso fue lo que me terminó de convencer.\"",
+          "Voz en off",
+          "En pantalla: primeros planos bien iluminados del frasco sobre el mesón junto a la ventana, girándolo para que se lean los sellos de la etiqueta.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 6",
+          "\"Ni polvos, ni pastillas, ni nada raro.\"",
+          "Voz en off",
+          "En pantalla: toma corta y limpia del frasco solo sobre la mesita de noche, con la lámpara apagándose detrás.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "Y tienen un descuento exclusivo. Solo si entras a este enlace de abajo.",
+          "Voz en off",
+          "En pantalla: packshot del frasco de frente sobre la mesita de noche. Única mirada a cámara opcional al cerrar, sin hablar, con gesto de \"buenas noches\".",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "245": {
+    "title": "REEL 245 — The Gummy Box",
+    "sub": "BOF · UGC · Respuesta a comentario · Ángulo: Objeción de precio — les bajaron el precio y los combos son solo por la web",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Amo estas gomitas de magnesio, pero están carísimas. ¿No pueden bajarles el precio?\"",
+          "A cámara",
+          "En la cocina, apoyada en el mesón, con el celular en la mano. Lee el comentario en voz alta con cara de \"ay, justo esta pregunta\". Todavía no aparece el producto.",
+          "Burbuja de comentario simulada sobre el video con el texto exacto: \"Amo estas gomitas de magnesio pero están carísimas 😩 ¿no pueden bajarles el precio??\". Entra música instrumental alegre a volumen bajo."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Te voy a volar la cabeza ahorita mismo. Comentaste esto en el momento perfecto, porque les acaban de bajar el precio.\"",
+          "A cámara",
+          "Corte a ella de frente a cámara, gesticulando y apuntando al lente con el dedo. Energía alta, sube el ritmo de golpe.",
+          "Corte seco de entrada. Texto superpuesto en dos golpes: \"TE VOY A VOLAR LA CABEZA\" y \"LES ACABAN DE BAJAR EL PRECIO\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"El frasco solo estaba en ochenta y cinco mil. Ahora está en setenta y nueve.\"",
+          "A cámara",
+          "Pone un frasco sobre el mesón de golpe, como quien tira una carta sobre la mesa.",
+          "Flash de recuadro verde con \"$79.000\" y efecto de \"cha-ching\" celebratorio. Al lado, el precio viejo tachado: \"$85.000\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"Llevando dos, ciento cuarenta y nueve novecientos.\"",
+          "A cámara",
+          "Pone el segundo frasco al lado del primero, mismo gesto seco.",
+          "Flash verde con \"-10%\" y el mismo \"cha-ching\". Corte rápido, ritmo de enumeración."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Y llevando tres, ciento noventa y nueve novecientos. O sea, menos de sesenta y siete mil cada uno.\"",
+          "A cámara",
+          "Pone el tercer frasco y los tres quedan alineados en el mesón. En \"tres\" levanta tres dedos a cámara.",
+          "Flash verde con \"-20%\" + \"cha-ching\". Debajo, texto fijo un segundo: \"MENOS DE $67.000 C/U\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 5",
+          "\"Y todos con garantía de noventa días: si no te sirven, devuelves el frasco y te regresan la plata.\"",
+          "A cámara",
+          "Levanta un frasco vacío y lo muestra a cámara, como prueba de lo fácil que es devolverlo.",
+          "Flash verde, esta vez con \"GARANTÍA 90 DÍAS\" + palomita. Mismo \"cha-ching\" para cerrar la serie de cuatro."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 6",
+          "\"Si sacas la cuenta, son como cincuenta y cinco mil pesos que te ahorras. Eso es más de medio frasco regalado.\"",
+          "A cámara",
+          "Plano de los tres frascos alineados en el mesón, ella pasando la mano por encima.",
+          "Gráfico grande del ahorro en recuadro verde: \"$255.000 → $199.900\" y debajo \"TE AHORRAS $55.100\". (La ref hace este beat en exterior con un pizarrón de picnic; acá se resuelve con gráfico en pantalla y no hay que salir del apartamento.)"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 7",
+          "\"Y esto está solo en la tienda web. En ningún otro lado te lo dejan a ese precio.\"",
+          "A cámara",
+          "Vuelve a cámara con las manos sobre los frascos alineados, tono de dato confidencial.",
+          "Texto superpuesto: \"SOLO EN LA TIENDA WEB\". Aquí la edición baja el ritmo un momento."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 8",
+          "\"Yo el primero lo pagué a precio viejo, completo, como una boba. Y nadie sabe hasta cuándo lo dejen así.\"",
+          "A cámara",
+          "Primer plano, tono confesional, se encoge de hombros. La energía baja acá a propósito: es el único momento honesto del video.",
+          "Sin texto superpuesto en la primera frase, para que se sienta hablada y no publicitaria. En la segunda entra: \"NADIE SABE HASTA CUÁNDO\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Así que respondiendo tu pregunta: sí, bajaron el precio. Pero solo por la página. Corre, corre, corre, antes de que lo suban otra vez y termines comentando esto el año entrante.\"",
+          "A cámara",
+          "Apunta directo a cámara con urgencia en el gesto, casi sacándote de la pantalla.",
+          "La edición acelera de golpe: cortes secos sincronizados en \"corre, corre, corre\". Cierre sobre los tres frascos alineados, packshot con el nombre de marca y texto final \"SOLO EN LA TIENDA WEB\"."
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        // data-col alimenta el rótulo de cada campo cuando la tabla colapsa a fichas en móvil.
+        const col = ` data-col="${String(cols[i] || '').replace(/"/g, '&quot;')}"`;
+        const v = (cell || '').trim();   // celdas con solo "\n" deben quedar vacías (se ocultan en móvil)
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est"${col}>${v}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto"${col}>${v}</td>`;
+        if (i === fmtCol) return `<td${col}>${v ? `<span class="guion-fmt ${fmtClass(v)}">${v}</span>` : ''}</td>`;
+        return `<td${col}>${v}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-hint"><span>⇄</span>Desliza la tabla de lado para ver todas las columnas</div>` +
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
