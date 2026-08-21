@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KATIRA · Tomas de Apoyo · FEM + GLAM HEALTHY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_katira_fem_glam_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  /* Brief marcado como grabado: se apaga y se tacha, PERO se queda en su posición.
+     El apagado va por elemento (no opacity en la card) para que el switch siga legible. */
+  .reel.recorded { border-color: var(--border); box-shadow: none; background: var(--card-2); }
+  .reel.recorded .reel-num, .reel.recorded .reel-title,
+  .reel.recorded .tag, .reel.recorded .ref-btn, .reel.recorded .caret,
+  .reel.recorded .reel-progress { opacity: 0.42; transition: opacity .25s ease; }
+  .reel.recorded:hover .reel-num, .reel.recorded:hover .reel-title,
+  .reel.recorded:hover .tag, .reel.recorded:hover .ref-btn,
+  .reel.recorded:hover .caret, .reel.recorded:hover .reel-progress { opacity: 0.8; }
+  .reel.recorded .reel-num, .reel.recorded .reel-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+  /* Switch estilo iOS: da el brief completo por grabado */
+  .rec-switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: transparent; border: none; padding: 4px 2px 4px 6px; margin: 0;
+    font-family: Poppins, "Open Sans", sans-serif; -webkit-tap-highlight-color: transparent;
+  }
+  .rec-switch-txt {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--muted); transition: color .18s ease; white-space: nowrap;
+  }
+  .rec-track {
+    position: relative; width: 42px; height: 25px; border-radius: 100px; flex-shrink: 0;
+    background: var(--card-2); border: 1px solid var(--border-strong);
+    transition: background .22s ease, border-color .22s ease;
+  }
+  .rec-knob {
+    position: absolute; top: 50%; left: 2px; width: 19px; height: 19px; border-radius: 50%;
+    background: #fff; transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .24s cubic-bezier(.4,.15,.25,1.2);
+  }
+  .rec-switch:hover .rec-track { border-color: var(--accent-solid); }
+  .rec-switch:focus-visible { outline: 2px solid var(--accent-solid); outline-offset: 3px; border-radius: 100px; }
+  .reel.recorded .rec-switch-txt { color: var(--accent); }
+  .reel.recorded .rec-track { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .reel.recorded .rec-knob { transform: translateY(-50%) translateX(17px); }
+  .briefs-text { font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; margin-left: auto; }
+  .briefs-text b { color: var(--accent); }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  /* ===== Tablet ===== */
+  @media (max-width: 900px) {
+    .guion-table { min-width: 720px; }
+  }
+
+  /* ===== Móvil =====
+     El audiovisual suele abrir esto en el celular en pleno set: targets grandes,
+     nada de scroll horizontal y el guión se lee como fichas, no como tabla. */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 26px 16px 22px; }
+    .logo { width: 44px; height: 44px; margin-bottom: 11px; }
+    h1 { font-size: 21px; }
+    .sub { font-size: 13px; }
+    .theme-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
+
+    .bar-inner { padding: 10px 14px; }
+    .toolbar { gap: 7px; }
+    .chip, .reset-btn { padding: 8px 14px; font-size: 13px; }
+    .reset-btn { margin-left: 0; }
+    .briefs-text { margin-left: 0; flex-basis: 100%; order: 9; font-size: 12px; }
+
+    .wrap { padding: 4px 14px 64px; }
+    .creator-block { margin-top: 26px; }
+    .creator-title h2 { font-size: 17px; }
+
+    /* Header del reel en 3 renglones: nº+progreso · título · tags/botones/switch */
+    .reel { border-radius: 13px; }
+    .reel-head { flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 13px 14px; }
+    .reel-num { order: 1; min-width: auto; font-size: 12.5px; }
+    .reel-progress { order: 2; margin-left: auto; }
+    .caret { order: 3; }
+    .reel-title { order: 4; flex-basis: 100%; font-size: 15px; }
+    .reel-meta { order: 5; flex-basis: 100%; gap: 8px; align-items: center; }
+    .reel-meta .rec-switch { margin-left: auto; }
+    .ref-btn { padding: 8px 14px; font-size: 12px; }
+    .rec-switch-txt { font-size: 12px; }
+    .rec-track { width: 46px; height: 27px; }
+    .rec-knob { width: 21px; height: 21px; }
+    .reel.recorded .rec-knob { transform: translateY(-50%) translateX(19px); }
+
+    /* Tomas: fila alta y checkbox grande para marcar con el pulgar */
+    .reel-body { padding: 2px 14px 12px; }
+    .shot { padding: 15px 2px; gap: 12px; }
+    .checkbox { width: 26px; height: 26px; border-radius: 8px; }
+    .shot-text { font-size: 15px; }
+  }
+
+  /* ===== Guión en pantalla chica =====
+     La tabla SIGUE siendo tabla: se desliza de lado para ver las columnas (decisión
+     del usuario, 2026-08-11 — las fichas apiladas no funcionaron en set).
+     La primera columna queda fija a la izquierda para no perder el tiempo/estructura. */
+  @media (max-width: 700px) {
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal { border-radius: 0; border: none; min-height: 100%; display: flex; flex-direction: column; }
+    .modal-head { position: sticky; top: 0; z-index: 3; background: var(--card); padding: 14px 16px; }
+    .modal-head h3 { font-size: 15.5px; }
+    .modal-close { width: 38px; height: 38px; font-size: 19px; }
+    .modal-body { max-height: none; padding: 12px 12px 40px; }
+
+    .guion-table-wrap { border-radius: 10px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .guion-table { min-width: 760px; font-size: 13.5px; }
+    .guion-table td { padding: 11px 12px; }
+    .guion-table td.g-texto { font-size: 14px; }
+
+    /* Columna 1 anclada mientras se desliza el resto */
+    .guion-table th:first-child, .guion-table td:first-child { position: sticky; left: 0; z-index: 2; }
+    .guion-table th:first-child { z-index: 4; background: var(--card-2); }
+    .guion-table td:first-child { background: var(--card); box-shadow: 1px 0 0 var(--border); }
+    .guion-table tr.is-broll td:first-child { background: var(--broll-bg); }
+    .guion-table tr.is-broll td.g-est { box-shadow: inset 3px 0 0 var(--accent-solid), 1px 0 0 var(--border); }
+
+    .guion-hint { display: flex; }
+    .guion-legend { font-size: 12.5px; align-items: flex-start; }
+  }
+
+  /* Aviso de deslizamiento — solo visible en móvil */
+  .guion-hint {
+    display: none; align-items: center; gap: 7px; margin: 0 0 9px;
+    font-size: 12px; color: var(--muted); font-family: Poppins, sans-serif;
+  }
+  .guion-hint span { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>KATIRA · Tomas de Apoyo · FEM + GLAM HEALTHY</h1>
+    <div class="sub">Rodaje con KATIRA — FEM Dúo Perfecto (Reels 231–235) + GLAM HEALTHY / LipoDrink (Reels 11–15)</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="fem">FEM · Dúo Perfecto</div>
+    <div class="chip" data-filter="glam">GLAM HEALTHY · LipoDrink</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <span class="briefs-text" id="briefsText"></span>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="fem">
+  <div class="creator-title">
+    <h2>FEM · Dúo Perfecto</h2>
+    <span class="count">Reels 231–235</span>
+  </div>
+  <!-- REEL 231 -->
+  <div class="reel" data-reel="231">
+    <div class="reel-head">
+      <span class="reel-num">REEL 231</span>
+      <span class="reel-title">"¿Tu cuchi huele raro por más que te bañes?" — Voz en off + tomas de producto</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC · VO</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(231)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/O0BT7O4KdvZBmxWqmgpv?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217713062546127" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(231)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="231">0/11</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="231-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Plano cenital</strong>: pies en el piso del baño, calzones en los tobillos (femenino, no explícito)</div></div>
+      <div class="shot" data-id="231-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Gancho visual</span>Toma llamativa del <strong>"villano"</strong>: jabón perfumado de baño en primer plano, con flores o etiqueta cursi</div></div>
+      <div class="shot" data-id="231-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Educación / villano</span>Mano <strong>descartando el jabón perfumado</strong></div></div>
+      <div class="shot" data-id="231-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Educación / villano</span>Primerísimos planos de <strong>incomodidad</strong>: ropa apretada, gesto de fastidio (en b-roll, no a cámara)</div></div>
+      <div class="shot" data-id="231-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución — por fuera</span><strong>Tomas de producto en uso</strong>: aplicación del jabón, textura, espuma, primeros planos</div></div>
+      <div class="shot" data-id="231-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución — por fuera</span>Producto en distintos contextos: <strong>repisa del baño, en la mano</strong></div></div>
+      <div class="shot" data-id="231-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución — por dentro</span>Tomas de la <strong>masticable</strong>: frasco, textura, alguien masticando la pasta (manos/boca, sin hablar)</div></div>
+      <div class="shot" data-id="231-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Solución — por dentro</span><strong>Los dos productos juntos</strong> en cuadro</div></div>
+      <div class="shot" data-id="231-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Payoff</span>Chica <strong>se huele la piel/muñeca, feliz</strong>; luego su pareja se acerca, complicidad y sonrisa (limpio, no sexual)</div></div>
+      <div class="shot" data-id="231-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Refuerzo / villano final</span><strong>Plano cenital de un cúmulo de productos</strong> que no funcionaron (óvulos, jabones, remedios) amontonados</div></div>
+      <div class="shot" data-id="231-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA suave</span>Cierre con <strong>tomas finales de producto/uso</strong>: los dos productos, aplicación, plano bonito del combo</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 232 -->
+  <div class="reel" data-reel="232">
+    <div class="reel-head">
+      <span class="reel-num">REEL 232</span>
+      <span class="reel-title">"Mi cuqui huele mejor que a los 20" — Voz en off + apoyo de creadora</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · VO</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(232)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/Bg5WDVnGgyBIvMBL2jUO?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217713062546129" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(232)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="232">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="232-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Plano frontal</strong> (calco de la ref): sentada en el piso, cara de asombro; abre las piernas y entre ellas aparece <strong>el Dúo</strong>. Zoom in al producto</div></div>
+      <div class="shot" data-id="232-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Agitación del dolor</span>Tomas de ella <strong>incómoda en su cuerpo</strong>: se acomoda la ropa, se mira al espejo insegura, se abraza</div></div>
+      <div class="shot" data-id="232-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Agitación del dolor</span>Primeros planos de gesto: <strong>cara de mucha tristeza y frustración</strong></div></div>
+      <div class="shot" data-id="232-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Descubrimiento / combo</span><strong>Saca las pastillas del frasco</strong>, las muestra y las mastica</div></div>
+      <div class="shot" data-id="232-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Descubrimiento / combo</span><strong>Demo del jabón</strong>: textura, aplicación</div></div>
+      <div class="shot" data-id="232-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Descubrimiento / combo</span>Los dos productos juntos + <strong>besito al frasco</strong> (gag tierno de la referencia)</div></div>
+      <div class="shot" data-id="232-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Transformación de ánimo</span><strong>Antes→después de ánimo</strong>: feliz frente al espejo con el producto al lado, segura, se ríe sola, se arregla contenta</div></div>
+      <div class="shot" data-id="232-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Payoff intimidad</span><strong>Su mano agarra la sábana</strong>; luego la mano de él se posa sobre la de ella</div></div>
+      <div class="shot" data-id="232-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA suave</span>Cierre con <strong>tomas de ella feliz con el producto en la mano</strong> + plano del combo</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 233 -->
+  <div class="reel" data-reel="233">
+    <div class="reel-head">
+      <span class="reel-num">REEL 233</span>
+      <span class="reel-title">"Reacción en cadena" — Animación IA + stock (NO se graba en set)</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">IA + STOCK</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(233)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/kGT7AfNjxAclpeA5TxTt?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217713062546131" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(233)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="233">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 234 -->
+  <div class="reel" data-reel="234">
+    <div class="reel-head">
+      <span class="reel-num">REEL 234</span>
+      <span class="reel-title">"¿Cuánta plata llevás botada?" — Selfie a cámara + pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC · Selfie</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(234)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/edvRA5XOzRq0DEMwtiKj?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217713062546133" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(234)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="234">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="234-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">La solución / combo</span><strong>POV</strong>: agarra el Dúo y lo muestra de frente. Demo rápida del jabón (textura) y de la masticable (la muerde)</div></div>
+      <div class="shot" data-id="234-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Showcase</span>Muestra <strong>envase, componentes, dosis</strong> + plano del combo completo</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 235 -->
+  <div class="reel" data-reel="235">
+    <div class="reel-head">
+      <span class="reel-num">REEL 235</span>
+      <span class="reel-title">"¿Los probióticos están sobrevalorados?" — Podcast a cámara</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Podcast</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(235)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/tRkKC7o8Gra2XGeotAZ3?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217713062546135" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(235)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="235">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="235-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">El combo / por qué el Dúo</span><strong>POV del Dúo</strong>: demo del jabón y de la masticable (la animación digital y los textos van en edición)</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="glam">
+  <div class="creator-title">
+    <h2>GLAM HEALTHY · LipoDrink</h2>
+    <span class="count">Reels 11–15</span>
+  </div>
+  <!-- REEL 11 -->
+  <div class="reel" data-reel="11">
+    <div class="reel-head">
+      <span class="reel-num">REEL 11</span>
+      <span class="reel-title">"Encontré un trucazo para la celulitis" — UGC a cámara</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(11)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/esmBB8RQHuW6zXhSZ2qM?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1217566649611026/1217678642975103" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(11)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="11">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="11-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Frustración</span>Hace <strong>gesto de masaje</strong> en la pierna</div></div>
+      <div class="shot" data-id="11-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Frustración</span><strong>Muestra una crema</strong> anticelulítica</div></div>
+      <div class="shot" data-id="11-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Frustración</span><strong>Expresión de frustración</strong></div></div>
+      <div class="shot" data-id="11-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span><strong>Muestra y prepara el producto</strong> (LipoDrink)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 12 -->
+  <div class="reel" data-reel="12">
+    <div class="reel-head">
+      <span class="reel-num">REEL 12</span>
+      <span class="reel-title">"Bajé de peso y quedé sin cola ni piernas" — UGC a cámara</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(12)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/2t7rsJWipIiV2aTis4P9?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1217566649611026/1217678642975105" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(12)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="12">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="12-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Payoff</span>Ella mostrando que <strong>bajó de peso pero sin perder músculo</strong></div></div>
+      <div class="shot" data-id="12-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Payoff</span><strong>Pedir material de apoyo</strong>: tomas/fotos de ella con más peso + fotos de ahora (antes/después)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 13 -->
+  <div class="reel" data-reel="13">
+    <div class="reel-head">
+      <span class="reel-num">REEL 13</span>
+      <span class="reel-title">"POV: tu metabolismo está más lento que un trancón" — todo tomas de apoyo</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(13)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/PukCEQbqu3zK9xq7BUmS?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1217566649611026/1217678642975107" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(13)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="13">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="13-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Se mira al espejo el abdomen</strong></div></div>
+      <div class="shot" data-id="13-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Identificación</span><strong>Videos comiendo</strong> (ella comiendo lo mismo que las amigas)</div></div>
+      <div class="shot" data-id="13-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Dolor</span>Se mira el abdomen, <strong>resignada</strong> — tomas muy negativas</div></div>
+      <div class="shot" data-id="13-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Metáfora</span>Tomas negativas de ella <strong>muy inflamada</strong></div></div>
+      <div class="shot" data-id="13-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Reframe</span><strong>Cierra el clóset</strong> y vuelve al espejo</div></div>
+      <div class="shot" data-id="13-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Mecanismo</span>Tomas de apoyo <strong>preparando el producto</strong></div></div>
+      <div class="shot" data-id="13-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span><strong>Primera aparición del producto + scoop</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 14 -->
+  <div class="reel" data-reel="14">
+    <div class="reel-head">
+      <span class="reel-num">REEL 14</span>
+      <span class="reel-title">"Así de calva me estaba quedando" — Voz en off + pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(14)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/dkGkLjryOconVhR80D3S?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1217566649611026/1217678642975109" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(14)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="14">0/9</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="14-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Arriba</strong>: foto real e incómoda de un <strong>parche sin pelo</strong> en la cabeza</div></div>
+      <div class="shot" data-id="14-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Identificación</span><strong>Abajo</strong>: se hace una <strong>moña de caballo</strong> y se le ve flaquita, sin gracia</div></div>
+      <div class="shot" data-id="14-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Reframe</span><strong>Arriba</strong>: ella desesperada, <strong>tomándose medidas</strong> porque no se ve flaca</div></div>
+      <div class="shot" data-id="14-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span><strong>Arriba</strong>: tomas de la <strong>densidad del cabello</strong></div></div>
+      <div class="shot" data-id="14-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span><strong>Abajo</strong>: el cabello mucho más sano y brillante</div></div>
+      <div class="shot" data-id="14-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Uso</span><strong>Arriba</strong>: <strong>scoop cayendo en el vaso</strong></div></div>
+      <div class="shot" data-id="14-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Uso</span><strong>Abajo</strong>: mezcla y toma</div></div>
+      <div class="shot" data-id="14-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span><strong>Arriba</strong>: tomas a producto</div></div>
+      <div class="shot" data-id="14-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span><strong>Abajo</strong>: ella mostrando producto y resultados del cabello</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 15 -->
+  <div class="reel" data-reel="15">
+    <div class="reel-head">
+      <span class="reel-num">REEL 15</span>
+      <span class="reel-title">"Así de pez globo me levantaba todos los días" — A cámara + tomas de apoyo</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(15)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/6Jav8IT0BlfcNAYtZkUg?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1217566649611026/1217678642975113" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(15)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="15">0/7</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="15-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Dolor</span><strong>Arriba</strong>: tomas de <strong>abdomen muy inflamado</strong></div></div>
+      <div class="shot" data-id="15-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Dolor</span><strong>Abajo</strong>: <strong>elástico de pijama/ropa marcado</strong> en la cintura</div></div>
+      <div class="shot" data-id="15-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Mecanismo</span>Ella frente al computador, <strong>se toca el abdomen y se abre un botón</strong></div></div>
+      <div class="shot" data-id="15-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Prueba</span>Ella <strong>a punto de llorar</strong> mirándose al espejo inflamadísima</div></div>
+      <div class="shot" data-id="15-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span><strong>Clip usando el producto</strong></div></div>
+      <div class="shot" data-id="15-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span>Clip mostrando el <strong>efecto lipo</strong>, ella ultra feliz</div></div>
+      <div class="shot" data-id="15-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Revelación</span>Otros clips positivos — <strong>muchos cambios de spot y tomas desde distintos ángulos</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FEM Dúo Perfecto + GLAM HEALTHY · Entrega 1<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_katira_fem_glam_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      if (reel.classList.contains('recorded')) {
+        el.textContent = 'grabado';
+        el.classList.add('done');
+        return;
+      }
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+
+    const totalReels = document.querySelectorAll('.reel').length;
+    const recReels = document.querySelectorAll('.reel.recorded').length;
+    const briefsEl = document.getElementById('briefsText');
+    if (briefsEl) briefsEl.innerHTML = '<b>' + recReels + '</b> / ' + totalReels + ' briefs grabados';
+  }
+
+  // === Marcar el BRIEF COMPLETO como grabado ===
+  // Es independiente de los checkboxes de tomas: el PM puede darlo por grabado
+  // aunque queden tomas sin marcar (o marcarlas todas y aun así no darlo por cerrado).
+  // El brief grabado NO se reordena: se queda en su sitio y solo se tacha
+  // (decisión del usuario, 2026-08-11 — mover la tarjeta desubica al equipo en set).
+  const REC = '__rec_';
+
+  // Mantiene el estado accesible del switch iOS alineado con la clase .recorded
+  function syncSwitches() {
+    document.querySelectorAll('.reel').forEach(reel => {
+      const sw = reel.querySelector('.rec-switch');
+      if (sw) sw.setAttribute('aria-checked', reel.classList.contains('recorded') ? 'true' : 'false');
+    });
+  }
+
+  function toggleRecorded(num) {
+    const reel = document.querySelector('.reel[data-reel="' + num + '"]');
+    if (!reel) return;
+    const on = !reel.classList.contains('recorded');
+    reel.classList.toggle('recorded', on);
+    if (on) {
+      reel.classList.remove('open');
+      state[REC + num] = true;
+    } else {
+      delete state[REC + num];
+    }
+    save();
+    syncSwitches();
+    updateProgress();
+    applyFilter();
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        const rec = reel.classList.contains('recorded');
+        reel.classList.toggle('hidden', rec || (allDone && shots.length > 0));
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      document.querySelectorAll('.reel.recorded').forEach(r => r.classList.remove('recorded'));
+      Object.keys(state).forEach(k => delete state[k]);
+      syncSwitches();
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Restaurar los briefs ya marcados como grabados (en su posición original)
+  document.querySelectorAll('.reel').forEach(reel => {
+    if (state[REC + reel.dataset.reel]) reel.classList.add('recorded');
+  });
+  syncSwitches();
+
+  // Open first reel by default (el primero que no esté grabado)
+  const firstReel = document.querySelector('.reel:not(.recorded)');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "231": {
+    "title": "REEL 231 — FEM Dúo Perfecto (KATIRA)",
+    "sub": "BOTTOM · UGC · FORMATO PPAL: VOZ EN OFF + TOMAS DE PRODUCTO",
+    "cols": [
+      "Estructura",
+      "Texto (VOZ EN OFF)",
+      "Formato",
+      "Audiovisual (tomas de apoyo)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (0–4s)",
+          "¿Tu cuchi huele raro por más que te bañes?<br>Lindi, el jabón tampoco te está ayudando.",
+          "Voz en off",
+          "<strong>Plano cenital</strong>: pies en el piso del baño, calzones en los tobillos (guiño a la referencia, femenino y no explícito).",
+          "Texto superpuesto grande: <strong>\"¿TU CUCHI HUELE RARO?\"</strong>"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Gancho visual (4–7s)",
+          "Sí, ese que usas para todo el cuerpo y que huele a menta... es lo peor para tu cosita.",
+          "Voz en off",
+          "Toma llamativa/humorística del \"villano\": un jabón perfumado de baño en primer plano, con flores o etiqueta cursi (equivalente al gag de los testículos de juguete: un objeto que descoloca).",
+          "Texto: <strong>\"el que huele rico\"</strong>. Zoom rápido."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Educación / villano (7–16s)",
+          "Pasa que los jabones te la resecan, te desregulan el pH y quita todas las bacterias buenas que necesitas.<br><br>Por eso es que te lavás…pero sigue oliendo como a pescado.",
+          "Voz en off",
+          "Tomas de apoyo: mano descartando el jabón perfumado; primerísimos planos de \"incomodidad\" (ropa apretada, gesto de fastidio grabado en b-roll, no a cámara).",
+          "Clips máx. 1.5s. Efecto visual de mal olor en la parte de la ropa."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Solución / combo — por fuera (16–24s)",
+          "\"Lo que de verdad funciona es cuidar tu cuquita de dos maneras. Por fuera: con el jabón íntimo de FEM, que tiene pH neutro y prebióticos.",
+          "Voz en off",
+          "<strong>Tomas de producto en uso</strong>: aplicación del jabón, textura, espuma, primeros planos; producto en distintos contextos (repisa del baño, mano).",
+          "Split o corte \"POR FUERA\". Texto: <strong>\"pH neutro + prebióticos\"</strong>. Sticker producto 👇."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Solución / combo — por dentro (24–31s)",
+          "\"Y por dentro: con las pastillitas de probióticos, que mantienen vivas las bacterias buenas y el pH equilibrado.",
+          "Voz en off",
+          "Tomas de la masticable: frasco, textura, alguien masticando la pasta (manos/boca, no hablando); los dos productos juntos en cuadro.",
+          "\"POR DENTRO\". Texto: <strong>\"probióticos · equilibra desde adentro\"</strong>."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Payoff / prueba social visual (31–39s)",
+          "Con este combo ese olor a podrido, de verdad se va...y va a empezar a ser el lugar feliz de tu novio.",
+          "Voz en off",
+          "Beat de la referencia adaptado: <strong>una chica se huele la piel/muñeca, feliz</strong>; luego su <strong>pareja se acerca, complicidad, sonrisa</strong> (limpio, tierno, no sexual).",
+          "Transición a luz/color cálido. Texto: <strong>\"FRESCA DE VERDAD\"</strong>."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Refuerzo / villano final (39–44s)",
+          "¿Cuánto tiempo y plata has gastado en cosas que no sirven? Que si óvulos, que si cremas, que si pastillas... ¡Nada de eso ha funcionado!",
+          "Voz en off",
+          "<strong>Plano cenital de un cúmulo de productos</strong> que no funcionaron (óvulos, jabones, remedios) amontonados.",
+          "Entra <strong>texto escrito a mano: \"NO FUNCIONAN\"</strong> sobre el cúmulo (calco del recurso de la referencia)."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA suave (TOF) (44–50s)",
+          "Si vivís peleando con el olor por más que te bañés, revisá qué jabón estás usando, y si necesitas una ayudita extra.",
+          "Voz en off",
+          "Cierre con <strong>tomas finales de producto/uso</strong> (los dos productos, aplicación, plano bonito del combo).",
+          "Card final: logo FEM + \"Dúo Perfecto\" + CTA suave <strong>\"Conócelo en la página\"</strong>. Sin precio ni urgencia."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "232": {
+    "title": "REEL 232 — FEM Dúo Perfecto (KATIRA)",
+    "sub": "TOP · UGC · FORMATO PPAL: VOZ EN OFF + IMÁGENES DE APOYO DE CREADORA",
+    "cols": [
+      "Estructura",
+      "Texto (VOZ EN OFF)",
+      "Formato",
+      "Audiovisual (tomas de apoyo)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (0–5s)",
+          "",
+          "Voz en off",
+          "<strong>Plano frontal (calco de la referencia):</strong> ella sentada en el piso, cara de asombro; abre las piernas y entre ellas aparece <strong>el Dúo</strong> (frasco de masticables + jabón). <strong>Zoom in</strong> al producto.",
+          "Texto en pantalla grande y descarado: <strong>\"Mi cuqui huele mejor que a los 20.\"</strong> Zoom marcado hacia producto. Música baja íntima."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Agitación del dolor (5–13s)",
+          "\"Con el tiempo dejé de sentirme cómoda con mi cuerpo… sobre todo ahí abajo.<br><br>Era la frustración de sentir que nada me servía. Incluso me sentía culpable por hacer el amor con mi novio, porque cada vez que lo hacía era una infección.<br><br>No importaba qué hiciera, siempre era lo mismo.",
+          "Voz en off",
+          "Tomas de ella <strong>incómoda en su cuerpo</strong>: se acomoda la ropa, se mira al espejo insegura, se abraza. Primeros planos de gesto.<br><br>Cara de mucha tristeza y frustración.",
+          "Subtítulos de voz en off - Tono desaturado/frío."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Descubrimiento / combo (13–24s)",
+          "Hasta que un día me cansé de sentirme así y empecé a tomar probióticos. Como a la semana me sentía mucho mejor. Y además empecé a usar un jabón íntimo especial para mi cuqui.",
+          "Voz en off",
+          "Ella <strong>saca las pastillas del frasco y las muestra</strong>, las mastica; demo del jabón (textura, aplicación). Los dos productos juntos. Le da un besito al frasco (gag tierno de la referencia).",
+          "Corte a color cálido. Subtítulos de voz en off"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Transformación de ánimo (24–33s)",
+          "\"Y no fue solo físico. Volví a sentirme cómoda, tranquila… en paz con mi cuerpo, y con mi amiga.",
+          "Voz en off",
+          "<strong>Antes→después de ánimo:</strong> ella feliz frente al espejo con el producto al lado, segura, se ríe sola, se arregla contenta.",
+          "Transición marcada oscuro→luz. Subtítulos de voz en off"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Payoff intimidad (33–40s)",
+          "\"Y sí… en las cositas ricas también volvieron. Dejé de estar pendiente y volví a disfrutar.\"",
+          "Voz en off",
+          "Payoff sugerido de la referencia: <strong>su mano agarra la sábana; luego la mano de él se posa sobre la de ella.</strong>",
+          "Tono cálido. Subtítulos de voz en off"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA suave (TOF) (40–47s)",
+          "\"Si a vos ese mal olor también te quitó la confianza, no es algo sólo tuyo. Y la solución en el link de abajo.",
+          "Voz en off",
+          "Cierre con <strong>tomas finales de ella feliz con el producto en la mano</strong> + plano del combo.",
+          "Subtítulos de voz en off"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "233": {
+    "title": "REEL 233 — FEM Dúo Perfecto (IA + stock)",
+    "sub": "TOP · IA + IMÁGENES DE STOCK · No requiere grabación con la creadora",
+    "cols": [
+      "Estructura",
+      "Texto (VOZ EN OFF)",
+      "Formato",
+      "Audiovisual (animación IA)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (0–5s)",
+          "Esto es lo que pasa en tu cuerpo cuando te empieza una infección.",
+          "Animación IA + voz en off",
+          "Animación: un cuerpo femenino estilizado; una zona íntima \"en equilibrio\" que de repente parpadea en alarma. Detonante visual (semen ingresando al canal vaginal)",
+          "Texto en pantalla grande: <strong>\"REACCIÓN EN CADENA\"</strong>. Música baja que sube en tensión."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cascada de síntomas (5–18s)",
+          "\"Primero, tu pH se sube. Y ahí empieza el efecto dominó: el olor raro aparece. Después llega la picazón que no te deja en paz. Luego el ardor cada que vas al baño. Y ese flujo que cambia de color y de textura. Un síntoma llama al otro.\"",
+          "Animación IA (cada síntoma animado)",
+          "Fichas de dominó cayendo, cada una etiquetada con un síntoma. Animar literal como la referencia: el \"olor\" como ondas, la \"picazón\" como chispas rojas, el \"ardor\" como fuego, el \"flujo\" como gota que cambia, en el cuerpo de la misma mujer del principio. Mostrar cara de dolor e incomodidad de la mujer.",
+          "Texto encadenando: <strong>\"pH ↑ → olor → picazón → ardor → flujo\"</strong>. Clips rápidos, staccato. Paleta fría/roja de alarma."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "La infección se instala (18–25s)",
+          "\"¿Y si no haces nada? Las bacterias malas toman el territorio. Se instalan, se multiplican… y ahí es cuando la incomodidad se vuelve tu día a día.\"",
+          "Animación IA",
+          "Bacterias \"malas\" (personajes oscuros) invadiendo y plantando bandera en un territorio antes sano. La zona se oscurece.",
+          "Texto: <strong>\"la infección se INSTALA\"</strong>. Momento más oscuro del video."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Reencuadre empático (25–30s)",
+          "Y tu cuerpo te empieza a pedir a gritos que le ayudes a defenderse.",
+          "Animación IA / voz en off",
+          "Transición: la cámara \"se acerca\" a una bacteria buena caída, que levanta la mano pidiendo refuerzos.",
+          "Texto: <strong>\"no sos vos — es tu flora pidiendo ayuda\"</strong>. La música respira."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "El ejército / mecanismo (30–43s)",
+          "\"Porque tu flora es literalmente un ejército. Millones de bacterias buenas que cuidan tu puchaina. Cuando ese ejército está fuerte, la infección ni entra: la frenan en la puerta. El problema es que el jabón perfumado y los químicos lo desarman… y lo dejan sin soldados.\"",
+          "Animación IA (personajes que hablan)",
+          "Bacterias buenas como <strong>soldados/ejército</strong> formando un muro en \"la puerta\". Un lactobacilo-personaje habla: \"yo cuido tu pH\". Llega el jabón agresivo y derriba soldados.",
+          "Texto: <strong>\"tu flora = tu ejército\"</strong>. Cada soldado con etiqueta (\"pH\", \"barrera\", \"defensa\")."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "La solución / combo (43–54s)",
+          "\"Por eso el Dúo de FEM envía refuerzos a tu cuerpo, por ambos lados. Por dentro: las masticables con probióticos que reclutan de nuevo a ese ejército y equilibran tu pH y tu flora. Por fuera: el jabón íntimo con pH neutro y prebióticos, que limpia sin desarmar a tus soldados. Juntos: tu defensa completa.\"",
+          "Animación IA → producto",
+          "Refuerzos entrando: nuevos soldados (probióticos) llenando el muro; el jabón \"bueno\" limpiando el campo sin tumbar a nadie. Transición de animación a <strong>producto real</strong> (el Dúo).",
+          "Corte a color cálido. Texto: <strong>\"por dentro + por fuera\"</strong>, \"probióticos · pH neutro\". Sticker \"el dúo 👇\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Timeline + prueba visual (54–63s)",
+          "\"Las mujeres lo sienten desde las primeras semanas: menos incomodidad, más frescura, más tranquilidad. Tu ejército de vuelta en pie.\"",
+          "Tomas reales (stock)",
+          "<strong>Mujeres reales usando el producto</strong>, cara de felicidad y tranquilidad. Tomando el producto, mostrándolo a cámara, etc. Distintas edades, luz cálida, gesto de alivio/seguridad. Imágenes de stock.",
+          "Texto: <strong>\"fresca · tranquila · protegida\"</strong>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA suave (TOF) (63–68s)",
+          "\"Si tu cuerpo te viene dando estas señales, no las ignores. Encuentra el dúo perfecto para tu cuquita, en el link de abajo.",
+          "Tomas reales / producto",
+          "Plano final del Dúo + una mujer tranquila.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "234": {
+    "title": "REEL 234 — FEM Dúo Perfecto (KATIRA)",
+    "sub": "MID · UGC · Selfie a cámara + pantalla verde",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (0–5s)",
+          "\"¿Cuánta plata llevás botada en cosas pa la puchaina que igual NO te funcionan?",
+          "Selfie a cámara",
+          "Ella en modo selfie, cara de \"hablemos claro\", cercana. Frena en seco. Muestra en un cajón todos los productos que tiene para la puchaina.",
+          "Texto en la mitad de la pantalla: ¿Cuánta plata vas a botar?"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "El desfile de compras (5–15s)",
+          "Porque siempre es lo mismo, una compra: que el óvulo, que la cremita de la farmacia, que el jabón íntimo de olor rico, que la ducha vaginal, que el té milagroso que vio en TikTok… y eso plata pa esto, plata pa aquello.",
+          "Selfie + PIP",
+          "Cada producto que menciona <strong>aparece pequeño bajo su rostro</strong> (calco de la referencia): óvulos, crema, jabón perfumado, ducha, té.",
+          "PIP encadenando productos. Texto: <strong>\"$ + $ + $\"</strong>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Reencuadre / lo científico (15–26s)",
+          "\"Pero ¿sabes qué?: nada de eso te está resolviendo el problema. Porque si así fuera, ya no tendrías qué comprar tanta cosa.<br><br>El problema es que tu flora está desbalanceada y el pH de tu amiguis está por las nubes. Y mientras eso siga así… la picazón y el olor van a volver, botés la plata que botés.\"",
+          "Pantalla verde",
+          "Ella pequeña a un lado; en verde, un <strong>esquema simple de pH/flora</strong> (barra de pH subiendo, \"bacterias buenas\" cayendo).",
+          "Pantalla verde mostrando una imagen o video de cómo se desequilibra el pH y la flora."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "La solución / combo (26–38s)",
+          "\"Lo que de verdad sirve es el Dúo dinámico de FEM: por dentro, estas pastillas con probióticos te ayudan la flora y equilibran el pH. Y por fuera, el jabón íntimo con pH neutro y prebióticos, te limpia sin volverte nada esa puchaina.",
+          "POV del producto",
+          "<strong>POV</strong>: agarra el Dúo, lo muestra de frente. Demo rápida del jabón (textura) y de la masticable (la muerde).",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Showcase (46–53s)",
+          "\"Son dos masticables al día, y el jaboncito lo usás en tu ducha, común y corriente.",
+          "Selfie / demo",
+          "Muestra <strong>envase, componentes, dosis</strong>. Plano del combo completo.",
+          "Texto: <strong>\"2 al día + tu ducha diaria\"</strong>."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA + dónde (53–60s)",
+          "Pa antier es tarde pa que estés comprando este dúo. Esta es la página en la que lo podés encontrar.",
+          "Pantalla verde (ecommerce)",
+          "Vuelve a <strong>pantalla verde mostrando el e-commerce</strong> (la página del Dúo, cómo se compra).",
+          "Pantalla verde mostrando la web"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cierre (60–63s)",
+          "Ya sabés pues, dejá de botar plata en pendejadas y de paso, dejá a tu puchaina tranquila.",
+          "Selfie en el baño",
+          "Cierre <strong>selfie en su baño</strong> (calco de la referencia), relajada, media sonrisa.",
+          "Corte seco. Texto final: <strong>\"tu puchaina en paz ✌️\"</strong>."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "235": {
+    "title": "REEL 235 — FEM Dúo Perfecto (KATIRA)",
+    "sub": "BOTTOM · UGC formato podcast · Casi todo hablado a cámara con micrófono",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (0–5s)",
+          "\"Un montón de gente dice que los probióticos vaginales son puro hype, que están sobrevalorados y que en realidad no funcionan. ¿Y si te dijera que están equivocadas… y que el problema es que nadie te explicó cómo funcionan?\"",
+          "Plano medio (podcast, mic)",
+          "Persona sentada con micrófono, <strong>el Dúo en la mano desde el segundo cero</strong>. Tono seguro, cercano. <strong>Zoom in al producto</strong> cuando lo menciona.",
+          "Texto grande: <strong>\"¿SUPERVALORADOS?\"</strong> que se tacha."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Qué es un probiótico (5–14s)",
+          "\"Empecemos por lo básico. Un probiótico son bacterias BUENAS. Sí, buenas — porque una puchaina sana está literalmente habitada por millones de ellas, los lactobacilos.",
+          "Plano medio + gráfico",
+          "Persona en pantalla con <strong>gráfico animado</strong> de lactobacilos poblando un ambiente sano.",
+          "Texto: <strong>\"lactobacilos = bacterias buenas\"</strong>. Ilustración digital sobreimpuesta."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "El mecanismo / el escudo (14–26s)",
+          "\"¿Y qué hacen? Fabrican ácido láctico dentro de tu cuqui. Ese ambiente ácido forma como un escudo, porque en él los bichos malos no pueden crecer. Cuando ese escudo se cae —por el jabón agresivo, por estrés, por lo que sea— ahí es cuando llega el olor, la picazón, o sea: una infección.",
+          "Pantalla dividida",
+          "<strong>Arriba</strong> la persona; <strong>abajo</strong> b-roll: animación de una barra de pH bajando a \"ácido = protegido\", y bacterias malas rebotando contra un escudo.",
+          "Texto grande: <strong>\"pH ácido = tu escudo\"</strong>. Datos clave resaltados. Clips de apoyo máx. 1.5s."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "El giro — por qué tomárselo llega (26–40s)",
+          "\"Y aquí está lo que casi nadie entiende. 'Pero si me lo tomo por la boca, ¿cómo va a llegar hasta allá abajo?' Fácil: por el intestino. Ahí queda la bodega de donde salen las bacterias — buenas y malas — que terminan ahí abajo. Metés lactobacilos por la boca, pasan por el intestino, llegan a tu puchaina y le ayudan a equilibrar su flora y su pH. Por eso un probiótico oral SÍ funciona.\"",
+          "Pantalla verde + persona pequeña",
+          "<strong>Pantalla verde</strong> con el \"dato científico\": un mapa simple cuerpo → intestino → vagina, con flechas del recorrido. Persona pequeña a un lado (como la referencia).",
+          "Look \"científico/estudio\". Texto: <strong>\"eje intestino–vagina\"</strong>. Resaltar el recorrido."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Bonus: digestión + vías urinarias (40–49s)",
+          "\"Y de paso: como trabaja desde el intestino, también te ayuda con la digestión y con las vías urinarias, porque esos mismos bichos del intestino son los que se suben a la vejiga. Todo está conectado.\"",
+          "Plano medio + gráfico",
+          "Persona a cámara; <strong>animación</strong> en gráfico de los tres sistemas conectados (intestino–vagina–vejiga) iluminándose.",
+          "Texto: <strong>\"flora + digestión + vías urinarias\"</strong>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "El combo / por qué el Dúo (49–60s)",
+          "\"Ahora, ojo: tomártelo reconstruye el escudo por DENTRO. Pero si por fuera seguís usando jabón perfumado que te daña el pH, lo estás desarmando al mismo tiempo. Por eso yo te recomiendo el Dúo de FEM: las pastillas de probióticos por dentro, y el jabón íntimo con pH neutro y prebióticos que va por fuera.",
+          "POV producto + animación",
+          "<strong>POV</strong> del Dúo. <strong>Imágenes animadas digitales</strong> del producto; en pantalla, <strong>ingredientes/características escritas</strong>. Demo del jabón y de la masticable.",
+          "Texto: <strong>\"por dentro + por fuera\"</strong>, \"probióticos · pH neutro · prebióticos\". Sticker \"el dúo 👇\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA + dónde (68–75s)",
+          "\"Así que no, no están sobrevalorados. Solo hay que entender cómo funcionan. Te dejo el link de la página aquí abajo por si querés probarlos.",
+          "Pantalla verde (ecommerce)",
+          "<strong>Persona a cámara con producto en la mano, hablando.</strong>",
+          "Card: logo FEM + \"Dúo Perfecto\" + \"envío gratis + regalos\" + CTA \"Pídelo en la página\"."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "11": {
+    "title": "REEL 11 — GLAM HEALTHY / LipoDrink (KATIRA ROMERO)",
+    "sub": "TOP · UGC · Ángulo: celulitis por pérdida de peso",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "TOF — HOOK / DNA: segmentación + dolor + curiosidad",
+          "\"Para todas mis niñas que están ya casi en los 30: encontré un TRUCAZO para la celulitis\"",
+          "A cámara",
+          "Creadora hablando directamente al celular.",
+          "Superponer: https://pin.it/5iiqBGS61"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — DOLOR / DNA: prueba visual + autoidentificación",
+          "\"Vean es que yo tenía las piernas LLENAS de celulitis. Ay no, no, no… era demasiado horrible.\"",
+          "A cámara",
+          "Se baja un poco el short y muestra sus piernas con gesto de disgusto.",
+          "Superponer encima de la pierna https://pin.it/6KsXvSnYg"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — FRUSTRACIÓN / DNA: acumulación de intentos fallidos",
+          "\"No se quitaba ni con masaje, ni con crema, ni en spa. Yo ya estaba aburrida de la situación.\"",
+          "VO",
+          "Hace gesto de masaje → muestra una crema → expresión de frustración.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REFRAME / DNA: ruptura de creencia",
+          "\"Y tiene sentido porque la celulitis es grasa atrapada que empuja la piel hacia arriba, mientras las fibras se caen, por eso se ven unos huecos y flacidez.\"",
+          "VO",
+          "",
+          "Video: https://pin.it/24acwx5yP - acelerar"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — MECANISMO / DNA: educación + ingrediente diferencial",
+          "\"Y ahí es donde el colágeno entra a salvar todo, porque literalmente fortalece ese tejido y la piel se ve más firme.\"",
+          "A cámara",
+          "Ella señala la pierna y enfatiza \"colágeno\".",
+          "Superponer video flotante: https://pin.it/38ouNJ3ZE"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — REVELACIÓN / DNA: payoff + diferenciador",
+          "\"Por eso es que yo me tomo mi LipoDrink, porque bajás de peso, pero sin celulitis, y con colágeno, nada más miren yo cómo me veo ahora\"",
+          "VO",
+          "Muestra y prepara el producto",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — CTA / DNA: recomendación entre amigas + acción directa",
+          "\"Así que vean, si quieren bajar sin celulitis van a amar LipoDrink. De pura amable les dejo el link abajo\"",
+          "A cámara",
+          "Muestra las piernas sin celulitis y muestra el producto",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "12": {
+    "title": "REEL 12 — GLAM HEALTHY / LipoDrink (KATIRA ROMERO)",
+    "sub": "TOP · UGC · Ángulo: pérdida de músculo",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "TOF — HOOK / DNA: comentario + dolor específico + identificación",
+          "\"Oigan, me han escrito mucho esto de que bajar de peso las está dejando escurridas o sin cola…\"",
+          "A cámara",
+          "Señala el comentario y mira a cámara.",
+          "Superponer comentario: \"BAJÉ DE PESO Y QUEDÉ SIN COLA NI PIERNAS 😭\""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — REFRAME / DNA: ruptura de creencia + crudeza",
+          "\"Nena y eso es porque algunas cosas te hacen bajar, pero te quitan músculo.\"",
+          "A cámara",
+          "Se mira de lado en el espejo y se agarra el jean por detrás.",
+          "Superponer https://pin.it/7Dgnfp1MS"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — MECANISMO / DNA: educación sencilla + ingrediente",
+          "\"Por eso también hay que estar pendientes de la masa muscular y que al bajar de peso se mantengan los músculos.\"",
+          "A cámara",
+          "Señala cuerpo y luego hace gesto de explicación.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — TENSIÓN / DNA: payoff anticipado",
+          "\"Porque chévere que quieras bajar, sí… pero no hay que verse escuálida y escurrida por eso.\"",
+          "A cámara",
+          "Se señala la silueta y hace gesto de preocupación.",
+          "Superponer: https://pin.it/9mlCFy0aP"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — PAYOFF / DNA: aspiración + transformación",
+          "\"Por eso yo para bajar sin perder músculo uso este producto, me lo tomo, me mantiene bien apoteósica pero fuerte.\"",
+          "VO<br>Tomas de apoyo",
+          "Ella mostrando que bajó de peso, pero sin perder músculo<br><br>- Pedir tomas de apoyo de ella con más peso y tomas/fotos de ahora",
+          "Superponer antes/después secuencial si existe material aprobado"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — CTA / DNA: acción directa + complicidad",
+          "\"Así que si ustedes también tienen ese miedo, conozcan LipoDrink aquí abajo. Yo por eso me fui por este.\"",
+          "A cámara",
+          "Preparando el producto, empaque visible",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "13": {
+    "title": "REEL 13 — GLAM HEALTHY / LipoDrink (KATIRA ROMERO)",
+    "sub": "TOP · POV · Ángulo: metabolismo lento",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "TOF — HOOK / DNA: dolor + POV",
+          "\"POV: Sientes que tu metabolismo está más lento que un trancón.\"",
+          "Tomas de apoyo",
+          "Se mira al espejo el abdomen.",
+          "Superponer texto grande."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — IDENTIFICACIÓN / DNA: comparación",
+          "\"Uno come lo mismo que las amigas… pero la única que se sube es uno.\"",
+          "Tomas de apoyo",
+          "",
+          "Videos comiendo"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — DOLOR / DNA: auto-burla",
+          "\"Es que literal, yo me engordo hasta respirando.\"",
+          "Tomas de apoyo",
+          "Se mira el abdomen, resignada - tomas muy negativas.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — METÁFORA / DNA: visualización",
+          "\"Es como acelerar un carro en neutro: mucho esfuerzo pero no arranca.\"",
+          "Tomas de apoyo",
+          "Tomas negativas de ella muy inflamada",
+          "Poner sonido de tráfico"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REFRAME / DNA: nueva explicación",
+          "\"Lo peor es que la solución no es dejar de comer\"",
+          "Tomas de apoyo",
+          "Cierra el clóset y vuelve al espejo.",
+          "Texto centrado."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — MECANISMO / DNA: curiosidad",
+          "\"Lo que tocaba hacer era despertar el metabolismo de verdad.\"",
+          "Tomas de apoyo",
+          "Tomas de apoyo preparando",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REVELACIÓN / DNA: solución",
+          "\"Y ahí fue cuando me salvé con esta maravilla, que además tiene Té Verde.\" \"Dale clic abajo y conócelo.\"",
+          "Tomas de apoyo",
+          "Primera aparición: producto + scoop.",
+          "Superponer: \"TÉ VERDE + 13 ACTIVOS\"."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "14": {
+    "title": "REEL 14 — GLAM HEALTHY / LipoDrink (KATIRA ROMERO)",
+    "sub": "TOP · Pantalla dividida · Ángulo: cabello débil por dietas excesivas",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual (pantalla dividida)",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "TOF — HOOK / DNA: dolor + prueba",
+          "\"Así de calva me estaba quedando por ponerme a aguantar hambre con dietas raras.\"",
+          "VO<br>PANTALLA DIVIDIDA",
+          "<strong>Arriba:</strong> Foto real e incómoda de un parche sin pelo en la cabeza.",
+          "Abajo: https://pin.it/5425cFZKU"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — IDENTIFICACIÓN / DNA: dolor",
+          "\"Eso fue hace un mes. Empecé a comer menos y el pelo se me venía al piso en la ducha, en el cepillo, por todo lado.\"",
+          "VO<br>PANTALLA DIVIDIDA",
+          "<strong>Abajo:</strong> Se hace una moña de caballo y se le ve flaquita, sin gracia.",
+          "Arriba: https://pin.it/1OwUJIlgy - solo superponer la toma del cepillo, y revisar que no se vean logos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REFRAME / DNA: explicación",
+          "\"Gasté un platal en champús caros y nada, porque cuando uno recorta comida tiene que fijarse también en lo que le está dando al cuerpo.\"",
+          "VO<br>PANTALLA DIVIDIDA",
+          "<strong>Arriba:</strong> Ella en video como desesperada, tomándose medidas porque no se ve flaca",
+          "Abajo: https://pin.it/3cA5YymQg"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REVELACIÓN / DNA: solución + diferencial",
+          "\"Gracias a Dios ya superé esa caída, y mis dietas ahora son mucho más saludables, y el pelo está mucho más sano.\"",
+          "VO<br>PANTALLA DIVIDIDA",
+          "<strong>Arriba:</strong> Tomas de la densidad del cabello<br><br><strong>Abajo:</strong> El cabello mucho más sano, más brillante",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — USO / DNA: facilidad + rutina",
+          "\"Por eso me quedé con LipoDrink: tiene colágeno hidrolizado dentro de una fórmula 3 en 1 con 13 activos.\"",
+          "VO<br>PANTALLA DIVIDIDA",
+          "<strong>Arriba:</strong> Scoop cayendo en el vaso.<br><br><strong>Abajo:</strong> Mezcla y toma.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — CTA / DNA: acción directa",
+          "\"Si ustedes también están bajando y quieren conocer la fórmula, denle clic abajo y mírenla, para que dejen de estar coquimbas.\"",
+          "VO<br>PANTALLA DIVIDIDA",
+          "<strong>Arriba:</strong> Tomas a producto<br><br><strong>Abajo:</strong> Ella mostrando producto y resultados del cabello",
+          ""
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "15": {
+    "title": "REEL 15 — GLAM HEALTHY / LipoDrink (KATIRA ROMERO)",
+    "sub": "TOP · A cámara + tomas de apoyo · Ángulo: retención de líquidos",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "TOF — HOOK / DNA: dolor + prueba visual",
+          "\"Así de pez globo me levantaba todos los días.\"",
+          "A cámara",
+          "Se mira el abdomen frente al espejo.",
+          "- Por favor ver la forma de edición de la ref<br>Superponer encima del abdomen: https://pin.it/5dEIZbzTb"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — DOLOR / DNA: identificación + incomodidad",
+          "\"Te miras al espejo, tienes el abdomen súper inflamado y la pijama marcadísima.\"",
+          "VO<br><br>Tomas de apoyo",
+          "<strong>Arriba:</strong> Tomas de abdomen muy inflamado.<br><br><strong>Abajo:</strong> elástico de pijama/ropa marcado en la cintura.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REFRAME / DNA: ruptura de creencia",
+          "\"Yo juraba que estaba engordando, hasta que entendí que no todo era grasa.\"",
+          "A cámara",
+          "Habla directo a cámara, seria.",
+          "Solo superponer el antes: https://pin.it/3Gpj1mbvu"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "TOF — MECANISMO / DNA: explicación + curiosidad",
+          "\"Había días en que sentía que mi cuerpo simplemente estaba reteniendo todo.\"",
+          "VO<br><br>Tomas de apoyo",
+          "Ella frente al computador, se toca el abdomen, se abre un botón.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — PRUEBA / DNA: cambio visual",
+          "\"Yo la verdad estuve muy aburrida, mirándome tan inflamada.\"",
+          "VO<br><br>Tomas de apoyo",
+          "Ella a punto de llorar mirándose al espejo inflamadísima",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — REVELACIÓN / DNA: solución + ingrediente",
+          "\"Por eso terminé usando esto: tiene Flor de Jamaica dentro de una fórmula 3 en 1 con 13 activos, que tienen ese efecto diurético, y después de unas semanas, mira, pareces con lipo hecha.\"",
+          "VO<br><br>Tomas de apoyo",
+          "<strong>Clip usando el producto</strong><br><br><strong>Clip mostrando efecto lipo, y ella ultra feliz</strong><br><br><strong>Otros clips positivos.</strong><br><br>- Muchos cambios de spot / tomas desde diferentes ángulos",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "TOF — CTA / DNA: acción directa",
+          "\"Amigas, si quieren verse con lipo pero de forma natural y más sana, usen LipoDrink, los cambios son muy reales.\"",
+          "A cámara",
+          "Hablando a cámara se sube la blusa y baja un poquito el pantalón para mostrar el abdomen perfecto - al final muestra el producto",
+          "Superponer el después: https://pin.it/3Gpj1mbvu"
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        // data-col alimenta el rótulo de cada campo cuando la tabla colapsa a fichas en móvil.
+        const col = ` data-col="${String(cols[i] || '').replace(/"/g, '&quot;')}"`;
+        const v = (cell || '').trim();   // celdas con solo "\n" deben quedar vacías (se ocultan en móvil)
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est"${col}>${v}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto"${col}>${v}</td>`;
+        if (i === fmtCol) return `<td${col}>${v ? `<span class="guion-fmt ${fmtClass(v)}">${v}</span>` : ''}</td>`;
+        return `<td${col}>${v}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-hint"><span>⇄</span>Desliza la tabla de lado para ver todas las columnas</div>` +
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
