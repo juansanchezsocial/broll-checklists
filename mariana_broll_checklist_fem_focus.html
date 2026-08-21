@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARIANA · Tomas de Apoyo · FEM + FOCUS BOOSTER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_mariana_fem_focus_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  /* Brief marcado como grabado: se apaga y se tacha, PERO se queda en su posición.
+     El apagado va por elemento (no opacity en la card) para que el switch siga legible. */
+  .reel.recorded { border-color: var(--border); box-shadow: none; background: var(--card-2); }
+  .reel.recorded .reel-num, .reel.recorded .reel-title,
+  .reel.recorded .tag, .reel.recorded .ref-btn, .reel.recorded .caret,
+  .reel.recorded .reel-progress { opacity: 0.42; transition: opacity .25s ease; }
+  .reel.recorded:hover .reel-num, .reel.recorded:hover .reel-title,
+  .reel.recorded:hover .tag, .reel.recorded:hover .ref-btn,
+  .reel.recorded:hover .caret, .reel.recorded:hover .reel-progress { opacity: 0.8; }
+  .reel.recorded .reel-num, .reel.recorded .reel-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+  /* Switch estilo iOS: da el brief completo por grabado */
+  .rec-switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: transparent; border: none; padding: 4px 2px 4px 6px; margin: 0;
+    font-family: Poppins, "Open Sans", sans-serif; -webkit-tap-highlight-color: transparent;
+  }
+  .rec-switch-txt {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--muted); transition: color .18s ease; white-space: nowrap;
+  }
+  .rec-track {
+    position: relative; width: 42px; height: 25px; border-radius: 100px; flex-shrink: 0;
+    background: var(--card-2); border: 1px solid var(--border-strong);
+    transition: background .22s ease, border-color .22s ease;
+  }
+  .rec-knob {
+    position: absolute; top: 50%; left: 2px; width: 19px; height: 19px; border-radius: 50%;
+    background: #fff; transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .24s cubic-bezier(.4,.15,.25,1.2);
+  }
+  .rec-switch:hover .rec-track { border-color: var(--accent-solid); }
+  .rec-switch:focus-visible { outline: 2px solid var(--accent-solid); outline-offset: 3px; border-radius: 100px; }
+  .reel.recorded .rec-switch-txt { color: var(--accent); }
+  .reel.recorded .rec-track { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .reel.recorded .rec-knob { transform: translateY(-50%) translateX(17px); }
+  .briefs-text { font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; margin-left: auto; }
+  .briefs-text b { color: var(--accent); }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  /* ===== Tablet ===== */
+  @media (max-width: 900px) {
+    .guion-table { min-width: 720px; }
+  }
+
+  /* ===== Móvil =====
+     El audiovisual suele abrir esto en el celular en pleno set: targets grandes,
+     nada de scroll horizontal y el guión se lee como fichas, no como tabla. */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 26px 16px 22px; }
+    .logo { width: 44px; height: 44px; margin-bottom: 11px; }
+    h1 { font-size: 21px; }
+    .sub { font-size: 13px; }
+    .theme-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
+
+    .bar-inner { padding: 10px 14px; }
+    .toolbar { gap: 7px; }
+    .chip, .reset-btn { padding: 8px 14px; font-size: 13px; }
+    .reset-btn { margin-left: 0; }
+    .briefs-text { margin-left: 0; flex-basis: 100%; order: 9; font-size: 12px; }
+
+    .wrap { padding: 4px 14px 64px; }
+    .creator-block { margin-top: 26px; }
+    .creator-title h2 { font-size: 17px; }
+
+    /* Header del reel en 3 renglones: nº+progreso · título · tags/botones/switch */
+    .reel { border-radius: 13px; }
+    .reel-head { flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 13px 14px; }
+    .reel-num { order: 1; min-width: auto; font-size: 12.5px; }
+    .reel-progress { order: 2; margin-left: auto; }
+    .caret { order: 3; }
+    .reel-title { order: 4; flex-basis: 100%; font-size: 15px; }
+    .reel-meta { order: 5; flex-basis: 100%; gap: 8px; align-items: center; }
+    .reel-meta .rec-switch { margin-left: auto; }
+    .ref-btn { padding: 8px 14px; font-size: 12px; }
+    .rec-switch-txt { font-size: 12px; }
+    .rec-track { width: 46px; height: 27px; }
+    .rec-knob { width: 21px; height: 21px; }
+    .reel.recorded .rec-knob { transform: translateY(-50%) translateX(19px); }
+
+    /* Tomas: fila alta y checkbox grande para marcar con el pulgar */
+    .reel-body { padding: 2px 14px 12px; }
+    .shot { padding: 15px 2px; gap: 12px; }
+    .checkbox { width: 26px; height: 26px; border-radius: 8px; }
+    .shot-text { font-size: 15px; }
+  }
+
+  /* ===== Guión en pantalla chica =====
+     La tabla SIGUE siendo tabla: se desliza de lado para ver las columnas (decisión
+     del usuario, 2026-08-11 — las fichas apiladas no funcionaron en set).
+     La primera columna queda fija a la izquierda para no perder el tiempo/estructura. */
+  @media (max-width: 700px) {
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal { border-radius: 0; border: none; min-height: 100%; display: flex; flex-direction: column; }
+    .modal-head { position: sticky; top: 0; z-index: 3; background: var(--card); padding: 14px 16px; }
+    .modal-head h3 { font-size: 15.5px; }
+    .modal-close { width: 38px; height: 38px; font-size: 19px; }
+    .modal-body { max-height: none; padding: 12px 12px 40px; }
+
+    .guion-table-wrap { border-radius: 10px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .guion-table { min-width: 760px; font-size: 13.5px; }
+    .guion-table td { padding: 11px 12px; }
+    .guion-table td.g-texto { font-size: 14px; }
+
+    /* Columna 1 anclada mientras se desliza el resto */
+    .guion-table th:first-child, .guion-table td:first-child { position: sticky; left: 0; z-index: 2; }
+    .guion-table th:first-child { z-index: 4; background: var(--card-2); }
+    .guion-table td:first-child { background: var(--card); box-shadow: 1px 0 0 var(--border); }
+    .guion-table tr.is-broll td:first-child { background: var(--broll-bg); }
+    .guion-table tr.is-broll td.g-est { box-shadow: inset 3px 0 0 var(--accent-solid), 1px 0 0 var(--border); }
+
+    .guion-hint { display: flex; }
+    .guion-legend { font-size: 12.5px; align-items: flex-start; }
+  }
+
+  /* Aviso de deslizamiento — solo visible en móvil */
+  .guion-hint {
+    display: none; align-items: center; gap: 7px; margin: 0 0 9px;
+    font-size: 12px; color: var(--muted); font-family: Poppins, sans-serif;
+  }
+  .guion-hint span { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>MARIANA · Tomas de Apoyo · FEM + FOCUS BOOSTER</h1>
+    <div class="sub">Rodaje con Mariana Naranjo — FEM Masticable (Reels 226–230) + Focus Booster (Reels 81–85)</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="fem">FEM · Masticable</div>
+    <div class="chip" data-filter="focus">FOCUS BOOSTER</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <span class="briefs-text" id="briefsText"></span>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="fem">
+  <div class="creator-title">
+    <h2>FEM · Masticable</h2>
+    <span class="count">Reels 226–230</span>
+  </div>
+  <!-- REEL 226 -->
+  <div class="reel" data-reel="226">
+    <div class="reel-head">
+      <span class="reel-num">REEL 226</span>
+      <span class="reel-title">"Me siento súper bien y es por esta cápsula" — A cámara</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(226)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/AosH7DlzkGdwlIaMly4e?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217593714673741" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(226)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="226">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="226-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>Ella <strong>recordando cuando le olían los pantys horrible</strong> (VO + apoyo)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 227 -->
+  <div class="reel" data-reel="227">
+    <div class="reel-head">
+      <span class="reel-num">REEL 227</span>
+      <span class="reel-title">"Mi ginecóloga me recomendó..." — A cámara + POV inicial</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(227)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/T8R8uKZeUKACvHvRE7wN?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217593714673742" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(227)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="227">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="227-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span><strong>Toma POV</strong>: su mano toma el frasco de FEM en el baño con el jabón íntimo, lo gira para mostrar la etiqueta, <strong>luz natural de mañana</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 228 -->
+  <div class="reel" data-reel="228">
+    <div class="reel-head">
+      <span class="reel-num">REEL 228</span>
+      <span class="reel-title">"Si tu cuchi huele a pescado, necesitas probióticos" — A cámara</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(228)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZSVUuoNnv/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217593714673743" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(228)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="228">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="228-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo</span>Tomas de la creadora <strong>aburrida en el baño viendo flujo raro en los pantys</strong> (VO + apoyo)</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 229 -->
+  <div class="reel" data-reel="229">
+    <div class="reel-head">
+      <span class="reel-num">REEL 229</span>
+      <span class="reel-title">"Amiga, si tus panties siguen saliendo así" — Selfie storytime</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(229)">☰ Guión</button> <a class="ref-btn" href="https://vt.tiktok.com/ZSVUHcyxG/" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217593714673744" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(229)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="229">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 230 -->
+  <div class="reel" data-reel="230">
+    <div class="reel-head">
+      <span class="reel-num">REEL 230</span>
+      <span class="reel-title">"He sido súper insegura por el olor" — A cámara</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(230)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/8quSbHOTzFiwyoFNg87S?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210559174208038/1217593714673745" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(230)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="230">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="focus">
+  <div class="creator-title">
+    <h2>FOCUS BOOSTER</h2>
+    <span class="count">Reels 81–85</span>
+  </div>
+  <!-- REEL 81 -->
+  <div class="reel" data-reel="81">
+    <div class="reel-head">
+      <span class="reel-num">REEL 81</span>
+      <span class="reel-title">"Mi cerebro como que se desconecta" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(81)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/z3zplunSeYUuzhdhE952?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1217697105179166" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(81)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="81">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="81-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Clips de la creadora <strong>haciendo algo y distrayéndose con el celular</strong></div></div>
+      <div class="shot" data-id="81-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span><strong>Clip tomando el producto</strong></div></div>
+      <div class="shot" data-id="81-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span><strong>Clip trabajando concentrada</strong> (va en pantalla dividida con el producto)</div></div>
+      <div class="shot" data-id="81-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Tomas rápidas de <strong>flujo de trabajo eficiente, usando computador</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 82 -->
+  <div class="reel" data-reel="82">
+    <div class="reel-head">
+      <span class="reel-num">REEL 82</span>
+      <span class="reel-title">"Le pregunté a mi entrenador cómo hacía todo" — UGC</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(82)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/XCcf2i0seQ2YRM5tNs7x?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1217697105179168" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(82)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="82">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="82-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Clips de la creadora <strong>entrenando</strong></div></div>
+      <div class="shot" data-id="82-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>Clips de la creadora <strong>estudiando</strong></div></div>
+      <div class="shot" data-id="82-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="82-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Clip de la creadora <strong>cocinando</strong></div></div>
+      <div class="shot" data-id="82-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Clip de la creadora <strong>ordenando la cama</strong></div></div>
+      <div class="shot" data-id="82-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Clip de la creadora <strong>trabajando</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 83 -->
+  <div class="reel" data-reel="83">
+    <div class="reel-head">
+      <span class="reel-num">REEL 83</span>
+      <span class="reel-title">"Sin depender del café" — IA / pantalla dividida</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">IA · Pantalla dividida</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(83)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/JwRSPbywaNX5zGhcSo7C?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1217697105179170" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(83)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="83">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 84 -->
+  <div class="reel" data-reel="84">
+    <div class="reel-head">
+      <span class="reel-num">REEL 84</span>
+      <span class="reel-title">"Si nunca terminas nada de lo que empiezas" — Autoridad, tarro en mano</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(84)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/zIBf6xBfnCgJLHYTxeea?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1217697105179172" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(84)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="84">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 85 -->
+  <div class="reel" data-reel="85">
+    <div class="reel-head">
+      <span class="reel-num">REEL 85</span>
+      <span class="reel-title">"Llevo semanas y nada, ¿qué sucede?" — Respondiendo comentario</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Respondiendo comentario</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(85)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/SL1qVBVwR5fP9iSvkoMH?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1210547332742593/1217697105179174" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(85)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="85">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="85-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Toma de apoyo mostrando una <strong>búsqueda en Google sobre la memoria</strong></div></div>
+      <div class="shot" data-id="85-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span><strong>POV del producto</strong></div></div>
+      <div class="shot" data-id="85-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Creadora <strong>preparando</strong> la bebida</div></div>
+      <div class="shot" data-id="85-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Creadora <strong>tomando</strong> la bebida</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · FEM Masticable + Focus Booster · Entrega 1-2 / Entrega 6<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_mariana_fem_focus_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      if (reel.classList.contains('recorded')) {
+        el.textContent = 'grabado';
+        el.classList.add('done');
+        return;
+      }
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+
+    const totalReels = document.querySelectorAll('.reel').length;
+    const recReels = document.querySelectorAll('.reel.recorded').length;
+    const briefsEl = document.getElementById('briefsText');
+    if (briefsEl) briefsEl.innerHTML = '<b>' + recReels + '</b> / ' + totalReels + ' briefs grabados';
+  }
+
+  // === Marcar el BRIEF COMPLETO como grabado ===
+  // Es independiente de los checkboxes de tomas: el PM puede darlo por grabado
+  // aunque queden tomas sin marcar (o marcarlas todas y aun así no darlo por cerrado).
+  // El brief grabado NO se reordena: se queda en su sitio y solo se tacha
+  // (decisión del usuario, 2026-08-11 — mover la tarjeta desubica al equipo en set).
+  const REC = '__rec_';
+
+  // Mantiene el estado accesible del switch iOS alineado con la clase .recorded
+  function syncSwitches() {
+    document.querySelectorAll('.reel').forEach(reel => {
+      const sw = reel.querySelector('.rec-switch');
+      if (sw) sw.setAttribute('aria-checked', reel.classList.contains('recorded') ? 'true' : 'false');
+    });
+  }
+
+  function toggleRecorded(num) {
+    const reel = document.querySelector('.reel[data-reel="' + num + '"]');
+    if (!reel) return;
+    const on = !reel.classList.contains('recorded');
+    reel.classList.toggle('recorded', on);
+    if (on) {
+      reel.classList.remove('open');
+      state[REC + num] = true;
+    } else {
+      delete state[REC + num];
+    }
+    save();
+    syncSwitches();
+    updateProgress();
+    applyFilter();
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        const rec = reel.classList.contains('recorded');
+        reel.classList.toggle('hidden', rec || (allDone && shots.length > 0));
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      document.querySelectorAll('.reel.recorded').forEach(r => r.classList.remove('recorded'));
+      Object.keys(state).forEach(k => delete state[k]);
+      syncSwitches();
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Restaurar los briefs ya marcados como grabados (en su posición original)
+  document.querySelectorAll('.reel').forEach(reel => {
+    if (state[REC + reel.dataset.reel]) reel.classList.add('recorded');
+  });
+  syncSwitches();
+
+  // Open first reel by default (el primero que no esté grabado)
+  const firstReel = document.querySelector('.reel:not(.recorded)');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "226": {
+    "title": "REEL 226 — FEM Masticable (Mariana Naranjo)",
+    "sub": "MID · A cámara · Testimonial de resultado + urgencia social",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Me siento súper bien, y estoy segurísima que es por esta cápsula probiótica y el jabón íntimo más toppp",
+          "A cámara",
+          "Ella recién levantada mostrando solo la cápsula y el jabón igual a la referencia",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Porque ustedes, mujeres... sabemos que todas luchamos con algo ahí abajo. Pero lo que esto hace es que básicamente regula tu pH... y tus niveles de hongos.",
+          "A cámara",
+          "Tono cómplice, de confesión entre amigas, baja un poco la voz en \"algo ahí abajo\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "O sea, básicamente elimina ese olorcito a pescado... del que todas nos hemos asustado alguna vez. Literal solo te tomas dos al día y te bañas como de costumbreeee",
+          "VO + apoyo",
+          "Ella recordando cuando le olían los pantys horrible",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "ASÍ QUE CHICAS, VAYAN Y CONSIGAN SU FEM. Me agradecerán después",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "227": {
+    "title": "REEL 227 — FEM Masticable (Mariana Naranjo)",
+    "sub": "BOTTOM · A cámara · Testimonial con respaldo de ginecóloga + venta directa",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "<em>(sin diálogo)</em>",
+          "A cámara (toma POV, b-roll)",
+          "Toma POV: su mano toma el frasco de FEM en el baño con el jabón íntimo, lo gira para mostrar la etiqueta, luz natural de mañana.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Hook",
+          "Yo solía sentirme súper insegura porque me olía a podrido y no era capaz de hacer el delicioso, pero mi ginecóloga me recomendó...",
+          "A cámara",
+          "Frente al espejo del baño, tono bajo y vulnerable en \"súper insegura\", casi confesándolo. Baja la mirada en \"cómo olía ahí abajo\" y la sube con más seguridad al mencionar a la ginecóloga.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "...este suplemento probiótico que se llama FEM y les juro que me cambió la vida, y el jabón íntimo, o sea, wow.",
+          "A cámara",
+          "Sostiene el frasco a cuadro en \"FEM\". Lleva las manos a la cara o abre los ojos con incredulidad en \"me cambió la vida, o sea, wow\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "...yo estoy feliz, créanme. Sentirme segura y fresca ahí abajo nunca había sido tan fácil con FEM. Aquí abajo te dejo el link — con envío gratis y 13% de descuento.",
+          "A cámara",
+          "Sonríe con seguridad, mirada fija a cámara en \"créanme\". En \"nunca había sido tan fácil\" abre las manos. En \"aquí abajo te dejo el link\" señala hacia abajo, tono de urgencia amable (no agresivo).",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "228": {
+    "title": "REEL 228 — FEM Masticable (Mariana Naranjo)",
+    "sub": "TOP · A cámara · Educación sobre infecciones recurrentes, sin link ni oferta",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Si tu cuchi huele a pescado, necesitas empezar a tomar probióticos, ¿okay? No quiero oír nada más. No quiero oír eso de \"ay, tal vez me tengo que lavar mejor\". No. Empieza a tomar probióticos, y no cualquier probiótico — probióticos hechos específicamente para tu cuchi, y usa un jabón íntimo realmente bueno.",
+          "A cámara",
+          "Recostada, cabeza apoyada en la mano, luz roja ambiental. Tono directo y un poco confrontativo, casi regañando con cariño. En \"no quiero oír nada más\" cierra los ojos y niega levemente. En \"no cualquier probiótico\" levanta el índice.",
+          "Texto superpuesto arriba: \"Cómo tener una salud íntima que prospera 💕\". Subtítulos solo en \"no cualquier probiótico... hechos específicamente para tu cuchi\". Toma fija, sin cortes."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Nadie habla de lo difícil que es deshacerte de la vaginosis y las infecciones por hongos una vez que te empiezan a dar seguido. Difícil porque la bacteria mala literalmente se toma el control.",
+          "VO + APOYO",
+          "Tomas de la creadora aburrida en el baño viendo flujo raro en los pantys",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Necesitas reintroducir bacteria buena, ¿okay? Yo empecé a usar FEM. Si no has oído hablar de esto, siento que vives debajo de una piedra ya.",
+          "A cámara",
+          "Levanta brevemente el frasco de FEM hacia la cámara en \"yo empecé a usar FEM\", lo mantiene cerca de su cabeza y lo vuelve a bajar. Tono ligeramente burlón en \"vives debajo de una piedra\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Ya llevan más de mil mujeres que lo han probado y tienen casi 5 estrellas en reseñas. Si eso no te dice que es bueno, no sé qué más. Y créeme, si me voy a meter algo dentro tiene que ser seguro — y tiene registro Invima.",
+          "A cámara",
+          "Mostrar el tarro y las pastas",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Tienes que empezar a cuidarte desde adentro hacia afuera. Así de simple.",
+          "A cámara",
+          "Cierra con la misma postura, mirada fija y calmada a cámara, sin urgencia. Tono de conclusión, casi susurrado en \"así de simple\".",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "229": {
+    "title": "REEL 229 — FEM (Mariana Naranjo)",
+    "sub": "TOP · A cámara (selfie, confesión/storytime) · Todo hablado a cámara",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Amiga, si tus panties siguen saliendo así, o huelen a pescado HORRIBLEEEEE,",
+          "A cámara",
+          "Sostiene y muestra unos panties de encaje con flujo blanco hacia la cámara, y los toca con cara de vergüenza. Cara de \"sabes de lo que hablo\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "...bebé, sin juzgar. Este es un espacio seguro. La mayoría de nosotras hemos pasado por eso. Puede que no lo admitan, pero yo sí. A mí no me da pena decirlo.",
+          "A cámara",
+          "Deja los panties a un lado, señala directo a la cámara con el índice, gesticula con seguridad y complicidad. Tono de \"somos amigas hablando de esto\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Déjame contarte cómo lidiar con esto, porque yo he tenido que aprenderlo sola, resolviendo estas cosas por mi cuenta.",
+          "A cámara",
+          "Se lleva las manos al pecho, tono más íntimo y vulnerable, baja un poco el volumen y la energía respecto al bloque anterior.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Te voy a poner las pilas rapidito. Probióticos FEM. Amiga, dos de estas al día y te bañas normal con el jabón íntimo, y mantienes el olor a pescado bien lejos.",
+          "A cámara",
+          "Saca a cuadro el frasco de FEM, destapa la tapa y saca unas cápsulas para mostrarlas de cerca a la cámara. Vuelve a subir la energía.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Este frasquito rosado, amiga, hizo que mi ropa interior pasara de pescado a brisa fresca. No es de extrañar que ya lo hayan comprado más de mil mujeres.",
+          "A cámara",
+          "Sigue sosteniendo el frasco, gesticula con la otra mano para enfatizar el cambio (\"de sardina a brisa fresca\") y el número de compradoras.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Búscalo como FEM Probiotics y agradéceme después. Las amo.",
+          "A cámara",
+          "Sostiene el frasco a un lado, sin señalar hacia abajo ni gestos de \"click\". Cierra mandando un beso a cámara y juntando las manos en despedida, tono cálido de amiga, no de vendedora.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "230": {
+    "title": "REEL 230 — FEM (Mariana Naranjo)",
+    "sub": "TOP · A cámara · Intentos fallidos hasta encontrar la solución (ref: segundo 4)",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "He sido súper insegura por el olor entre mis piernas.",
+          "A cámara",
+          "Frente al espejo del cuarto o baño, tono bajo y vulnerable, casi como una confesión que le cuesta decir en voz alta. Mirada esquiva al inicio, que se sostiene un poco más hacia el final de la frase.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Probé comiendo piña, bañándome dos veces al día, y hasta probé duchas vaginales de la desesperación. Nada funcionó, y a veces hasta lo empeoraba.",
+          "A cámara",
+          "Contar muy apenada",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Investigué bastante y encontré FEM.",
+          "A cámara",
+          "Cambia el tono a uno de alivio/esperanza, se le ilumina la expresión. Saca el frasco de FEM y lo sostiene a cuadro por primera vez en \"FEM\".",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo",
+          "Dejé todo lo demás, pero los ingredientes de FEM van directo a la raíz del problema, ayudando a mantener el olor vaginal saludable, el pH y el balance de hongos.",
+          "A cámara",
+          "Tono educativo y seguro, gesto de \"ir al centro\" (junta los dedos y los lleva hacia el pecho) en \"van directo a la raíz\". Enumera con los dedos \"olor... pH... hongos\".",
+          "Texto superpuesto: \"Olor saludable ✓\" / \"pH equilibrado ✓\" / \"Balance de hongos ✓\". Subtítulos completos en esta frase por ser el claim central."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Así que si te pasa esto, vale la pena investigar sobre los probióticos vaginales, como FEM. Y ten la tranquilidad de que estás cuidando bien esa parte de ti.",
+          "A cámara",
+          "Tono cálido y cercano, mirada fija a cámara como aconsejando a una amiga, sin urgencia de venta. Sostiene el frasco a un lado.",
+          "Cierre solo con el frasco a cuadro + logo superpuesto discreto. Subtítulos solo en \"vale la pena investigar sobre los probióticos vaginales, como FEM\"."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "81": {
+    "title": "REEL 81 — Focus Booster (Mariana Naranjo)",
+    "sub": "TOF · UGC · Superar la niebla mental y recuperar el foco diario",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "¿Has sentido que tienes tantas cosas encima que, literalmente, tu cerebro como que se desconecta? Sí, así era yo",
+          "A cámara",
+          "En cocina o patio, donde se vea que está haciendo labores del hogar",
+          "Texto superpuesto llamativo: Si eres de los que procrastina así, tienes que escuchar esto."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Estaba totalmente bloqueada intentando avanzar con mi trabajo y con proyectos personales.<br><br>Empezaba una tarea, me distraía, empezaba otra, y luego ya ni me acordaba de lo que estaba haciendo.<br><br>Jaaa y hablando de eso, se me olvidaba era pero todo",
+          "A cámara / B-roll",
+          "Clips de creadora haciendo algo y se distrae con el celular",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Honestamente, yo creía que era solo cansancio acumulado, tipo, obvio, el ritmo de vida a veces es fuerte.<br><br>Pero aquí va lo bueno. Empecé a tomar este suplemento llamado Focus Booster y es como si mi cerebro por fin hubiera despertado.",
+          "A cámara",
+          "Mostrar el frasco de Focus Booster.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Ya por fin no tengo que anotar hasta la más mínima cosa en la libreta.<br><br>Literalmente puedo terminar mi jornada de trabajo sin ver TikTok cada dos minutos.<br><br>Ni siquiera me daba cuenta de lo mucho que mi cerebro estaba funcionando en reserva hasta que le di lo que realmente necesitaba para activarse.",
+          "A cámara / Pantalla dividida",
+          "Clip tomando producto<br>Clip trabajando",
+          "Pantalla dividida: de un lado, tú trabajando concentrada; del otro, el producto."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Ahora, en vez de quedarme mirando la pantalla o la lista de tareas sintiéndome paralizada, tengo la energía y el foco para terminar todo de una vez.",
+          "Voz en off / B-roll",
+          "Tomas rápidas de flujo de trabajo eficiente, usando computador.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "Ahí te cuento si a ti también tu cerebro se te dispersa con nada.<br><br>Además, ahorita tienen una promo si te suscribes, que fue por lo que yo me decidí a pedirlo, y no me arrepiento en absoluto",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "82": {
+    "title": "REEL 82 — Focus Booster (Mariana Naranjo)",
+    "sub": "TOF · UGC · Ser más productivo gracias a la melena de león",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Oigan, yo le pregunté a mi entrenador cómo era capaz de tener dos trabajos, estudiar, entrenar y además pasar tiempo con su familia... y me dijo que era por una bebida.",
+          "A cámara, B-ROLL",
+          "Clips creadora entrenando<br><br>Clips creadora estudiando",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Hook",
+          "Yo quedé loca, o sea, ¿cómo así que con una bebida?<br><br>Así que le pregunté qué era lo que tomaba y me dijo que un hongo... ¡y yo quedé peor de loca!",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Le pedí que me explicara y me habló de un suplemento con melena de león.<br><br>¡Ese honguito es el que va a hacernos poner pilas en el día (o en la noche)! Yo estaba algo dudosa, ¿a ver, un polvo para la concentración?",
+          "A cámara / B-roll opcional",
+          "TOMAS IA MELENA DE LEÓN (se generan, no se graban)",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Pero él me explicó que a diferencia de un simple energizante, que te da una aceleración horrible en el corazón y luego un bajón terrible cuando se te pasa, <strong>Focus Booster</strong> combina la melena de león con vitaminas.<br><br>Y ese honguito es el que te ayuda a estar más concentrada, apoya la salud mental y te mantiene calmada ante la presión.",
+          "A cámara / b-roll",
+          "POV producto",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Aparte, me decía que te da full energía limpia, sin el bajón que te dejan esas otras bebidas o el café. Así que me decidí, hice el experimento por ustedes y ya lo entendí todo.",
+          "A cámara",
+          "Con producto en mano",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Tu mente queda enfocada solo en lo que tú te quieras enfocar durante estas actividades, y me gustó que además sabe rico. La verdad, después de tomarlo sí siento el enfoque y más energía, ¡y el día me rindió un montón!",
+          "Voz off",
+          "Clip creadora cocinando<br><br>Clip creadora ordenando la cama<br><br>Clip creadora trabajando",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "Pruébenlo de verdad, les juro que les va a cambiar los días pesados. Si quieren echarle un vistazo, les dejo el dato por aquí abajito",
+          "A cámara",
+          "Con producto en mano",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "83": {
+    "title": "REEL 83 — Focus Booster (Mariana Naranjo)",
+    "sub": "TOF · IA / pantalla dividida · La creadora habla a cámara; el resto es animación estilo Disney",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook (0:00–0:01)",
+          "¿Qué tal si pudieras hacer más cosas sin sentir que no das más en todo momento?",
+          "A cámara",
+          "<em>Pantalla dividida</em>",
+          "Arriba: Animación estilo Disney: personaje animado con expresión de agobio rodeado de tareas flotantes que se desvanecen mágicamente."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Hook (0:02–0:04)",
+          "La diferencia no se trata solo de trabajar más duro.<br><br>Se trata de cómo funciona tu cerebro.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo (0:07–0:10)",
+          "La mayoría de nosotros dependemos de la cafeína o estimulantes para un impulso en el día",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: el personaje sostiene una taza humeante de café con ojos muy abiertos por la cafeína."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (0:11–0:14)",
+          "Pero estos pueden darte energía sin darte el enfoque que realmente necesitas.",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: la energía en forma de rayos dorados se escapa de las manos del personaje sin dirección fija."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (0:15–0:19)",
+          "Terminas con energía, pero disperso, saltando entre tareas sin terminar nada.",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: el personaje salta de un lado a otro persiguiendo papeles y documentos voladores."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (0:20–0:24)",
+          "Tu cerebro no es un órgano aislado. Está conectado a múltiples sistemas en tu cuerpo.",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: conexiones coloridas y fluidas recorriendo el cuerpo del personaje."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (0:25–0:26)",
+          "Tu nutrición influye en cómo funciona tu cuerpo y tu mente.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo (0:31–0:34)",
+          "Por eso, más que buscar otro impulso momentáneo, se trata de darle a tu cerebro una ayudita",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: el personaje cruza las manos sobre el pecho con un gesto cálido y protector."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (0:39–0:44)",
+          "Del tipo que te permite concentrarte en una tarea y avanzar con mayor enfoque durante tu día.",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: el personaje trabaja tranquilamente en su escritorio con un aura de enfoque claro."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (0:45–0:49)",
+          "Eso es lo que esta bebida hace diferente. No es un energizante ni un medicamento.",
+          "A CÁMARA",
+          "<em>Con bebida en mano</em>",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo (0:50–0:55)",
+          "Es un suplemento con ingredientes como melena de león, glicinato de magnesio, Omega 3 y vitaminas B",
+          "A cámara",
+          "<em>Pantalla dividida</em>",
+          "Animación estilo Disney: los ingredientes desfilan alrededor del personaje como dibujos animados."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo (1:01–1:05)",
+          "No busca simplemente estimularte. Está formulado para integrarse a tu rutina y apoyar tu bienestar cognitivo.",
+          "VOZ OFF",
+          "<em>[Sin contenido]</em>",
+          "Animación estilo Disney: el personaje incorpora felizmente el producto a su día cotidiano."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (1:06–1:08)",
+          "Y lo mejor es que puedes prepararlo fácilmente mezclándolo con agua fría o caliente",
+          "A cámara",
+          "<em>Bebe producto al final</em>",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo (1:13–1:16)",
+          "Porque mantener el enfoque no debería significar depender todo el día del café.",
+          "VOZ OFF",
+          "<em>Pantalla dividida</em>",
+          "Animación estilo Disney: una taza de café triste se despide mientras el personaje elige su nuevo hábito."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo (1:17–1:20)",
+          "Focus Booster está pensado para acompañarte en tu rutina y ayudarte a rendir con mayor claridad.",
+          "A cámara",
+          "<em>Pantalla dividida</em>",
+          "Tarro de Focus Booster animado feliz"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA (1:21–1:27)",
+          "Si estás cansado de soluciones temporales y buscas una forma más inteligente de apoyar tu enfoque diario",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA (1:28–1:32)",
+          "Tendrás claridad, enfoque y productividad, sin sobreestimulación.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "84": {
+    "title": "REEL 84 — Focus Booster (Mariana Naranjo)",
+    "sub": "MID · Autoridad · Toda la pieza es a cámara jugando con el tarro; las fotos de apoyo van en edición",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Si nunca terminas nada de lo que empiezas... esto es para ti.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Imagen de apoyo de persona con cansancio"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Déjame mostrarte lo que puedes experimentar cuando tomas Focus Booster al iniciar el día.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto alusiva a calma y serenidad"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Los primeros minutos: serenidad, calma y claridad.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto alusiva a claridad"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Gracias a ingredientes como la melena de león y el glicinato de magnesio, que apoyan los procesos relacionados con la función cognitiva y el bienestar mental.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto alusiva a ingredientes"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Lo que significa que puedes mantener la concentración sin sentirte abrumado cuando el día se pone pesado",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto de persona abrumada"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Pocos minutos después, notas el apoyo en la memoria y el enfoque.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto de persona concentrada"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Esto ayuda a que tu mente funcione de forma más fluida, permitiéndote avanzar en tus tareas",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "<em>(Sin notas de edición)</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Contiene nutrientes como el Omega 3 y las vitaminas B1, B3 y B6.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto de vitaminas"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y sin azúcares y sin los picos y caídas del café.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "Foto de persona productiva"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Esta es la parte donde logras concentrarte y sacar adelante tus pendientes con mayor enfoque.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "<em>(Sin notas de edición)</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Porque dejar de depender de los estimulantes pesados te ayuda a recuperar el control de tu día.<br><br>Lo sé porque lo uso",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "<em>(Sin notas de edición)</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Tú también puedes notar la diferencia al tomarlo",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "<em>(Sin notas de edición)</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Pide el Focus Booster en el link que te dejo aquí. Focus Booster de Biobuster.",
+          "A cámara",
+          "Jugar mucho con el tarro, abrirlo, sacar scoop, mostrar polvo cayendo mientras habla",
+          "<em>(Sin notas de edición)</em>"
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "85": {
+    "title": "REEL 85 — Focus Booster (Mariana Naranjo)",
+    "sub": "BOTTOM · Respondiendo comentario · Arranca en pantalla verde con hongo IA de fondo",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Sí, la melena de león es buenísima para las mujeres que sienten que andan con la memoria medio perdida, pero, eso sí, he escuchado unas historias algo tristes..",
+          "Pantalla verde",
+          "",
+          "Fondo: video generado por IA de un hongo (melena de león) realista como referencia.<br><br>Aparece un <strong>comentario simulado encima</strong>: <em>\"Bueno y cuándo hace efecto porque llevo semanas y nadaaaaa, ¿qué sucede? :(\"</em>"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "La mayoría de las personas asume que tiene mala memoria o que últimamente anda más dispersa, así que busca en Google cosas como \"suplementos para la concentración\" y termina encontrándose con la melena de león.<br><br>Pero después no pasa nada, porque muchos de los productos que encuentras por ahí terminan siendo simplemente polvo de hongo, sin una fórmula realmente completa.<br><br>De hecho, alguien nos escribió diciéndonos que la melena de león era puro cuento, que llevaba meses tomándola y que no había notado ninguna diferencia.",
+          "A cámara, b-roll",
+          "Toma de apoyo mostrando una búsqueda en Google sobre la memoria",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y ahí entendí que probablemente no había probado Focus Booster.<br><br>Porque su fórmula combina siete veces más melena de león que otras ofertas del mercado, con 1.500 mg de melena de león, además de Omega-3, glicinato de magnesio y vitaminas B1, B3 y B6.<br><br>Una combinación de ingredientes que sirven especialmente para los días de mucho trabajo, estudio o simplemente mil cosas pendientes.",
+          "A cámara",
+          "Mostrando producto",
+          "Aparición del producto con efecto de zoom o brillo. Gráficos flotantes rápidos con los datos clave: <em>1.500 mg</em>, <em>Omega-3</em>, <em>Magnesio</em>, <em>Vitaminas B</em>."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y lo mejor es que es súper fácil de incorporar a tu rutina: tomas la porción recomendada de Focus Booster al día y listo.<br><br>Además, es una opción para quienes buscan energía, mente clara y enfoque, sin tener que depender todo el tiempo del café.<br><br>Porque seamos honestos: una cosa es tomarte un café para arrancar el día y otra es necesitar café tras café para poder concentrarse.",
+          "Voz en off (B-roll)<br><br>A CÁMARA",
+          "POV producto<br><br>Creadora preparando<br><br>Creadora tomando",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "Así que, si últimamente sientes que tienes mil cosas en la cabeza y necesitas un poquito más de enfoque para sacar adelante el día, Focus Booster es lo que yo te recomiendo.<br><br>Si ya estabas pensando en probarlo, este es el momento. Pide tu Focus Booster y empieza a incluirlo en tu rutina.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        // data-col alimenta el rótulo de cada campo cuando la tabla colapsa a fichas en móvil.
+        const col = ` data-col="${String(cols[i] || '').replace(/"/g, '&quot;')}"`;
+        const v = (cell || '').trim();   // celdas con solo "\n" deben quedar vacías (se ocultan en móvil)
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est"${col}>${v}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto"${col}>${v}</td>`;
+        if (i === fmtCol) return `<td${col}>${v ? `<span class="guion-fmt ${fmtClass(v)}">${v}</span>` : ''}</td>`;
+        return `<td${col}>${v}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-hint"><span>⇄</span>Desliza la tabla de lado para ver todas las columnas</div>` +
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
