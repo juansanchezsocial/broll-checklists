@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAPEE · Tomas de Apoyo · Reels 96–105</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_tapee_96_105_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  /* Brief marcado como grabado: se apaga y se tacha, PERO se queda en su posición.
+     El apagado va por elemento (no opacity en la card) para que el switch siga legible. */
+  .reel.recorded { border-color: var(--border); box-shadow: none; background: var(--card-2); }
+  .reel.recorded .reel-num, .reel.recorded .reel-title,
+  .reel.recorded .tag, .reel.recorded .ref-btn, .reel.recorded .caret,
+  .reel.recorded .reel-progress { opacity: 0.42; transition: opacity .25s ease; }
+  .reel.recorded:hover .reel-num, .reel.recorded:hover .reel-title,
+  .reel.recorded:hover .tag, .reel.recorded:hover .ref-btn,
+  .reel.recorded:hover .caret, .reel.recorded:hover .reel-progress { opacity: 0.8; }
+  .reel.recorded .reel-num, .reel.recorded .reel-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+  /* Switch estilo iOS: da el brief completo por grabado */
+  .rec-switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: transparent; border: none; padding: 4px 2px 4px 6px; margin: 0;
+    font-family: Poppins, "Open Sans", sans-serif; -webkit-tap-highlight-color: transparent;
+  }
+  .rec-switch-txt {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--muted); transition: color .18s ease; white-space: nowrap;
+  }
+  .rec-track {
+    position: relative; width: 42px; height: 25px; border-radius: 100px; flex-shrink: 0;
+    background: var(--card-2); border: 1px solid var(--border-strong);
+    transition: background .22s ease, border-color .22s ease;
+  }
+  .rec-knob {
+    position: absolute; top: 50%; left: 2px; width: 19px; height: 19px; border-radius: 50%;
+    background: #fff; transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .24s cubic-bezier(.4,.15,.25,1.2);
+  }
+  .rec-switch:hover .rec-track { border-color: var(--accent-solid); }
+  .rec-switch:focus-visible { outline: 2px solid var(--accent-solid); outline-offset: 3px; border-radius: 100px; }
+  .reel.recorded .rec-switch-txt { color: var(--accent); }
+  .reel.recorded .rec-track { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .reel.recorded .rec-knob { transform: translateY(-50%) translateX(17px); }
+  .briefs-text { font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; margin-left: auto; }
+  .briefs-text b { color: var(--accent); }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  /* ===== Tablet ===== */
+  @media (max-width: 900px) {
+    .guion-table { min-width: 720px; }
+  }
+
+  /* ===== Móvil =====
+     El audiovisual suele abrir esto en el celular en pleno set: targets grandes,
+     nada de scroll horizontal y el guión se lee como fichas, no como tabla. */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 26px 16px 22px; }
+    .logo { width: 44px; height: 44px; margin-bottom: 11px; }
+    h1 { font-size: 21px; }
+    .sub { font-size: 13px; }
+    .theme-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
+
+    .bar-inner { padding: 10px 14px; }
+    .toolbar { gap: 7px; }
+    .chip, .reset-btn { padding: 8px 14px; font-size: 13px; }
+    .reset-btn { margin-left: 0; }
+    .briefs-text { margin-left: 0; flex-basis: 100%; order: 9; font-size: 12px; }
+
+    .wrap { padding: 4px 14px 64px; }
+    .creator-block { margin-top: 26px; }
+    .creator-title h2 { font-size: 17px; }
+
+    /* Header del reel en 3 renglones: nº+progreso · título · tags/botones/switch */
+    .reel { border-radius: 13px; }
+    .reel-head { flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 13px 14px; }
+    .reel-num { order: 1; min-width: auto; font-size: 12.5px; }
+    .reel-progress { order: 2; margin-left: auto; }
+    .caret { order: 3; }
+    .reel-title { order: 4; flex-basis: 100%; font-size: 15px; }
+    .reel-meta { order: 5; flex-basis: 100%; gap: 8px; align-items: center; }
+    .reel-meta .rec-switch { margin-left: auto; }
+    .ref-btn { padding: 8px 14px; font-size: 12px; }
+    .rec-switch-txt { font-size: 12px; }
+    .rec-track { width: 46px; height: 27px; }
+    .rec-knob { width: 21px; height: 21px; }
+    .reel.recorded .rec-knob { transform: translateY(-50%) translateX(19px); }
+
+    /* Tomas: fila alta y checkbox grande para marcar con el pulgar */
+    .reel-body { padding: 2px 14px 12px; }
+    .shot { padding: 15px 2px; gap: 12px; }
+    .checkbox { width: 26px; height: 26px; border-radius: 8px; }
+    .shot-text { font-size: 15px; }
+  }
+
+  /* ===== Guión en pantalla chica =====
+     La tabla SIGUE siendo tabla: se desliza de lado para ver las columnas (decisión
+     del usuario, 2026-08-11 — las fichas apiladas no funcionaron en set).
+     La primera columna queda fija a la izquierda para no perder el tiempo/estructura. */
+  @media (max-width: 700px) {
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal { border-radius: 0; border: none; min-height: 100%; display: flex; flex-direction: column; }
+    .modal-head { position: sticky; top: 0; z-index: 3; background: var(--card); padding: 14px 16px; }
+    .modal-head h3 { font-size: 15.5px; }
+    .modal-close { width: 38px; height: 38px; font-size: 19px; }
+    .modal-body { max-height: none; padding: 12px 12px 40px; }
+
+    .guion-table-wrap { border-radius: 10px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .guion-table { min-width: 760px; font-size: 13.5px; }
+    .guion-table td { padding: 11px 12px; }
+    .guion-table td.g-texto { font-size: 14px; }
+
+    /* Columna 1 anclada mientras se desliza el resto */
+    .guion-table th:first-child, .guion-table td:first-child { position: sticky; left: 0; z-index: 2; }
+    .guion-table th:first-child { z-index: 4; background: var(--card-2); }
+    .guion-table td:first-child { background: var(--card); box-shadow: 1px 0 0 var(--border); }
+    .guion-table tr.is-broll td:first-child { background: var(--broll-bg); }
+    .guion-table tr.is-broll td.g-est { box-shadow: inset 3px 0 0 var(--accent-solid), 1px 0 0 var(--border); }
+
+    .guion-hint { display: flex; }
+    .guion-legend { font-size: 12.5px; align-items: flex-start; }
+  }
+
+  /* Aviso de deslizamiento — solo visible en móvil */
+  .guion-hint {
+    display: none; align-items: center; gap: 7px; margin: 0 0 9px;
+    font-size: 12px; color: var(--muted); font-family: Poppins, sans-serif;
+  }
+  .guion-hint span { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>TAPEE · Tomas de Apoyo · Reels 96–105</h1>
+    <div class="sub">Rodaje miércoles 26 de agosto · Cali · Tapete sanitario Tapee (TrendsCol)</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="gabriela">Gabriela Jaramillo</div>
+    <div class="chip" data-filter="camila">Camila Sanclemente</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <span class="briefs-text" id="briefsText"></span>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="gabriela">
+  <div class="creator-title">
+    <h2>Gabriela Jaramillo</h2>
+    <span class="count">Reels 96–100</span>
+  </div>
+  <!-- REEL 96 -->
+  <div class="reel" data-reel="96">
+    <div class="reel-head">
+      <span class="reel-num">REEL 96</span>
+      <span class="reel-title">"Si tu peludo se hace por toda la casa…"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Voz en off + demostración</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(96)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/XXgctj5Pb5rrySYvDXv6?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217591154205342" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(96)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="96">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="96-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>En pantalla: charquito en el piso, la creadora llega y lo mira resignada; corte a ella con cara de "pero miren". No habla a cámara</div></div>
+      <div class="shot" data-id="96-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>Tomas del método viejo fallando: periódico, pañal, el perro dudando; en "no era él" el peludo mirando inocente</div></div>
+      <div class="shot" data-id="96-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>En "lo puse" coloca el Tapee en su sitio; en "se subiera solo" el perro se acerca y lo olfatea por su cuenta</div></div>
+      <div class="shot" data-id="96-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>En "huele a pasto" el perro olfatea intensamente la grama; en "instinto" lo usa; en "arena de coco" se levanta la esquina y cae un puñado</div></div>
+      <div class="shot" data-id="96-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>En "premio y cariño" le da una galleta y lo acaricia sobre el tapete; en "iba solito" el perro va por su cuenta días después</div></div>
+      <div class="shot" data-id="96-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 97 -->
+  <div class="reel" data-reel="97">
+    <div class="reel-head">
+      <span class="reel-num">REEL 97</span>
+      <span class="reel-title">"Tu perro no se va a volver a hacer pipí…"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Voz en off / B-roll</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(97)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/VpYouhfXL9QOc0UErtPf?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217591154205341" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(97)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="97">0/6</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="97-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>En pantalla: el peludo caminando por la casa, y un charquito en el piso al que la creadora llega y mira. No habla a cámara: graba en silencio</div></div>
+      <div class="shot" data-id="97-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>En "se corren" muestra un pañal corrido; en "los arrastra" el perro jalándolo; en "otra bolsa" un paquete nuevo saliendo del mercado</div></div>
+      <div class="shot" data-id="97-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>En "tapa por encima" vierte un poco de agua sobre un pad y queda encharcada arriba; animación de vapor subiendo</div></div>
+      <div class="shot" data-id="97-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>En "el tapete Tapee" entra el producto a cuadro por primera vez; en "vaya ahí solo" el perro camina directo y lo usa</div></div>
+      <div class="shot" data-id="97-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>En "arena de coco" levanta la grama y deja caer un puñado; en "corta el olor" acerca la nariz y asiente; en "cachorros" un perro pequeño usándolo</div></div>
+      <div class="shot" data-id="97-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 98 -->
+  <div class="reel" data-reel="98">
+    <div class="reel-head">
+      <span class="reel-num">REEL 98</span>
+      <span class="reel-title">"¿Cansada de ver el chichí por toda la casa?"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara + B-roll</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(98)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/mij3JMlPoPw2bTDDqeDd?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217591154205340" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(98)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="98">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 99 -->
+  <div class="reel" data-reel="99">
+    <div class="reel-head">
+      <span class="reel-num">REEL 99</span>
+      <span class="reel-title">"Resolví un problema de mamá perruna"</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Voz en off / B-roll</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(99)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/w695PXC8MUHiyP3l2Ybx?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217591154205339" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(99)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="99">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="99-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>En pantalla: la creadora abre una caja recién llegada con cara de intriga y saca el Tapee. Apartamento real, luz natural. No habla a cámara: graba la escena en silencio</div></div>
+      <div class="shot" data-id="99-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>En "este regalo" muestra el Tapee desempacado; en "arena de coco" toma un puñado de la arena y la deja caer para que se vea la textura; en "olor a amoníaco" acerca la nariz al tapete y asiente tranquila</div></div>
+      <div class="shot" data-id="99-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Dos tomas: el peludo usando el Tapee en su rincón (su espacio) → la creadora respirando tranquila en la sala (su casa fresca)</div></div>
+      <div class="shot" data-id="99-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>Demostración del mantenimiento en silencio: en "lávalo" enjuaga la grama; en "reemplaza la arena" saca la arena usada y vierte la nueva; en "como nuevo" muestra el tapete listo otra vez</div></div>
+      <div class="shot" data-id="99-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una sola vez y señalar hacia el botón</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 100 -->
+  <div class="reel" data-reel="100">
+    <div class="reel-head">
+      <span class="reel-num">REEL 100</span>
+      <span class="reel-title">"Deja de estar esclavizada al orín"</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">A cámara + B-roll</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(100)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/lEQLzerwhuti34tadoaf?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217591154205338" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(100)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="100">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="100-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>La creadora graba en silencio: vierte agua sobre un tapete genérico y queda encharcada arriba</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="camila">
+  <div class="creator-title">
+    <h2>Camila Sanclemente</h2>
+    <span class="count">Reels 101–105</span>
+  </div>
+  <!-- REEL 101 -->
+  <div class="reel" data-reel="101">
+    <div class="reel-head">
+      <span class="reel-num">REEL 101</span>
+      <span class="reel-title">"Necesito pedirles disculpas públicamente"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC · Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(101)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/i3caihkOZVJuucCPdbXn?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217832189491163" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(101)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="101">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 102 -->
+  <div class="reel" data-reel="102">
+    <div class="reel-head">
+      <span class="reel-num">REEL 102</span>
+      <span class="reel-title">"¿Lloviendo y sin tiempo para sacarlo?"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(102)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/axAJUkElZEVhPIFPRKhJ?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217832189491165" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(102)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="102">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="102-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>perrito curioseando en el  apartamento.</div></div>
+      <div class="shot" data-id="102-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Mostrando Tapee listo en la sala o balcón.</div></div>
+      <div class="shot" data-id="102-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>El peludo usándolo de forma natural.</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 103 -->
+  <div class="reel" data-reel="103">
+    <div class="reel-head">
+      <span class="reel-num">REEL 103</span>
+      <span class="reel-title">"Contraté a mi mamá para que les enseñe"</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(103)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/31G7FtnCdnR7IBNY2Vin?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217832189491167" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(103)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="103">0/4</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="103-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>perrito en tapete</div></div>
+      <div class="shot" data-id="103-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La mamá entra en cuadro sonriendo para hacer la demostración práctica.</div></div>
+      <div class="shot" data-id="103-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La mamá enrolla la grama sintética de forma limpia y rápida.</div></div>
+      <div class="shot" data-id="103-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Mostrando el sistema de dos capas del producto.</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 104 -->
+  <div class="reel" data-reel="104">
+    <div class="reel-head">
+      <span class="reel-num">REEL 104</span>
+      <span class="reel-title">"Era súper escéptica con esto"</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(104)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/DnbEhADpbFebDOhpCnwT?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217832189491169" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(104)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="104">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="104-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Beneficios Clave (0:12 - 0:22)</span>Primer plano mostrando la bandeja de Tapee, la arena ecológica y la facilidad de uso.</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 105 -->
+  <div class="reel" data-reel="105">
+    <div class="reel-head">
+      <span class="reel-num">REEL 105</span>
+      <span class="reel-title">"Así que quieres comprarle un Tapee"</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">UGC</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(105)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/Vz6jW0XO6J2iryWMLDRA?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216285003527722/1217832189491171" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(105)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="105">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="105-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>mostrando arena por dentro</div></div>
+      <div class="shot" data-id="105-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>perrito en el tapete</div></div>
+      <div class="shot" data-id="105-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>pov producto</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · TAPEE · Entrega 7<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_tapee_96_105_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      if (reel.classList.contains('recorded')) {
+        el.textContent = 'grabado';
+        el.classList.add('done');
+        return;
+      }
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+
+    const totalReels = document.querySelectorAll('.reel').length;
+    const recReels = document.querySelectorAll('.reel.recorded').length;
+    const briefsEl = document.getElementById('briefsText');
+    if (briefsEl) briefsEl.innerHTML = '<b>' + recReels + '</b> / ' + totalReels + ' briefs grabados';
+  }
+
+  // === Marcar el BRIEF COMPLETO como grabado ===
+  // Es independiente de los checkboxes de tomas: el PM puede darlo por grabado
+  // aunque queden tomas sin marcar (o marcarlas todas y aun así no darlo por cerrado).
+  // El brief grabado NO se reordena: se queda en su sitio y solo se tacha
+  // (decisión del usuario, 2026-08-11 — mover la tarjeta desubica al equipo en set).
+  const REC = '__rec_';
+
+  // Mantiene el estado accesible del switch iOS alineado con la clase .recorded
+  function syncSwitches() {
+    document.querySelectorAll('.reel').forEach(reel => {
+      const sw = reel.querySelector('.rec-switch');
+      if (sw) sw.setAttribute('aria-checked', reel.classList.contains('recorded') ? 'true' : 'false');
+    });
+  }
+
+  function toggleRecorded(num) {
+    const reel = document.querySelector('.reel[data-reel="' + num + '"]');
+    if (!reel) return;
+    const on = !reel.classList.contains('recorded');
+    reel.classList.toggle('recorded', on);
+    if (on) {
+      reel.classList.remove('open');
+      state[REC + num] = true;
+    } else {
+      delete state[REC + num];
+    }
+    save();
+    syncSwitches();
+    updateProgress();
+    applyFilter();
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        const rec = reel.classList.contains('recorded');
+        reel.classList.toggle('hidden', rec || (allDone && shots.length > 0));
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      document.querySelectorAll('.reel.recorded').forEach(r => r.classList.remove('recorded'));
+      Object.keys(state).forEach(k => delete state[k]);
+      syncSwitches();
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Restaurar los briefs ya marcados como grabados (en su posición original)
+  document.querySelectorAll('.reel').forEach(reel => {
+    if (state[REC + reel.dataset.reel]) reel.classList.add('recorded');
+  });
+  syncSwitches();
+
+  // Open first reel by default (el primero que no esté grabado)
+  const firstReel = document.querySelector('.reel:not(.recorded)');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "96": {
+    "title": "REEL 96 — Gabriela Jaramillo",
+    "sub": "TOF · Voz en off + demostración",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Si tu peludo se hace por toda la casa y crees que enseñarle es imposible… te va a sorprender lo fácil que fue para mí.\"",
+          "Voz en off",
+          "En pantalla: charquito en el piso, la creadora llega y lo mira resignada; corte a ella con cara de \"pero miren\". No habla a cámara",
+          "Corte seco de entrada. Subtítulos completos (voz en off), destacado en \"lo fácil que fue\". B-roll del charquito [insertar referencia visual]. Cortes rápidos en el hook"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Lo intenté con periódico, con pañales, regañándolo… y nada. Hasta que entendí que el problema no era él, era que no tenía un sitio que reconociera como suyo.\"",
+          "Voz en off sobre demostración",
+          "Tomas del método viejo fallando: periódico, pañal, el perro dudando; en \"no era él\" el peludo mirando inocente",
+          "B-roll de intentos fallidos. Texto superpuesto \"no es maña, le falta su sitio\". El insight respira. Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"Con el tapete Tapee fue otra cosa, y te muestro lo que hice. Paso uno: lo puse en un lugar fijo de la sala y dejé que él se subiera solo a olerlo. No lo forcé.\"",
+          "Voz en off sobre demostración",
+          "En \"lo puse\" coloca el Tapee en su sitio; en \"se subiera solo\" el perro se acerca y lo olfatea por su cuenta",
+          "Corte al producto. Producto en cuadro #1. Texto superpuesto \"Paso 1: su lugar fijo\". Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"Y aquí está el truco que lo hace fácil: la grama huele a pasto de verdad. Eso solito le activa el instinto de hacer ahí, como si estuviera en un parque. Debajo, la arena de coco se traga el orín y corta el olor.\"",
+          "Voz en off sobre demostración",
+          "En \"huele a pasto\" el perro olfatea intensamente la grama; en \"instinto\" lo usa; en \"arena de coco\" se levanta la esquina y cae un puñado",
+          "Close-up de arena de coco; corte transversal grama/arena. Producto en cuadro #2. Texto superpuesto \"el olor a pasto hace el trabajo 🌳 / arena de coco 🥥\". El insight respira. Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Paso dos: cada vez que hacía ahí, premio y cariño. Y ya. En pocos días iba solito, sin que yo tuviera que estar detrás de él.\"",
+          "Voz en off sobre demostración",
+          "En \"premio y cariño\" le da una galleta y lo acaricia sobre el tapete; en \"iba solito\" el perro va por su cuenta días después",
+          "B-roll del refuerzo positivo → salto temporal al perro yendo solo. Texto superpuesto \"Paso 2: premio + cariño\". Transición \"unos días después\". Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Así de fácil. Si tu peludo también se hace donde no debe, este es el que le da su lugar. Pídelo hoy, pago contra entrega.\"",
+          "Voz en off (mirada a cámara opcional al cierre)",
+          "Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón",
+          "Packshot final: Tapee en la sala + logo Tapee/TrendsCol + flecha al botón. Texto \"+20.000 casas ✓ / Pago contra entrega ✓\". Corte seco final"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "97": {
+    "title": "REEL 97 — Gabriela Jaramillo",
+    "sub": "TOF · Voz en off / B-roll",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Tu perro no se va a volver a hacer pipí en cualquier parte de la casa. Nunca más.\"",
+          "Voz en off",
+          "En pantalla: el peludo caminando por la casa, y un charquito en el piso al que la creadora llega y mira. No habla a cámara: graba en silencio",
+          "Corte seco de entrada. Subtítulos completos (voz en off), destacado en \"nunca más\". Cortes rápidos en el hook. B-roll del charquito [insertar referencia visual]"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Y no, no es poniendo más pañales desechables. Esos se corren, el peludo los arrastra, y a la semana estás comprando otra bolsa… y el piso igual mojado.\"",
+          "Voz en off sobre demostración",
+          "En \"se corren\" muestra un pañal corrido; en \"los arrastra\" el perro jalándolo; en \"otra bolsa\" un paquete nuevo saliendo del mercado",
+          "B-roll de pañales fallando. Texto superpuesto \"adiós desechables ✗\". Ritmo que acumula frustración. Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"El problema es que el desechable solo tapa el pipí por encima. Queda ahí expuesto, se evapora, y por eso la casa sigue oliendo por más que lo cambies.\"",
+          "Voz en off sobre demostración",
+          "En \"tapa por encima\" vierte un poco de agua sobre un pad y queda encharcada arriba; animación de vapor subiendo",
+          "Corte transversal del pad: líquido en la superficie. Texto superpuesto \"el pipí queda expuesto ⚠️\". El insight respira. Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"Esto es diferente: el tapete Tapee. Arriba, grama que se siente como pasto de parque, para que el peludo la reconozca como su baño y vaya ahí solo.\"",
+          "Voz en off",
+          "En \"el tapete Tapee\" entra el producto a cuadro por primera vez; en \"vaya ahí solo\" el perro camina directo y lo usa",
+          "Corte al producto. Producto en cuadro #1. Texto superpuesto \"como pasto real 🌳\". Cambio de energía. Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Y debajo, una arena de coco que se traga el orín y corta el olor a amoníaco desde adentro. Por eso no queda ese olor fuerte en la casa. Sirve perfecto para cachorros o para peludos que no aguantan mucho.\"",
+          "Voz en off sobre demostración",
+          "En \"arena de coco\" levanta la grama y deja caer un puñado; en \"corta el olor\" acerca la nariz y asiente; en \"cachorros\" un perro pequeño usándolo",
+          "Close-up de arena de coco cayendo; corte transversal grama/arena. Producto en cuadro #2. Texto superpuesto \"arena de coco 🥥 / corta el amoníaco ✓\". Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"¿Qué estás esperando? Miles de mamás perrunas ya lo tienen. Pídelo hoy, y pagas cuando te llegue a la casa.\"",
+          "Voz en off (mirada a cámara opcional al cierre)",
+          "Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón",
+          "Packshot final: Tapee en la sala + logo Tapee/TrendsCol + flecha al botón. Texto \"+20.000 casas ✓ / Pago contra entrega ✓\". Corte seco final"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "98": {
+    "title": "REEL 98 — Gabriela Jaramillo",
+    "sub": "TOF · A cámara + B-roll",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"¿Tienes perro y estás cansada de ver el chichí por toda la casa? Créeme, yo estaba igual.\"",
+          "A cámara",
+          "Tono de desahogo entre amigas. Ella en la sala; en \"chichí por toda la casa\" señala el piso con fastidio; en \"yo estaba igual\" se apunta al pecho",
+          "Corte seco de entrada. Subtítulos en \"cansada de ver el chichí por toda la casa\". B-roll rápido de un charquito en el piso [insertar referencia visual]. Cortes rápidos en el hook"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Trapeaba, ponía periódico, cambiaba el pañal… y a las horas otra vez un charco. En la sala, en el cuarto, hasta en la ropa que dejaba en el piso.\"",
+          "A cámara",
+          "Se queda en el dolor. Va enumerando con los dedos \"trapeaba, periódico, pañal\"; en \"otra vez un charco\" deja caer los brazos, rendida",
+          "B-roll de cada intento fallido: trapero, periódico mojado, pañal corrido. Subtítulos en \"y a las horas otra vez un charco\". Ritmo que acumula frustración"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"Y lo que nadie te dice es por qué lo hace: no es maña. El perro busca una superficie que absorba, parecida al pasto. El periódico y la baldosa no lo son, entonces sigue buscando por toda la casa.\"",
+          "A cámara",
+          "Cambio a tono de \"te explico algo que nadie te dice\". En \"no es maña\" niega con la cabeza; en \"parecida al pasto\" junta los dedos como mostrando textura",
+          "Animación simple o b-roll: el perro oliendo el piso duro y rechazándolo, buscando otra superficie. Texto superpuesto \"no es maña, es instinto\". El insight respira: ritmo calmado. Subtítulos completos"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"Cuando entendí eso, encontré el tapete de Tapee. Y te cuento por qué es diferente a todo lo que había probado.\"",
+          "A cámara",
+          "En \"cuando entendí eso\" se le ilumina la cara; en \"el tapete de Tapee\" lo levanta a cuadro por primera vez",
+          "Corte al producto. Producto en cuadro #1. Subtítulos en \"por qué es diferente\". Cambio de energía: del problema a la solución"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Arriba tiene grama que se siente y huele como el pasto de un parque, así que el peludo la reconoce como su baño y va ahí solito. Y debajo, una arena de coco que se traga el orín y corta ese olor a amoníaco que se queda en toda la casa.\"",
+          "A cámara + demostración",
+          "En \"grama como pasto\" pasa la mano por encima; en \"va ahí solito\" señala al perro usándolo; en \"arena de coco\" levanta la esquina y deja caer un puñado; en \"amoníaco\" arruga la nariz",
+          "Close-up de la arena de coco cayendo; corte transversal grama/arena; b-roll del perro yendo solo. Producto en cuadro #2. Texto superpuesto \"grama como parque 🌳 / arena de coco corta el amoníaco ✓\". Subtítulos en las frases clave"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 5",
+          "\"Adiós olores, adiós accidentes. Mi casa se mantiene limpia, mi peludo está más tranquilo, y yo dejé de pelear con él. Fue como recuperar la paz de mi hogar.\"",
+          "A cámara",
+          "Alivio total. En \"adiós olores, adiós accidentes\" dos gestos de \"chao\"; en \"recuperar la paz\" respira hondo, ojos cerrados",
+          "B-roll: casa en orden, peludo echado tranquilo, ella relajada en el sofá. Texto superpuesto \"adiós olores ✓ / adiós accidentes ✓\". Ritmo calmado, emocional"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Si tu peludo vive en apartamento o pasa mucho tiempo adentro, este es la solución. No es un gasto, es una inversión en tu tranquilidad y en la de él. Pídelo hoy, pago contra entrega.\"",
+          "A cámara",
+          "Cierre con convicción. En \"no es un gasto, es una inversión\" marca la diferencia con las manos; en \"pídelo hoy\" señala el botón",
+          "Packshot final: Tapee en la sala con el peludo encima + logo Tapee/TrendsCol + flecha al botón. Texto \"Pago contra entrega ✓\". Corte seco fina"
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "99": {
+    "title": "REEL 99 — Gabriela Jaramillo",
+    "sub": "MOF · Voz en off / B-roll",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Resolví un problema de mamá perruna.\"",
+          "Voz en off",
+          "En pantalla: la creadora abre una caja recién llegada con cara de intriga y saca el Tapee. Apartamento real, luz natural. No habla a cámara: graba la escena en silencio",
+          "Corte seco de entrada. Subtítulos completos (voz en off), destacado en \"problema de mamá perruna\". B-roll de la caja llegando a la puerta [insertar referencia visual si es unboxing real]"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Este regalo llegó para cambiarlo todo: es un tapete sanitario y su secreto está en la arena de coco que absorbe los orines evitando el olor a amoníaco.\"",
+          "Voz en off sobre demostración",
+          "En \"este regalo\" muestra el Tapee desempacado; en \"arena de coco\" toma un puñado de la arena y la deja caer para que se vea la textura; en \"olor a amoníaco\" acerca la nariz al tapete y asiente tranquila",
+          "Close-up de la arena de coco cayendo entre los dedos. Texto superpuesto \"arena de coco ✓ / adiós olor a amoníaco ✓\". Producto en cuadro #1. El insight respira: ritmo calmado en \"evitando el olor a amoníaco\". Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"Tu perrito tendrá su espacio y tú, una casa fresca.\"",
+          "Voz en off",
+          "Dos tomas: el peludo usando el Tapee en su rincón (su espacio) → la creadora respirando tranquila en la sala (su casa fresca)",
+          "Corte que empareja las dos ideas: perro en su sitio / ella tranquila. Texto superpuesto \"su espacio 🐾 / tu casa fresca 🏠\". Producto en cuadro #2. Subtítulos completos"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"El mantenimiento es supersimple: lávalo y reemplaza la arena cada 15 días, y quedará como nuevo.\"",
+          "Voz en off sobre demostración",
+          "Demostración del mantenimiento en silencio: en \"lávalo\" enjuaga la grama; en \"reemplaza la arena\" saca la arena usada y vierte la nueva; en \"como nuevo\" muestra el tapete listo otra vez",
+          "Timelapse corto del mantenimiento (lavar → cambiar arena → listo). Texto superpuesto \"cada 15 días 🗓️ / como nuevo ✨\". Subtítulos completos. Ritmo ágil"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Te dejo el enlace abajo.\"",
+          "Voz en off (mirada a cámara opcional al cierre)",
+          "Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una sola vez y señalar hacia el botón",
+          "Packshot final: Tapee en la sala + logo Trends Pet / Tapee + botón verde \"LLÉVALO AHORA EN TRENDSCOL.COM\" con flecha. Corte seco final"
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "100": {
+    "title": "REEL 100 — Gabriela Jaramillo",
+    "sub": "BOF · A cámara + B-roll",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "\"Deja de estar esclavizada al orín de tu perrito. El tapete Tapee es la solución.\"",
+          "A cámara",
+          "Tono de hartazgo que libera. Ella en la sala, trapero todavía en la mano; en \"esclavizada\" lo suelta sobre el balde con fastidio; en \"el tapete Tapee\" lo levanta a cuadro",
+          "Corte seco de entrada. Subtítulos en \"esclavizada al orín\" y \"Tapee\". Zoom in cómico al trapero cayendo. Producto entra a cuadro #1"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 1",
+          "\"Te lo digo directo: estaba aburrida de estar trapeando pipí, pibe de todo y por eso este es el único que recomiendo.\"",
+          "A cámara",
+          "Actitud de confesión directa y segura. En \"un desastre\" señala el pipi del perro en el piso ; en \"el único que recomiendo\" vuelve al Tapee",
+          "B-roll:   pipí en el piso Subtítulos en \"el único que recomiendo\". Corte a ritmo medio"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Desarrollo 2",
+          "\"¿Por qué? Porque los normales son solo grama, o un absorbente que se satura. El pipí se queda arriba, expuesto… y expuesto, se evapora y el olor es horrible. Por más que limpies.\"",
+          "Voz en off sobre demostración",
+          "La creadora graba en silencio: vierte agua sobre un tapete genérico y queda encharcada arriba",
+          "Corte transversal del genérico: líquido en la superficie. Texto superpuesto \"el pipí queda expuesto ⚠️\". Animación simple de vapor subiendo. Subtítulos completos (voz en off). El insight respira: ritmo calmado"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 3",
+          "\"El Tapee es diferente por una sola cosa: debajo de la grama trae una capa de arena ecológica que se traga el pipí y lo sella abajo. No lo tapa: lo encierra antes de que huela.\"",
+          "A cámara + b-roll",
+          "En \"una sola cosa\" levanta un dedo; en \"debajo de la grama\" levanta la esquina del Tapee y muestra la arena; en \"lo encierra\" cierra el puño",
+          "Close-up de la mano levantando la grama → arena seca debajo. Texto superpuesto \"capa de arena que sella el olor ✓\". Producto en cuadro #2. Subtítulos en \"lo encierra antes de que huela\""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Desarrollo 4",
+          "\"Mi casa pasó de oler a perrera a oler a casa otra vez. Y ya no vivo con el trapero: le cambio la arena cada 15 días y ya.\"",
+          "A cámara",
+          "Cambio de energía a alivio. En \"oler a casa\" respira hondo con los ojos cerrados; en \"cada 15 días\" hace un gesto de \"y ya\" con la mano",
+          "B-roll: ella entrando a la casa tranquila; gesto rápido de sacar y poner arena. Texto superpuesto \"cambio cada 15 días 🗓️\". Subtítulos en \"de perrera a oler a casa\""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "\"Ya lo tienen más de 20 mil casas. Pídelo hoy y pagas cuando te llegue a la puerta.\"",
+          "A cámara",
+          "Cierre con autoridad tranquila. En \"más de 20 mil casas\" muestra la palma; en \"pagas cuando te llegue\" señala hacia el link",
+          "Packshot final: Tapee en la sala con el peludo encima + logo Tapee/TrendsCol + flecha al botón. Texto \"+20.000 casas ✓ / Pago contra entrega ✓\". Corte seco final"
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "101": {
+    "title": "REEL 101 — Camila Sanclemente",
+    "sub": "TOF · UGC · Pantalla verde",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Necesito pedirles disculpas públicamente a todas las mamás perrunas que han comprado tapetes desechables para su peludo.",
+          "Pantalla verde",
+          "clip perrito en el tapete",
+          "MENTIMOS!"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Hook",
+          "Porque les mentí.",
+          "Pantalla verde",
+          "clip perrito en el tapete",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Sí, es cierto que Tapee tiene un olor a pasto natural que activa el instinto de tu peludo para que descubra y aprenda solo.",
+          "Pantalla verde",
+          "pov producto",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "tambien es verdad, que Te ahorras una buena plata al año y dejas de botar dinero comprando desechables cada semana.",
+          "Pantalla verde",
+          "",
+          "clips negativos de tapetes desechables que no sirven"
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "y si es cierto, que Su bandeja con sistema antideslizante está 100% a prueba de fugas para proteger el piso de tu apartamento.",
+          "Pantalla verde",
+          "Primer plano de la bandeja firme sobre el piso y la impermeabilidad.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "y claro que tambien es cierto que Su cambio de arena es cada 15 días (con grama lavable semanal).",
+          "Pantalla verde",
+          "creadora con arena la muestra en pantalla",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Pero aquí viene la mentira:",
+          "Pantalla verde",
+          "clip del perrito en tapete",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "les dijimos que se pagaba el tapete y el envio.",
+          "Pantalla verde",
+          "clip perrito en tapete",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Resulta que eso no era cierto... porque solo por esta semana tienen envío gratis, con pago contra entrega.",
+          "a camara",
+          "creadora con perrito en las piernas",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Más de 20,000 mamás perrunas en Colombia ya dejaron atrás el caos de los desechables.",
+          "Pantalla verde",
+          "perrito jugando con creadora en tapete\n\no si es posible toma orinando",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Se han quedado sin stock varias veces porque sí que funciona.",
+          "Pantalla verde",
+          "pov producto",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Así que si estabas pensando en probar Tapee, no esperes más.",
+          "pantalla verde",
+          "mostrando tapete y al lado bolsa de arena",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Si todavía ves el botón aquí abajo, hay stock disponible.\nConsíguelo hoy, recíbelo en casa y págalo al recibir.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "102": {
+    "title": "REEL 102 — Camila Sanclemente",
+    "sub": "TOF · UGC",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "¿Lloviendo y sin tiempo para sacar a tu peludito a trabajar?",
+          "A cámara",
+          "con perrito en brazos",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Hook",
+          "Tu cachorrito termina dejando accidentes por toda la casa.",
+          "VOZ OFF B-roll",
+          "perrito curioseando en el  apartamento.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Con Tapee le das su propio espacio dentro del hogar, sin estrés.",
+          "VOZ OFF / B-roll",
+          "Mostrando Tapee listo en la sala o balcón.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Te ahorras limpiar todo el día y proteges tus pisos de manchas.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Respeta sus instintos y es ideal para todas las edades o cachorros sin vacunas completas.",
+          "VOZ OFF B-roll",
+          "El peludo usándolo de forma natural.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "Olvídate de preocupaciones y disfruta más con tu peludo.",
+          "A cámara",
+          "con perrito cargado",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "CTA",
+          "Es la solución perfecta para un hogar limpio. Conócelo abajo",
+          "A cámara",
+          "",
+          "Botón o flecha hacia abajo."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "103": {
+    "title": "REEL 103 — Camila Sanclemente",
+    "sub": "TOF · UGC",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "¡Hola a todos, soy [ ]!",
+          "Voz en Off / A cámara",
+          "Tono tierno, divertido y conversacional, simulando que el peludo habla detrás de cámaras.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Como saben, amo mi Tapee.",
+          "B-roll de la mascota interactuando con el tapete",
+          "perrito en tapete",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Muchos me han preguntado cómo se cambia la arena y la grama, así que contraté a mi mamá para que les enseñe.",
+          "Toma general del balcón o sala",
+          "La mamá entra en cuadro sonriendo para hacer la demostración práctica.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Como pueden ver, la grama se enrolla superfácil y sin hacer ningún desorden en el apartamento.",
+          "Demostración (Show, don't tell)",
+          "La mamá enrolla la grama sintética de forma limpia y rápida.",
+          "]"
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Después, solo renovamos la capa de arena ecológica absorbente que va por debajo.",
+          "Toma de demostración del recambio",
+          "Mostrando el sistema de dos capas del producto.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Y lo mejor es que solo se hace cada 15 días, ¡así que la casa se mantiene sin olores",
+          "A cámara / Demostración",
+          "Tono de alivio total, mostrando el resultado final limpio.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "¡Y ya estamos listos para la siguiente! Pide el tuyo ahora mismo con pago contra entrega en Colombia.",
+          "Cierre directo a cámara",
+          "Sonrisa y señalando hacia abajo con el enlace disponible.",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "104": {
+    "title": "REEL 104 — Camila Sanclemente",
+    "sub": "MOF · UGC",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Gancho (0:00 - 0:03)",
+          "\"Okay, la verdad era súper escéptica con esto, pero después de probar Tapee con mi peludo... en verdad, me cambió  la jugada.\"",
+          "A cámara",
+          "con perrito en los brazos",
+          "Subtítulos dinámicos resaltando la marca y la frase clave."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Problema y Descubrimiento (0:03 - 0:12)",
+          "\"Si eres de las mías y te cuesta mantener la casa sin olores y sin el fastidio de limpiar todo el día, tienes que ver esto. Lo pedí y no le tenía mucha fe, pero wow.\"",
+          "A cámara / B-roll",
+          "mostrando el tapete en la casa",
+          "Texto de apoyo en pantalla sobre el dolor de la limpieza con químicos."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Beneficios Clave (0:12 - 0:22)",
+          "\"Lo mejor es su arena ecológica integrada que absorbe los olores por dentro, y que solo necesitas cambiarla cada 15 días. \n\nCero enredos y resultados reales justo cuando más lo necesitas.\"",
+          "B-roll / VOZ OFF",
+          "Primer plano mostrando la bandeja de Tapee, la arena ecológica y la facilidad de uso.",
+          "Viñetas resaltando: \"Arena ecológica\" y \"Cambio cada 15 días\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Llamado a la Acción (0:22 - 0:29)",
+          "\"te lo digo, no lo dejes pasar. Dale clic al enlace de abajo para conseguir el tuyo, recíbelo en la puerta de tu casa y págalo al recibir. ¡No te vas a arrepentir!\"",
+          "A cámara",
+          "con tapete a la vista",
+          "Botón animado de compra y texto flotante: \"Pago contra entrega\"."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "105": {
+    "title": "REEL 105 — Camila Sanclemente",
+    "sub": "BOF · UGC",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "Hook",
+          "Así que quieres comparle a un Tapee — hablemos de eso.",
+          "A cámara",
+          "hablando con el perrito al lado",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Mi peludito usa su tapete unas tres veces al día, y de verdad cumple.",
+          "A cámara / B-roll rápido",
+          "mostrando a perrito en el tapete",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "No reemplaza nuestros paseos — pero es buenísimo para esas madrugadas con lluvia, las noches tarde y los días de mal clima.",
+          "a camara",
+          "",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "En cuanto a olores o que atraiga bichos — no he tenido ninguno. Cero problemas con eso.",
+          "A cámara mostrando de cerca el producto",
+          "Acercamiento al tapete para evidenciar la limpieza y la calidad de los materiales pet-safe.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "Lo mejor es que la arena ecológica absorbe por dentro y solo se cambia cada 15 días, no hay que estar lavando todos los días.",
+          "VOZ OFF",
+          "mostrando arena por dentro\n\nperrito en el tapete",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "Cuerpo",
+          "El tamaño de 80x60 cm es el más grande de Colombia y es perfecto para nuestro balcón o apartamento.",
+          "voz off",
+          "pov producto",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "CTA",
+          "Créeme, este es un producto que te va a cambiar la vida. Pide el tuyo ahora mismo con pago contra entrega y te llega en 24 horas.",
+          "A cámara",
+          "",
+          ""
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        // data-col alimenta el rótulo de cada campo cuando la tabla colapsa a fichas en móvil.
+        const col = ` data-col="${String(cols[i] || '').replace(/"/g, '&quot;')}"`;
+        const v = (cell || '').trim();   // celdas con solo "\n" deben quedar vacías (se ocultan en móvil)
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est"${col}>${v}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto"${col}>${v}</td>`;
+        if (i === fmtCol) return `<td${col}>${v ? `<span class="guion-fmt ${fmtClass(v)}">${v}</span>` : ''}</td>`;
+        return `<td${col}>${v}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-hint"><span>⇄</span>Desliza la tabla de lado para ver todas las columnas</div>` +
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
