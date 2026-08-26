@@ -44,6 +44,10 @@
     --bof-bg: rgba(248,113,113,0.15);
     --broll-bg: rgba(2,254,191,0.07);
     --broll-ink: #02FEBF;
+    --cat-neg: #FCA5A5;  --cat-neg-bg: rgba(248,113,113,0.16);
+    --cat-pos: #02FEBF;  --cat-pos-bg: rgba(2,254,191,0.14);
+    --cat-prod: #9DBBFF; --cat-prod-bg: rgba(8,74,243,0.26);
+    --cat-neu: rgba(255,255,255,0.74); --cat-neu-bg: rgba(255,255,255,0.09);
     --shadow: 0 1px 2px rgba(0,0,0,0.4);
     --hero-text: #ffffff;
   }
@@ -70,6 +74,10 @@
     --bof-bg: #fee2e2;
     --broll-bg: rgba(2,254,191,0.16);
     --broll-ink: #00806A;
+    --cat-neg: #b91c1c;  --cat-neg-bg: #fee2e2;
+    --cat-pos: #00806A;  --cat-pos-bg: rgba(2,254,191,0.24);
+    --cat-prod: #1d4ed8; --cat-prod-bg: #dbeafe;
+    --cat-neu: #494B51;  --cat-neu-bg: #EAEEEE;
     --shadow: 0 1px 2px rgba(16,18,24,0.06);
   }
 
@@ -175,6 +183,10 @@
   .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
   .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
   .shot.checked .shot-text strong { color: var(--muted); }
+  .shot-tag.cat-negativa { background: var(--cat-neg-bg); color: var(--cat-neg); }
+  .shot-tag.cat-positiva { background: var(--cat-pos-bg); color: var(--cat-pos); }
+  .shot-tag.cat-producto { background: var(--cat-prod-bg); color: var(--cat-prod); }
+  .shot-tag.cat-neutra   { background: var(--cat-neu-bg); color: var(--cat-neu); }
   .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
 
   /* ===== Botones del header del reel ===== */
@@ -388,12 +400,12 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="96-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>En pantalla: charquito en el piso, la creadora llega y lo mira resignada; corte a ella con cara de "pero miren". No habla a cámara</div></div>
-      <div class="shot" data-id="96-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>Tomas del método viejo fallando: periódico, pañal, el perro dudando; en "no era él" el peludo mirando inocente</div></div>
-      <div class="shot" data-id="96-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>En "lo puse" coloca el Tapee en su sitio; en "se subiera solo" el perro se acerca y lo olfatea por su cuenta</div></div>
-      <div class="shot" data-id="96-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>En "huele a pasto" el perro olfatea intensamente la grama; en "instinto" lo usa; en "arena de coco" se levanta la esquina y cae un puñado</div></div>
-      <div class="shot" data-id="96-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>En "premio y cariño" le da una galleta y lo acaricia sobre el tapete; en "iba solito" el perro va por su cuenta días después</div></div>
-      <div class="shot" data-id="96-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón</div></div>
+      <div class="shot" data-id="96-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>En pantalla: charquito en el piso, la creadora llega y lo mira resignada; corte a ella con cara de "pero miren". No habla a cámara</div></div>
+      <div class="shot" data-id="96-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Tomas del método viejo fallando: periódico, pañal, el perro dudando; en "no era él" el peludo mirando inocente</div></div>
+      <div class="shot" data-id="96-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>En "lo puse" coloca el Tapee en su sitio; en "se subiera solo" el perro se acerca y lo olfatea por su cuenta</div></div>
+      <div class="shot" data-id="96-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>En "huele a pasto" el perro olfatea intensamente la grama; en "instinto" lo usa; en "arena de coco" se levanta la esquina y cae un puñado</div></div>
+      <div class="shot" data-id="96-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>En "premio y cariño" le da una galleta y lo acaricia sobre el tapete; en "iba solito" el perro va por su cuenta días después</div></div>
+      <div class="shot" data-id="96-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón</div></div>
     </div>
   </div>
 
@@ -411,12 +423,12 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="97-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>En pantalla: el peludo caminando por la casa, y un charquito en el piso al que la creadora llega y mira. No habla a cámara: graba en silencio</div></div>
-      <div class="shot" data-id="97-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>En "se corren" muestra un pañal corrido; en "los arrastra" el perro jalándolo; en "otra bolsa" un paquete nuevo saliendo del mercado</div></div>
-      <div class="shot" data-id="97-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>En "tapa por encima" vierte un poco de agua sobre un pad y queda encharcada arriba; animación de vapor subiendo</div></div>
-      <div class="shot" data-id="97-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>En "el tapete Tapee" entra el producto a cuadro por primera vez; en "vaya ahí solo" el perro camina directo y lo usa</div></div>
-      <div class="shot" data-id="97-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 4</span>En "arena de coco" levanta la grama y deja caer un puñado; en "corta el olor" acerca la nariz y asiente; en "cachorros" un perro pequeño usándolo</div></div>
-      <div class="shot" data-id="97-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón</div></div>
+      <div class="shot" data-id="97-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>En pantalla: el peludo caminando por la casa, y un charquito en el piso al que la creadora llega y mira. No habla a cámara: graba en silencio</div></div>
+      <div class="shot" data-id="97-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>En "se corren" muestra un pañal corrido; en "los arrastra" el perro jalándolo; en "otra bolsa" un paquete nuevo saliendo del mercado</div></div>
+      <div class="shot" data-id="97-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>En "tapa por encima" vierte un poco de agua sobre un pad y queda encharcada arriba; animación de vapor subiendo</div></div>
+      <div class="shot" data-id="97-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>En "el tapete Tapee" entra el producto a cuadro por primera vez; en "vaya ahí solo" el perro camina directo y lo usa</div></div>
+      <div class="shot" data-id="97-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>En "arena de coco" levanta la grama y deja caer un puñado; en "corta el olor" acerca la nariz y asiente; en "cachorros" un perro pequeño usándolo</div></div>
+      <div class="shot" data-id="97-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una vez y señalar el botón</div></div>
     </div>
   </div>
 
@@ -452,11 +464,11 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="99-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>En pantalla: la creadora abre una caja recién llegada con cara de intriga y saca el Tapee. Apartamento real, luz natural. No habla a cámara: graba la escena en silencio</div></div>
-      <div class="shot" data-id="99-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 1</span>En "este regalo" muestra el Tapee desempacado; en "arena de coco" toma un puñado de la arena y la deja caer para que se vea la textura; en "olor a amoníaco" acerca la nariz al tapete y asiente tranquila</div></div>
-      <div class="shot" data-id="99-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>Dos tomas: el peludo usando el Tapee en su rincón (su espacio) → la creadora respirando tranquila en la sala (su casa fresca)</div></div>
-      <div class="shot" data-id="99-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 3</span>Demostración del mantenimiento en silencio: en "lávalo" enjuaga la grama; en "reemplaza la arena" saca la arena usada y vierte la nueva; en "como nuevo" muestra el tapete listo otra vez</div></div>
-      <div class="shot" data-id="99-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">CTA</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una sola vez y señalar hacia el botón</div></div>
+      <div class="shot" data-id="99-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>En pantalla: la creadora abre una caja recién llegada con cara de intriga y saca el Tapee. Apartamento real, luz natural. No habla a cámara: graba la escena en silencio</div></div>
+      <div class="shot" data-id="99-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>En "este regalo" muestra el Tapee desempacado; en "arena de coco" toma un puñado de la arena y la deja caer para que se vea la textura; en "olor a amoníaco" acerca la nariz al tapete y asiente tranquila</div></div>
+      <div class="shot" data-id="99-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Dos tomas: el peludo usando el Tapee en su rincón (su espacio) → la creadora respirando tranquila en la sala (su casa fresca)</div></div>
+      <div class="shot" data-id="99-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Demostración del mantenimiento en silencio: en "lávalo" enjuaga la grama; en "reemplaza la arena" saca la arena usada y vierte la nueva; en "como nuevo" muestra el tapete listo otra vez</div></div>
+      <div class="shot" data-id="99-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Cierre: el peludo tranquilo sobre el Tapee; la creadora puede mirar a cámara una sola vez y señalar hacia el botón</div></div>
     </div>
   </div>
 
@@ -474,7 +486,7 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="100-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Desarrollo 2</span>La creadora graba en silencio: vierte agua sobre un tapete genérico y queda encharcada arriba</div></div>
+      <div class="shot" data-id="100-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>La creadora graba en silencio: vierte agua sobre un tapete genérico y queda encharcada arriba</div></div>
     </div>
   </div>
 </div>
@@ -516,9 +528,9 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="102-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Hook</span>perrito curioseando en el  apartamento.</div></div>
-      <div class="shot" data-id="102-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Mostrando Tapee listo en la sala o balcón.</div></div>
-      <div class="shot" data-id="102-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>El peludo usándolo de forma natural.</div></div>
+      <div class="shot" data-id="102-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>perrito curioseando en el  apartamento.</div></div>
+      <div class="shot" data-id="102-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Mostrando Tapee listo en la sala o balcón.</div></div>
+      <div class="shot" data-id="102-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>El peludo usándolo de forma natural.</div></div>
     </div>
   </div>
 
@@ -536,10 +548,10 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="103-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>perrito en tapete</div></div>
-      <div class="shot" data-id="103-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La mamá entra en cuadro sonriendo para hacer la demostración práctica.</div></div>
-      <div class="shot" data-id="103-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>La mamá enrolla la grama sintética de forma limpia y rápida.</div></div>
-      <div class="shot" data-id="103-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>Mostrando el sistema de dos capas del producto.</div></div>
+      <div class="shot" data-id="103-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>perrito en tapete</div></div>
+      <div class="shot" data-id="103-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>La mamá entra en cuadro sonriendo para hacer la demostración práctica.</div></div>
+      <div class="shot" data-id="103-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>La mamá enrolla la grama sintética de forma limpia y rápida.</div></div>
+      <div class="shot" data-id="103-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Mostrando el sistema de dos capas del producto.</div></div>
     </div>
   </div>
 
@@ -557,7 +569,7 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="104-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Beneficios Clave (0:12 - 0:22)</span>Primer plano mostrando la bandeja de Tapee, la arena ecológica y la facilidad de uso.</div></div>
+      <div class="shot" data-id="104-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Primer plano mostrando la bandeja de Tapee, la arena ecológica y la facilidad de uso.</div></div>
     </div>
   </div>
 
@@ -575,9 +587,9 @@
       <span class="caret">›</span>
     </div>
     <div class="reel-body">
-      <div class="shot" data-id="105-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>mostrando arena por dentro</div></div>
-      <div class="shot" data-id="105-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>perrito en el tapete</div></div>
-      <div class="shot" data-id="105-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag">Cuerpo</span>pov producto</div></div>
+      <div class="shot" data-id="105-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>mostrando arena por dentro</div></div>
+      <div class="shot" data-id="105-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>perrito en el tapete</div></div>
+      <div class="shot" data-id="105-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>pov producto</div></div>
     </div>
   </div>
 </div>
