@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIXIR + FITME · Tomas de Apoyo · Valeria Anaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Tema antes del primer paint para que no haya destello
+  (function () {
+    try {
+      var t = localStorage.getItem('broll_elixir-fitme_valeria_51-55_161-165_v1_theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ===== Identidad Social Ecom Agency =====
+     Menta  #02FEBF   Azul  #084AF3
+     Negro  #101218   Gris claro  #F3F5F5
+     Poppins (títulos) + Open Sans (texto)                        */
+  :root {
+    --bg: #0B0D11;
+    --hero-glow: radial-gradient(105% 165% at 50% -25%, rgba(2,254,191,0.40) 0%, rgba(2,254,191,0.13) 34%, rgba(11,13,17,0) 68%);
+    --card: #14171D;
+    --card-2: #1B1F27;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.62);
+    --accent: #02FEBF;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.22);
+    --danger: #FCA5A5;
+    --danger-bg: rgba(248,113,113,0.14);
+    --tof: #7DD3FC;
+    --tof-bg: rgba(56,189,248,0.14);
+    --mof: #FCD34D;
+    --mof-bg: rgba(251,191,36,0.14);
+    --bof: #FCA5A5;
+    --bof-bg: rgba(248,113,113,0.15);
+    --broll-bg: rgba(2,254,191,0.07);
+    --broll-ink: #02FEBF;
+    --cat-neg: #FCA5A5;  --cat-neg-bg: rgba(248,113,113,0.16);
+    --cat-pos: #02FEBF;  --cat-pos-bg: rgba(2,254,191,0.14);
+    --cat-prod: #9DBBFF; --cat-prod-bg: rgba(8,74,243,0.26);
+    --cat-neu: rgba(255,255,255,0.74); --cat-neu-bg: rgba(255,255,255,0.09);
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --hero-text: #ffffff;
+  }
+  :root[data-theme="light"] {
+    --bg: #F3F5F5;
+    --hero-glow: radial-gradient(120% 150% at 50% -20%, rgba(2,254,191,0.30) 0%, rgba(2,254,191,0.08) 40%, rgba(243,245,245,0) 72%);
+    --card: #ffffff;
+    --card-2: #EAEEEE;
+    --text: #101218;
+    --muted: #494B51;
+    --accent: #00806A;
+    --accent-solid: #02FEBF;
+    --accent-ink: #04231C;
+    --blue: #084AF3;
+    --border: #DCE1E1;
+    --border-strong: #B9C1C1;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --tof: #1d4ed8;
+    --tof-bg: #dbeafe;
+    --mof: #92590a;
+    --mof-bg: #fef3c7;
+    --bof: #b91c1c;
+    --bof-bg: #fee2e2;
+    --broll-bg: rgba(2,254,191,0.16);
+    --broll-ink: #00806A;
+    --cat-neg: #b91c1c;  --cat-neg-bg: #fee2e2;
+    --cat-pos: #00806A;  --cat-pos-bg: rgba(2,254,191,0.24);
+    --cat-prod: #1d4ed8; --cat-prod-bg: #dbeafe;
+    --cat-neu: #494B51;  --cat-neu-bg: #EAEEEE;
+    --shadow: 0 1px 2px rgba(16,18,24,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .reel-num, .progress-text, .chip, .ref-btn, .tag, .creator-title h2 {
+    font-family: Poppins, "Open Sans", -apple-system, system-ui, sans-serif;
+  }
+
+  /* ===== Hero de marca ===== */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-glow); pointer-events: none; }
+  .hero-inner { position: relative; max-width: 1000px; margin: 0 auto; padding: 34px 20px 30px; text-align: center; }
+  .logo { width: 52px; height: 52px; margin: 0 auto 14px; display: block; }
+  h1 { font-size: 27px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; line-height: 1.22; color: var(--text); }
+  h1 .accent { color: var(--accent-solid); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .theme-btn {
+    position: absolute; top: 18px; right: 20px; width: 38px; height: 38px; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    cursor: pointer; font-size: 15px; line-height: 1; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; z-index: 2;
+  }
+  .theme-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+
+  /* ===== Barra sticky de progreso + filtros ===== */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar-inner { max-width: 1000px; margin: 0 auto; padding: 12px 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 14px; }
+  .progress-bar { flex: 1; height: 8px; background: var(--card-2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--accent-solid)); transition: width .35s ease; }
+  .progress-text { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); font-weight: 600; }
+  .reset-btn {
+    margin-left: auto; background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 5px 13px; border-radius: 100px; font-size: 12.5px; cursor: pointer; font-weight: 500;
+    font-family: Poppins, "Open Sans", sans-serif;
+  }
+  .reset-btn:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 4px 20px 80px; }
+
+  /* ===== Bloques por creador ===== */
+  .creator-block { margin-top: 34px; }
+  .creator-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--border); }
+  .creator-title h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .creator-title h2::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; background: var(--accent-solid); margin-right: 10px; vertical-align: 2px; }
+  .creator-title .count { color: var(--muted); font-size: 13px; }
+
+  /* ===== Card de reel ===== */
+  .reel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 11px; overflow: hidden; transition: border-color .2s; box-shadow: var(--shadow); }
+  .reel:hover { border-color: var(--border-strong); }
+  .reel.open { border-color: var(--accent-solid); }
+  .reel.hidden { display: none; }
+  /* Brief marcado como grabado: se apaga y se tacha, PERO se queda en su posición.
+     El apagado va por elemento (no opacity en la card) para que el switch siga legible. */
+  .reel.recorded { border-color: var(--border); box-shadow: none; background: var(--card-2); }
+  .reel.recorded .reel-num, .reel.recorded .reel-title,
+  .reel.recorded .tag, .reel.recorded .ref-btn, .reel.recorded .caret,
+  .reel.recorded .reel-progress { opacity: 0.42; transition: opacity .25s ease; }
+  .reel.recorded:hover .reel-num, .reel.recorded:hover .reel-title,
+  .reel.recorded:hover .tag, .reel.recorded:hover .ref-btn,
+  .reel.recorded:hover .caret, .reel.recorded:hover .reel-progress { opacity: 0.8; }
+  .reel.recorded .reel-num, .reel.recorded .reel-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .reel-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; }
+  .reel-num { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 68px; letter-spacing: 0.02em; }
+  .reel-title { flex: 1; font-size: 14.5px; color: var(--text); line-height: 1.4; }
+  .reel-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--card-2); color: var(--muted); border: 1px solid transparent; white-space: nowrap; }
+  .tag.tof { background: var(--tof-bg); color: var(--tof); }
+  .tag.mof { background: var(--mof-bg); color: var(--mof); }
+  .tag.bof { background: var(--bof-bg); color: var(--bof); }
+  .reel-progress { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .reel-progress.done { color: var(--accent-ink); background: var(--accent-solid); padding: 2px 9px; border-radius: 100px; }
+  .caret { color: var(--muted); transition: transform .2s; font-size: 18px; }
+  .reel.open .caret { transform: rotate(90deg); }
+
+  .reel-body { display: none; padding: 4px 18px 16px; border-top: 1px solid var(--border); background: var(--card-2); }
+  .reel.open .reel-body { display: block; }
+
+  /* ===== Tomas ===== */
+  .shot { display: flex; align-items: flex-start; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .shot:last-of-type { border-bottom: none; }
+  .shot:hover .checkbox { border-color: var(--accent-solid); }
+  .checkbox { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all .15s; background: var(--card); }
+  .shot.checked .checkbox { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .checkbox svg polyline { stroke: var(--accent-ink); }
+  .shot.checked .checkbox svg { opacity: 1; }
+  .shot-text { font-size: 14.5px; line-height: 1.55; flex: 1; color: var(--text); }
+  .shot-text strong { color: var(--text); font-weight: 700; }
+  .shot-tag { display: inline-block; margin-right: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--broll-bg); color: var(--broll-ink); vertical-align: 1px; font-family: Poppins, sans-serif; }
+  .shot.checked .shot-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .shot.checked .shot-text strong { color: var(--muted); }
+  .shot-tag.cat-negativa { background: var(--cat-neg-bg); color: var(--cat-neg); }
+  .shot-tag.cat-positiva { background: var(--cat-pos-bg); color: var(--cat-pos); }
+  .shot-tag.cat-producto { background: var(--cat-prod-bg); color: var(--cat-prod); }
+  .shot-tag.cat-neutra   { background: var(--cat-neu-bg); color: var(--cat-neu); }
+  .shot.checked .shot-tag { background: var(--card-2); color: var(--muted); }
+
+  /* ===== Botones del header del reel ===== */
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+    text-decoration: none; padding: 4px 11px; border-radius: 100px; white-space: nowrap;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.02em;
+    background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .ref-btn:hover { border-color: var(--accent-solid); color: var(--accent); }
+  .guion-btn { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+  .guion-btn:hover { background: #00e0a8; border-color: #00e0a8; color: var(--accent-ink); }
+  .asana-btn { border-color: #f06a6a; color: #f06a6a; }
+  .asana-btn:hover { background: #f06a6a; border-color: #f06a6a; color: #fff; }
+  /* Switch estilo iOS: da el brief completo por grabado */
+  .rec-switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: transparent; border: none; padding: 4px 2px 4px 6px; margin: 0;
+    font-family: Poppins, "Open Sans", sans-serif; -webkit-tap-highlight-color: transparent;
+  }
+  .rec-switch-txt {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--muted); transition: color .18s ease; white-space: nowrap;
+  }
+  .rec-track {
+    position: relative; width: 42px; height: 25px; border-radius: 100px; flex-shrink: 0;
+    background: var(--card-2); border: 1px solid var(--border-strong);
+    transition: background .22s ease, border-color .22s ease;
+  }
+  .rec-knob {
+    position: absolute; top: 50%; left: 2px; width: 19px; height: 19px; border-radius: 50%;
+    background: #fff; transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .24s cubic-bezier(.4,.15,.25,1.2);
+  }
+  .rec-switch:hover .rec-track { border-color: var(--accent-solid); }
+  .rec-switch:focus-visible { outline: 2px solid var(--accent-solid); outline-offset: 3px; border-radius: 100px; }
+  .reel.recorded .rec-switch-txt { color: var(--accent); }
+  .reel.recorded .rec-track { background: var(--accent-solid); border-color: var(--accent-solid); }
+  .reel.recorded .rec-knob { transform: translateY(-50%) translateX(17px); }
+  .briefs-text { font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; margin-left: auto; }
+  .briefs-text b { color: var(--accent); }
+
+  /* ===== Modal de guión ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,7,10,0.72); backdrop-filter: blur(5px); z-index: 100; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; max-width: 1120px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.5); overflow: hidden; }
+  .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-head h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); font-family: Poppins, sans-serif; }
+  .modal-head .modal-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modal-close { background: var(--card-2); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 17px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+  .modal-body { padding: 8px 20px 20px; max-height: 72vh; overflow-y: auto; }
+
+  /* Tabla de guión — réplica de la tabla de Asana */
+  .guion-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; }
+  .guion-table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+  .guion-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--card-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 1; font-family: Poppins, sans-serif; }
+  .guion-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; color: var(--text); }
+  .guion-table tr:last-child td { border-bottom: none; }
+  .guion-table td.g-est { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-table td.g-texto { font-size: 13.5px; }
+  .guion-table th:nth-child(1), .guion-table td:nth-child(1) { width: 104px; }
+  .guion-table th:nth-child(2) { width: 32%; }
+  .guion-table th:nth-child(3), .guion-table td:nth-child(3) { width: 118px; }
+  .guion-table th:nth-child(4) { width: 26%; }
+  .guion-table th:nth-child(5) { width: 22%; }
+  .guion-table tr.is-broll { background: var(--broll-bg); }
+  .guion-table tr.is-broll td.g-est { color: var(--broll-ink); box-shadow: inset 3px 0 0 var(--accent-solid); }
+  .guion-table a { color: var(--accent); }
+  .guion-fmt { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--card-2); color: var(--muted); white-space: nowrap; font-family: Poppins, sans-serif; }
+  .guion-fmt.voz { background: var(--broll-bg); color: var(--broll-ink); }
+  .guion-fmt.verde { background: var(--tof-bg); color: var(--tof); }
+  .guion-fmt.podcast { background: var(--mof-bg); color: var(--mof); }
+  .guion-legend { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .guion-legend .swatch { width: 14px; height: 14px; border-radius: 4px; background: var(--broll-bg); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent-solid); flex-shrink: 0; }
+
+  .no-broll { padding: 14px 4px; color: var(--muted); font-style: italic; font-size: 13.5px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border); }
+  footer .brand { color: var(--accent); font-weight: 600; }
+
+  /* ===== Tablet ===== */
+  @media (max-width: 900px) {
+    .guion-table { min-width: 720px; }
+  }
+
+  /* ===== Móvil =====
+     El audiovisual suele abrir esto en el celular en pleno set: targets grandes,
+     nada de scroll horizontal y el guión se lee como fichas, no como tabla. */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 26px 16px 22px; }
+    .logo { width: 44px; height: 44px; margin-bottom: 11px; }
+    h1 { font-size: 21px; }
+    .sub { font-size: 13px; }
+    .theme-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
+
+    .bar-inner { padding: 10px 14px; }
+    .toolbar { gap: 7px; }
+    .chip, .reset-btn { padding: 8px 14px; font-size: 13px; }
+    .reset-btn { margin-left: 0; }
+    .briefs-text { margin-left: 0; flex-basis: 100%; order: 9; font-size: 12px; }
+
+    .wrap { padding: 4px 14px 64px; }
+    .creator-block { margin-top: 26px; }
+    .creator-title h2 { font-size: 17px; }
+
+    /* Header del reel en 3 renglones: nº+progreso · título · tags/botones/switch */
+    .reel { border-radius: 13px; }
+    .reel-head { flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 13px 14px; }
+    .reel-num { order: 1; min-width: auto; font-size: 12.5px; }
+    .reel-progress { order: 2; margin-left: auto; }
+    .caret { order: 3; }
+    .reel-title { order: 4; flex-basis: 100%; font-size: 15px; }
+    .reel-meta { order: 5; flex-basis: 100%; gap: 8px; align-items: center; }
+    .reel-meta .rec-switch { margin-left: auto; }
+    .ref-btn { padding: 8px 14px; font-size: 12px; }
+    .rec-switch-txt { font-size: 12px; }
+    .rec-track { width: 46px; height: 27px; }
+    .rec-knob { width: 21px; height: 21px; }
+    .reel.recorded .rec-knob { transform: translateY(-50%) translateX(19px); }
+
+    /* Tomas: fila alta y checkbox grande para marcar con el pulgar */
+    .reel-body { padding: 2px 14px 12px; }
+    .shot { padding: 15px 2px; gap: 12px; }
+    .checkbox { width: 26px; height: 26px; border-radius: 8px; }
+    .shot-text { font-size: 15px; }
+  }
+
+  /* ===== Guión en pantalla chica =====
+     La tabla SIGUE siendo tabla: se desliza de lado para ver las columnas (decisión
+     del usuario, 2026-08-11 — las fichas apiladas no funcionaron en set).
+     La primera columna queda fija a la izquierda para no perder el tiempo/estructura. */
+  @media (max-width: 700px) {
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal { border-radius: 0; border: none; min-height: 100%; display: flex; flex-direction: column; }
+    .modal-head { position: sticky; top: 0; z-index: 3; background: var(--card); padding: 14px 16px; }
+    .modal-head h3 { font-size: 15.5px; }
+    .modal-close { width: 38px; height: 38px; font-size: 19px; }
+    .modal-body { max-height: none; padding: 12px 12px 40px; }
+
+    .guion-table-wrap { border-radius: 10px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .guion-table { min-width: 760px; font-size: 13.5px; }
+    .guion-table td { padding: 11px 12px; }
+    .guion-table td.g-texto { font-size: 14px; }
+
+    /* Columna 1 anclada mientras se desliza el resto */
+    .guion-table th:first-child, .guion-table td:first-child { position: sticky; left: 0; z-index: 2; }
+    .guion-table th:first-child { z-index: 4; background: var(--card-2); }
+    .guion-table td:first-child { background: var(--card); box-shadow: 1px 0 0 var(--border); }
+    .guion-table tr.is-broll td:first-child { background: var(--broll-bg); }
+    .guion-table tr.is-broll td.g-est { box-shadow: inset 3px 0 0 var(--accent-solid), 1px 0 0 var(--border); }
+
+    .guion-hint { display: flex; }
+    .guion-legend { font-size: 12.5px; align-items: flex-start; }
+  }
+
+  /* Aviso de deslizamiento — solo visible en móvil */
+  .guion-hint {
+    display: none; align-items: center; gap: 7px; margin: 0 0 9px;
+    font-size: 12px; color: var(--muted); font-family: Poppins, sans-serif;
+  }
+  .guion-hint span { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="theme-btn" id="themeBtn" title="Cambiar entre modo oscuro y claro">☀</button>
+  <div class="hero-inner">
+    <img class="logo" src="data:image/png;base64,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" alt="Social Ecom Agency">
+    <h1>ELIXIR + FITME · Tomas de Apoyo · Valeria Anaya</h1>
+    <div class="sub">Rodaje Valeria Anaya — ELIXIR Péptidos de Colágeno (51–55) · FITME Protectores solares (161–165)</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 0</div>
+    </div>
+    <div class="toolbar">
+      <div class="chip active" data-filter="all">Todos</div>
+    <div class="chip" data-filter="elixir">ELIXIR · Valeria Anaya</div>
+    <div class="chip" data-filter="fitme">FITME · Valeria Anaya</div>
+      <div class="chip" data-filter="pending">Pendientes</div>
+      <span class="briefs-text" id="briefsText"></span>
+      <button class="reset-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="creator-block" data-creator="elixir">
+  <div class="creator-title">
+    <h2>ELIXIR · Valeria Anaya</h2>
+    <span class="count">Reels 51–55 · Péptidos de Colágeno</span>
+  </div>
+  <!-- REEL 51 -->
+  <div class="reel" data-reel="51">
+    <div class="reel-head">
+      <span class="reel-num">REEL 51</span>
+      <span class="reel-title">"El colágeno es importantísimo para la estructura de la piel" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(51)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/2GYQlwb7RBDdd6mQzW8d?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1218150582728533/1218755586871765" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(51)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="51">0/2</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="51-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Inserto: close-up del empaque <strong>derecho, con la etiqueta en español</strong></div></div>
+      <div class="shot" data-id="51-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Inserto: close-up de la <strong>tabla nutricional</strong> del empaque</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 52 -->
+  <div class="reel" data-reel="52">
+    <div class="reel-head">
+      <span class="reel-num">REEL 52</span>
+      <span class="reel-title">"Hace tres meses, esa era yo" — A cámara</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">A cámara</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(52)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/tYPvclsTjaXp9hSoP0YF?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1218150582728533/1218755586871767" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(52)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="52">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 53 -->
+  <div class="reel" data-reel="53">
+    <div class="reel-head">
+      <span class="reel-num">REEL 53</span>
+      <span class="reel-title">"Hablemos del colágeno y de por qué, si tienes más de 30 años,…" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(53)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/bmTEF9rdpF51RLu8ztJ2?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1218150582728533/1218755586871769" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(53)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="53">0/1</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="53-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Cierre: plano del producto sobre la superficie, con ella fuera de cuadro o <strong>sonriendo al fondo desenfocada</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 54 -->
+  <div class="reel" data-reel="54">
+    <div class="reel-head">
+      <span class="reel-num">REEL 54</span>
+      <span class="reel-title">"Que coreano, que japonés, que europeo" — Reseña</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Reseña</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(54)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/1Djv9XW55NBapdHC24KL?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1218150582728533/1218755586871771" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(54)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="54">0/5</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="54-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Close-up del frasco en la <strong>zona de ingredientes</strong></div></div>
+      <div class="shot" data-id="54-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Manos abriendo el frasco</div></div>
+      <div class="shot" data-id="54-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Un scoop de polvo azul cayendo en medio vaso de agua</div></div>
+      <div class="shot" data-id="54-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>⭐ TOMA ESTRELLA: <strong>el azul disolviéndose en el agua, en cámara lenta</strong></div></div>
+      <div class="shot" data-id="54-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Plano de su piel al natural <strong>con glow, sin corrector</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 55 -->
+  <div class="reel" data-reel="55">
+    <div class="reel-head">
+      <span class="reel-num">REEL 55</span>
+      <span class="reel-title">"No puedes ser tan ingenua de creer eso de que "la que tiene buena…" — Selfie</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Selfie</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(55)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/share/ads/ibRn5gFZ64I2aaqx9TVQ?user=iUJsPrRRZrWDm7VyyRGUo208M2U2" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1218150582728533/1218755586871773" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(55)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="55">0/3</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="55-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Se sienta frente a la mesita o el tocador y <strong>abre el empaque a cuadro</strong></div></div>
+      <div class="shot" data-id="55-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Inserto: close-up de la <strong>tabla nutricional</strong> del empaque (0 g de azúcar añadida)</div></div>
+      <div class="shot" data-id="55-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>B-roll de manos: <strong>un scoop de polvo azul</strong> cayendo en medio vaso de agua</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="creator-block" data-creator="fitme">
+  <div class="creator-title">
+    <h2>FITME · Valeria Anaya</h2>
+    <span class="count">Reels 161–165 · Protectores solares</span>
+  </div>
+  <!-- REEL 161 -->
+  <div class="reel" data-reel="161">
+    <div class="reel-head">
+      <span class="reel-num">REEL 161</span>
+      <span class="reel-title">"Si tienes la piel grasa, seguramente has escuchado que el…" — Autoridad</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Autoridad</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(161)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/discovery?ad=FElg2GmHRjqzXaJrkAKY" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1219364643001494" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(161)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="161">0/20</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="161-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Frente y nariz <strong>brillantes</strong>, tocándose la cara con fastidio</div></div>
+      <div class="shot" data-id="161-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Secándose la frente con una toalla de papel</div></div>
+      <div class="shot" data-id="161-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Sacando una foto del celular y <strong>viéndose brillante</strong></div></div>
+      <div class="shot" data-id="161-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Tocándose la nariz grasosa frente al espejo</div></div>
+      <div class="shot" data-id="161-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Frotando entre los dedos una <strong>crema espesa y grasosa</strong> (sin marca visible)</div></div>
+      <div class="shot" data-id="161-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Close-up de los dedos brillantes de grasa</div></div>
+      <div class="shot" data-id="161-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Mirando la crema espesa con cara de desagrado</div></div>
+      <div class="shot" data-id="161-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Mirándose al espejo en la tarde, con la frente brillante</div></div>
+      <div class="shot" data-id="161-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>Reloj del celular marcando las <strong>3:00 pm</strong></div></div>
+      <div class="shot" data-id="161-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>En el carro o en la oficina, tocándose la frente con fastidio</div></div>
+      <div class="shot" data-id="161-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Close-up de la <strong>textura del protector en el dorso de la mano</strong></div></div>
+      <div class="shot" data-id="161-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Difuminando el protector en la frente y la nariz con los dedos</div></div>
+      <div class="shot" data-id="161-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Close-up de la nariz con el protector ya difuminado, <strong>sin brillo</strong></div></div>
+      <div class="shot" data-id="161-14"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Mostrando los dos protectores, uno en cada mano</div></div>
+      <div class="shot" data-id="161-15"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>⭐ TOMA ESTRELLA: close-up de la <strong>frente y la nariz mates</strong>, girando la cara hacia la luz</div></div>
+      <div class="shot" data-id="161-16"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Caminando al sol, tranquila</div></div>
+      <div class="shot" data-id="161-17"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Tomándose una selfie y viendo la foto <strong>sin brillo</strong></div></div>
+      <div class="shot" data-id="161-18"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Close-up de la mejilla con los <strong>poros menos visibles</strong>, con luz natural</div></div>
+      <div class="shot" data-id="161-19"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Sonriendo frente al espejo con la piel lista</div></div>
+      <div class="shot" data-id="161-20"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Acercando la cara a la cámara, segura</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 162 -->
+  <div class="reel" data-reel="162">
+    <div class="reel-head">
+      <span class="reel-num">REEL 162</span>
+      <span class="reel-title">"Si se te notan los poros y por eso no sales sin base, te cuento…" — Storytime VO</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">Storytime VO</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(162)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/discovery?ad=tIE3l0RRizqDWpan8XT0" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1219364642920084" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(162)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="162">0/23</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="162-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Close-up de la nariz y las mejillas con los <strong>poros visibles</strong>, sin nada en la cara</div></div>
+      <div class="shot" data-id="162-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Echándose base con cara de aburrida</div></div>
+      <div class="shot" data-id="162-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Tapándose la nariz con la mano al tomarse una selfie</div></div>
+      <div class="shot" data-id="162-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Mirándose de cerca en el espejo, tocándose la nariz</div></div>
+      <div class="shot" data-id="162-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>La base de maquillaje en el lavamanos</div></div>
+      <div class="shot" data-id="162-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Echándose polvo encima de la base, cansada</div></div>
+      <div class="shot" data-id="162-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-negativa">Negativa</span>Quitándose el maquillaje en la noche con una toallita</div></div>
+      <div class="shot" data-id="162-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Sacando el <strong>protector con color</strong> de la cartera</div></div>
+      <div class="shot" data-id="162-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Close-up de la textura en el dedo</div></div>
+      <div class="shot" data-id="162-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Abriendo el tubo y oliendo la textura</div></div>
+      <div class="shot" data-id="162-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Aplicándose el protector con color con los dedos</div></div>
+      <div class="shot" data-id="162-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Close-up de la nariz y las mejillas con el protector puesto, <strong>girando hacia la luz</strong></div></div>
+      <div class="shot" data-id="162-13"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Mirándose de cerca en el espejo, sorprendida</div></div>
+      <div class="shot" data-id="162-14"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Tocándose la mejilla y <strong>despegando los dedos (no se pega)</strong></div></div>
+      <div class="shot" data-id="162-15"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Close-up de la mejilla <strong>mate</strong> a la luz de la ventana</div></div>
+      <div class="shot" data-id="162-16"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>Poniéndose rubor en crema con los dedos</div></div>
+      <div class="shot" data-id="162-17"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Saliendo de la casa con la piel lista, al sol</div></div>
+      <div class="shot" data-id="162-18"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>Poniéndose las gafas de sol al salir</div></div>
+      <div class="shot" data-id="162-19"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Caminando por la calle, sonriendo</div></div>
+      <div class="shot" data-id="162-20"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Aplicándose el <strong>sin color</strong> antes de maquillarse</div></div>
+      <div class="shot" data-id="162-21"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Maquillándose encima del sin color</div></div>
+      <div class="shot" data-id="162-22"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Con los dos protectores, uno en cada mano, sonriendo</div></div>
+      <div class="shot" data-id="162-23"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Tomándose una selfie con la piel lista</div></div>
+    </div>
+  </div>
+
+  <!-- REEL 163 -->
+  <div class="reel" data-reel="163">
+    <div class="reel-head">
+      <span class="reel-num">REEL 163</span>
+      <span class="reel-title">"Si no sales sin base porque te da pena tu piel, mira esto: no…" — POV</span>
+      <div class="reel-meta">
+        <span class="tag tof">TOF</span>
+        <span class="tag">POV</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(163)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/discovery?ad=7TqTUAEndDtFwvp1EzCA" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1219364642852781" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(163)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="163">—</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="no-broll">Sin tomas de apoyo — todo hablado a cámara (ver Guión)</div>
+    </div>
+  </div>
+
+  <!-- REEL 164 -->
+  <div class="reel" data-reel="164">
+    <div class="reel-head">
+      <span class="reel-num">REEL 164</span>
+      <span class="reel-title">"El video que les hice del protector con color de FITME se llenó de…" — Pantalla verde</span>
+      <div class="reel-meta">
+        <span class="tag mof">MOF</span>
+        <span class="tag">Pantalla verde</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(164)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/discovery?ad=BusJXFMXey3qDJMysLAl" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1219364642993968" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(164)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="164">0/12</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="164-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>Close-up de la cara <strong>sin nada</strong>, con luz natural (el "antes")</div></div>
+      <div class="shot" data-id="164-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-neutra">Neutra</span>Lavándose la cara antes de empezar</div></div>
+      <div class="shot" data-id="164-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Poniéndose el protector en la mejilla y <strong>difuminándolo con los dedos</strong></div></div>
+      <div class="shot" data-id="164-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>⭐ TOMA ESTRELLA: close-up de la mejilla ya difuminada, <strong>del mismo tono de su piel, sin rastro blanco</strong></div></div>
+      <div class="shot" data-id="164-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Close-up del dorso de la mano con una línea de protector difuminándose</div></div>
+      <div class="shot" data-id="164-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>En la tarde, en la calle, tocándose la <strong>frente mate</strong></div></div>
+      <div class="shot" data-id="164-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>En la tarde tomándose un café, con la piel mate</div></div>
+      <div class="shot" data-id="164-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Caminando al sol en la calle</div></div>
+      <div class="shot" data-id="164-9"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Close-up de la cara terminada, girando hacia la luz</div></div>
+      <div class="shot" data-id="164-10"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Mirándose al espejo, contenta</div></div>
+      <div class="shot" data-id="164-11"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Mostrando el <strong>sin color</strong> y aplicándoselo en la otra mejilla</div></div>
+      <div class="shot" data-id="164-12"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Close-up de las dos mejillas: <strong>con color y sin color</strong></div></div>
+    </div>
+  </div>
+
+  <!-- REEL 165 -->
+  <div class="reel" data-reel="165">
+    <div class="reel-head">
+      <span class="reel-num">REEL 165</span>
+      <span class="reel-title">"No uso protectores solares que me dejen la cara blanca o…" — Comparativo</span>
+      <div class="reel-meta">
+        <span class="tag bof">BOF</span>
+        <span class="tag">Comparativo</span>
+        <button class="ref-btn guion-btn" onclick="event.stopPropagation(); openGuion(165)">☰ Guión</button> <a class="ref-btn" href="https://app.foreplay.co/discovery?ad=EvF9vp3yvo4NoeCPINmG" target="_blank" onclick="event.stopPropagation()">▶ Ref</a> <a class="ref-btn asana-btn" href="https://app.asana.com/0/1216934710881465/1219364789560871" target="_blank" onclick="event.stopPropagation()">✎ Asana</a> <button class="rec-switch" role="switch" aria-checked="false" title="Marcar este brief como grabado" onclick="event.stopPropagation(); toggleRecorded(165)"><span class="rec-switch-txt">Grabado</span><span class="rec-track"><span class="rec-knob"></span></span></button>
+      </div>
+      <span class="reel-progress" data-reel-progress="165">0/8</span>
+      <span class="caret">›</span>
+    </div>
+    <div class="reel-body">
+      <div class="shot" data-id="165-1"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Lado izquierdo: aplicándose el <strong>con color</strong></div></div>
+      <div class="shot" data-id="165-2"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Lado derecho: aplicándose el <strong>sin color</strong> — mismo encuadre y misma luz</div></div>
+      <div class="shot" data-id="165-3"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Close-up de la textura de cada protector en el dorso de la mano</div></div>
+      <div class="shot" data-id="165-4"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>⭐ TOMA ESTRELLA (izq.): close-up de la piel con el con color, girando hacia la luz</div></div>
+      <div class="shot" data-id="165-5"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>⭐ TOMA ESTRELLA (der.): close-up de la piel con el sin color — los dos lados mates</div></div>
+      <div class="shot" data-id="165-6"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-positiva">Positiva</span>Girando la cara al sol, mate</div></div>
+      <div class="shot" data-id="165-7"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Recibiendo la <strong>caja de FITME</strong> en la puerta</div></div>
+      <div class="shot" data-id="165-8"><div class="checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shot-text"><span class="shot-tag cat-producto">Producto</span>Abriendo la caja y sacando los dos tubos</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tu progreso se guarda automáticamente en este navegador · ELIXIR Entrega 3 · FITME Entrega 11<br><span class="brand">SOCIAL ECOM AGENCY</span></footer>
+
+</div>
+
+<!-- Modal Guión -->
+<div class="modal-overlay" id="guionModal" onclick="closeGuion(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Guión</h3>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeGuion()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'broll_elixir-fitme_valeria_51-55_161-165_v1';
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  // === Tema oscuro / claro ===
+  const themeBtn = document.getElementById('themeBtn');
+  function paintThemeBtn() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    themeBtn.textContent = light ? '☾' : '☀';
+    themeBtn.title = light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro (mejor bajo el sol)';
+  }
+  themeBtn.addEventListener('click', () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.setItem(STORAGE_KEY + '_theme', light ? 'dark' : 'light'); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  function updateProgress() {
+    const allShots = document.querySelectorAll('.shot');
+    const total = allShots.length;
+    const done = document.querySelectorAll('.shot.checked').length;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' (' + Math.round(pct) + '%)';
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      const shots = reel.querySelectorAll('.shot');
+      const checked = reel.querySelectorAll('.shot.checked');
+      const el = reel.querySelector('[data-reel-progress]');
+      if (reel.classList.contains('recorded')) {
+        el.textContent = 'grabado';
+        el.classList.add('done');
+        return;
+      }
+      el.textContent = shots.length ? checked.length + '/' + shots.length : 'sin b-roll';
+      if (checked.length === shots.length && shots.length > 0) {
+        el.classList.add('done');
+      } else {
+        el.classList.remove('done');
+      }
+    });
+
+    const totalReels = document.querySelectorAll('.reel').length;
+    const recReels = document.querySelectorAll('.reel.recorded').length;
+    const briefsEl = document.getElementById('briefsText');
+    if (briefsEl) briefsEl.innerHTML = '<b>' + recReels + '</b> / ' + totalReels + ' briefs grabados';
+  }
+
+  // === Marcar el BRIEF COMPLETO como grabado ===
+  // Es independiente de los checkboxes de tomas: el PM puede darlo por grabado
+  // aunque queden tomas sin marcar (o marcarlas todas y aun así no darlo por cerrado).
+  // El brief grabado NO se reordena: se queda en su sitio y solo se tacha
+  // (decisión del usuario, 2026-08-11 — mover la tarjeta desubica al equipo en set).
+  const REC = '__rec_';
+
+  // Mantiene el estado accesible del switch iOS alineado con la clase .recorded
+  function syncSwitches() {
+    document.querySelectorAll('.reel').forEach(reel => {
+      const sw = reel.querySelector('.rec-switch');
+      if (sw) sw.setAttribute('aria-checked', reel.classList.contains('recorded') ? 'true' : 'false');
+    });
+  }
+
+  function toggleRecorded(num) {
+    const reel = document.querySelector('.reel[data-reel="' + num + '"]');
+    if (!reel) return;
+    const on = !reel.classList.contains('recorded');
+    reel.classList.toggle('recorded', on);
+    if (on) {
+      reel.classList.remove('open');
+      state[REC + num] = true;
+    } else {
+      delete state[REC + num];
+    }
+    save();
+    syncSwitches();
+    updateProgress();
+    applyFilter();
+  }
+
+  // Restore state
+  document.querySelectorAll('.shot').forEach(shot => {
+    const id = shot.dataset.id;
+    if (state[id]) shot.classList.add('checked');
+
+    shot.addEventListener('click', () => {
+      shot.classList.toggle('checked');
+      state[id] = shot.classList.contains('checked');
+      save();
+      updateProgress();
+      applyFilter();
+    });
+  });
+
+  // Reel toggles
+  document.querySelectorAll('.reel-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Filters
+  let currentFilter = 'all';
+  function applyFilter() {
+    document.querySelectorAll('.creator-block').forEach(block => {
+      const creator = block.dataset.creator;
+      if (currentFilter !== 'all' && currentFilter !== 'pending' && creator !== currentFilter) block.style.display = 'none';
+      else block.style.display = '';
+    });
+
+    document.querySelectorAll('.reel').forEach(reel => {
+      if (currentFilter === 'pending') {
+        const shots = reel.querySelectorAll('.shot');
+        const allDone = Array.from(shots).every(s => s.classList.contains('checked'));
+        const rec = reel.classList.contains('recorded');
+        reel.classList.toggle('hidden', rec || (allDone && shots.length > 0));
+      } else {
+        reel.classList.remove('hidden');
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('¿Borrar todo el progreso?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.shot.checked').forEach(s => s.classList.remove('checked'));
+      document.querySelectorAll('.reel.recorded').forEach(r => r.classList.remove('recorded'));
+      Object.keys(state).forEach(k => delete state[k]);
+      syncSwitches();
+      updateProgress();
+      applyFilter();
+    }
+  });
+
+  // Restaurar los briefs ya marcados como grabados (en su posición original)
+  document.querySelectorAll('.reel').forEach(reel => {
+    if (state[REC + reel.dataset.reel]) reel.classList.add('recorded');
+  });
+  syncSwitches();
+
+  // Open first reel by default (el primero que no esté grabado)
+  const firstReel = document.querySelector('.reel:not(.recorded)');
+  if (firstReel) firstReel.classList.add('open');
+  updateProgress();
+
+  // === GUIONES ===
+  const GUIONES = {
+  "51": {
+    "title": "REEL 51 — ELIXIR · Valeria Anaya",
+    "sub": "TOF · Autoridad · \"El colágeno es importantísimo para la estructura de la piel\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "El colágeno es importantísimo para la estructura de la piel. No nos sirve de mucho invertir en skincare por fuera y no tener colágeno por dentro que la sostenga.",
+          "Figura de autoridad",
+          "Sentada frente a una estantería con libros o un fondo sobrio, blusa blanca de cuello alto, tono serio y profesional desde la primera palabra. En \"por fuera\" se toca la mejilla y en \"por dentro\" se lleva la mano al pecho.",
+          "Subtítulos abajo, dentro de la zona segura, con énfasis en Cormorant Garamond en \"no nos sirve de mucho\". Sin música: solo voz."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "El skincare es algo que hay que hacer con mucha constancia, pero no le sacamos todo el provecho si no tenemos la proteína que le da estructura a la piel, que es el colágeno. Porque puedes tener la mejor rutina por fuera, pero si esa malla de soporte se está perdiendo por dentro, la piel...",
+          "Figura de autoridad",
+          "Gestos suaves y contenidos. En \"la proteína que le da estructura\" entrelaza los dedos formando una malla. En \"se está perdiendo\" separa las manos despacio.",
+          "Texto: \"Colágeno = la estructura de tu piel\". Mini zoom en \"la mejor rutina por fuera\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "...termina perdiendo firmeza, aparecen las líneas de expresión, se ve apagada, sin glow, y sientes que ningún producto te funciona.",
+          "Figura de autoridad",
+          "Primer plano más cerrado, tono grave. Enumera con los dedos cada consecuencia. En \"ningún producto te funciona\" hace una pausa y levanta las cejas, como quien sabe que eso le pasa a la que está mirando.",
+          "<strong>Toma estrella:</strong> el primer plano en \"ningún producto te funciona\", donde la audiencia se reconoce. Texto tachado en cascada: \"firmeza glowresultados\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Entonces es muy importante cuidar tu skincare, pero no aislado, ¿listo? Siempre tiene que ir junto con lo que haces por dentro: colágeno de varios tipos, antioxidantes y proteína.",
+          "Figura de autoridad",
+          "Cambia a tono de recomendación firme. En \"no aislado, ¿listo?\" niega con el índice y mira directo a cámara. Enumera con los dedos colágeno, antioxidantes y proteína.",
+          "Texto: \"Por fuera: skincare ✓ / Por dentro: colágeno + antioxidantes + proteína ✓\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Como los Péptidos Bioactivos de Colágeno de Elixir Beauty Foods: 5 tipos de colágeno, espirulina azul y proteína en un solo scoop.",
+          "Figura de autoridad + producto",
+          "El empaque entra a cuadro en \"Como los Péptidos\", derecho y con la etiqueta en español. En \"un solo scoop\" levanta un dedo.",
+          "Close-up del empaque y de la tabla nutricional. Packshot final con logo de Elixir Beauty Foods."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "52": {
+    "title": "REEL 52 — ELIXIR · Valeria Anaya",
+    "sub": "TOF · A cámara · \"Hace tres meses, esa era yo\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "Hace tres meses, esa era yo...",
+          "A cámara",
+          "En el tocador, en plena rutina de noche, con parches bajo los ojos (sin marca visible) y bata lisa en tono neutro. En \"esa era yo\" señala con el pulgar hacia la esquina superior de la pantalla.",
+          "<strong>Toma estrella:</strong> foto de ella misma envejecida en la esquina superior derecha, dentro de la zona segura [foto de la creadora editada con IA]. Caja de texto arriba: \"Así me estaba envejeciendo el estrés\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "...tenía líneas de expresión, tenía arrugas, el cabello se me estaba cayendo, no me veía ni me sentía en mi mejor momento. Y voy a ser honesta, mi confianza se estaba viniendo abajo.",
+          "A cámara",
+          "Se toca la frente en \"líneas de expresión\" y el contorno de ojos en \"arrugas\". En \"cabello\" pasa la mano por el pelo. En \"se estaba viniendo abajo\" baja la mano en picada con los labios apretados.",
+          "Subtítulo solo en \"mi confianza se estaba viniendo abajo\". Cortes rápidos entre cada problema."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Me acababa de separar de mi esposo después de 10 años, y el divorcio CASI ME MATA.",
+          "A cámara",
+          "Cambio de energía: seria, reflexiva, más quieta, mirada un segundo hacia abajo en \"divorcio\". Nada de gestos grandes.",
+          "Ritmo calmado, sin cortes, dejando respirar la confesión. Lo-fi calm de fondo."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "...Entonces decidí ir donde mi coach de bienestar, y ella me dijo que una de las razones por las que no me sentía en mi mejor momento podía ser que no estaba consumiendo suficiente colágeno. Que desde los 25 años el cuerpo empieza a producir menos.",
+          "A cámara",
+          "Recupera energía. En \"me dijo\" levanta el índice. En \"desde los 25\" muestra el número con los dedos (2 y luego 5).",
+          "Texto: \"Desde los 25 años producimos menos colágeno 📉\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y el colágeno es súper importante. Todas sabemos que es buenísimo para la piel, el cabello, las uñas, todo. Pero también es parte de tus músculos, tus articulaciones y tus huesos.",
+          "A cámara",
+          "Primer plano, tono educativo de amiga que te explica algo que no sabías. Enumera con los dedos piel, cabello, uñas. En \"pero también\" abre las manos y señala su cuerpo.",
+          "Checkmarks en dos tandas: \"Piel ✓ Cabello ✓ Uñas ✓\" y luego \"Músculos ✓ Articulaciones ✓ Huesos ✓\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y ella me recomendó específicamente una marca, y les voy a mostrar cuál es. Son los Péptidos Bioactivos de Colágeno de Elixir Beauty Foods.",
+          "A cámara + producto",
+          "En \"les voy a mostrar\" se agacha fuera de cuadro y sube con el empaque, derecho y con la etiqueta en español.",
+          "Soft pop cuando entra el producto. Texto: \"5 tipos de colágeno + espirulina azul\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Es la única en la que confío, porque trae 5 tipos de colágeno, del I al V, y espirulina azul. Si quieren verlo ustedes mismas, les dejo el link aquí.",
+          "A cámara + producto",
+          "Agita suave el empaque. En \"del I al V\" muestra los cinco dedos. En \"el link aquí\" señala hacia abajo.",
+          "Inserto corto: close-up de la tabla nutricional. Flecha ⬇️ al botón."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Esto literalmente me transformó la piel. O sea, tengo la piel con glow, el cabello súper brillante, las uñas ya no se me quiebran y tengo muchísima energía. Si quieren sentir eso también, consíganlo.",
+          "A cámara + producto",
+          "Mismo tocador, ya sin parches, con la piel al natural. Se toca la mejilla en \"glow\", pasa la mano por el pelo en \"brillante\", muestra las uñas a cámara en \"no se me quiebran\". Cierra levantando el empaque.",
+          "Checkmarks: \"Glow ✓ / Cabello ✓ / Uñas ✓ / Energía ✓\". Packshot final con logo de Elixir Beauty Foods."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "53": {
+    "title": "REEL 53 — ELIXIR · Valeria Anaya",
+    "sub": "TOF · Autoridad · \"Hablemos del colágeno y de por qué, si tienes más de 30 años,…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "Hablemos del colágeno y de por qué, si tienes más de 30 años, deberías terminar de ver este video.",
+          "Figura de autoridad",
+          "Sentada o de pie frente a un fondo sobrio, con gafas de montura oscura, blusa lisa y neutra, tono de experta cercana. En \"más de 30 años\" señala a la cámara con el índice.",
+          "Recuadro de título al centro: \"Hablemos del COLÁGENO y su importancia después de los 30\", con \"COLÁGENO\" en Cormorant Garamond."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "¿Pero qué es verdaderamente el colágeno? ¿Por qué es tan importante en tantas cosas, incluida la medicina estética y anti-edad?",
+          "Figura de autoridad",
+          "Manos abiertas, expresivas, como quien plantea la pregunta del millón. En \"verdaderamente\" hace una pausa corta.",
+          "Subtítulo solo en \"¿qué es verdaderamente el colágeno?\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "El colágeno en realidad es una proteína fibrosa. Estas fibras se unen y forman como una malla de soporte, una de las moléculas más importantes para mantener la estructura y la juventud de la piel.",
+          "Figura de autoridad + infografía",
+          "En \"se unen\" entrelaza los dedos de ambas manos para formar la malla.",
+          "Infografía a pantalla completa o en la mitad superior: fibras de colágeno, fibras elásticas y fibroblastos formando la red [insertar referencia visual]. Subtítulos completos en este bloque."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "A partir de los 30 años en adelante, esta proteína, esta malla de soporte, empieza a disminuir. Y no solamente disminuye la producción de colágeno, sino que el que se produce ya no es de tan buena calidad.",
+          "Figura de autoridad + infografía",
+          "En \"empieza a disminuir\" baja la mano en rampa. En \"no es de tan buena calidad\" niega suave con la cabeza, seria.",
+          "Gráfica comparativa \"Piel joven\" vs. \"Envejecimiento de la piel\" [insertar referencia visual]. Texto: \"+30 años 📉\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y es por esto que, si tienes más de 30 años, no te va a funcionar cualquier colágeno en polvo que solo es de relleno. Lo que sí te va a funcionar es activar la producción natural de colágeno de tu cuerpo.",
+          "Figura de autoridad",
+          "Tono firme, de quien rompe un mito. En \"cualquier colágeno\" levanta el índice y niega. En \"Lo que sí\" cambia a una sonrisa y abre las manos hacia sí misma.",
+          "Ritmo más lento: aquí está el giro y respira. Texto tachado: \"colágeno de relleno\" → \"activar tu producción natural ✓\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Además de todo lo que hagas por fuera con tu skincare, hoy hay formas de activarla desde adentro: los péptidos bioactivos, fragmentos pequeñitos de colágeno que el cuerpo absorbe más fácil.",
+          "Figura de autoridad",
+          "En \"por fuera\" se toca la mejilla, en \"desde adentro\" se lleva la mano al pecho. En \"pequeñitos\" junta el índice y el pulgar. En \"de cinco\" muestra la mano abierta.",
+          "Texto: \"Por fuera: skincare / Por dentro: péptidos bioactivos\". Luego: \"Tipos I · II · III · IV · V\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y este es el elixir, y el secreto, de la belleza: los Péptidos Bioactivos de Colágeno de Elixir Beauty Foods.",
+          "Figura de autoridad + producto",
+          "Asiente con el pulgar arriba en \"el secreto\". El empaque entra a cuadro en \"Péptidos\", derecho y con la etiqueta en español.",
+          "<strong>Toma estrella:</strong> el juego de palabras en \"el elixir\", con el producto entrando justo ahí. Sparkle en \"elixir\". Close-up del empaque."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "(Texto en pantalla)",
+          "Cierre gráfico",
+          "Plano del producto sobre la superficie, con ella fuera de cuadro o sonriendo al fondo desenfocada.",
+          "Texto destacado: \"+ colágeno = aspecto + joven\". Packshot final con logo de Elixir Beauty Foods."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "54": {
+    "title": "REEL 54 — ELIXIR · Valeria Anaya",
+    "sub": "MOF · Reseña · \"Que coreano, que japonés, que europeo\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "Que coreano, que japonés, que europeo... el colágeno está en todas partes. Pero, ¿por qué esa obsesión con lo importado?",
+          "A cámara",
+          "De pie en su habitación, frente a persianas o una cortina clara. Tono de amiga que cuestiona con algo de ironía. Cuenta con los dedos en \"coreano\", \"japonés\" y \"europeo\". En \"¿por qué esa obsesión…?\" levanta las cejas y abre las manos hacia la cámara.",
+          "Cortes sutiles cada 1-2 s para dar dinamismo. Subtítulo en Cormorant Garamond solo en \"¿por qué esa obsesión con lo importado?\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Es hora de cambiarte a un colágeno que muestre resultados, no apariencias.",
+          "A cámara",
+          "Mismo plano. Baja el tono y sube la seguridad, como quien da el veredicto. Marca \"resultados\" con la palabra y en \"no apariencias\" niega suave con la cabeza.",
+          "Zoom lento sobre el plano (reemplaza el efecto espejo de la referencia, que se sale de la estética de marca). Texto: \"resultados ✓ / apariencias\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "los Péptidos Bioactivos de Colágeno de Elixir Beauty Foods,  una marca orgullosamente colombiana, con 7 gramos de colágeno por porción para resultados reales.",
+          "A cámara + producto",
+          "El frasco entra a cuadro en \"Te presento\", de frente, derecho y con la etiqueta en español. En \"orgullosamente colombiana\" se lleva la mano libre al pecho. En \"7 gramos\" lo acerca a la cámara.",
+          "Texto superpuesto en blanco: \"5 tipos de colágeno\" y \"7 g por porción\". Soft pop cuando entra el frasco."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Seguro ya te diste cuenta de que la mayoría de colágenos del mercado traen solo uno o dos tipos, y encima con azúcar o rellenos. Y yo llevaba años buscando una fórmula limpia.",
+          "A cámara",
+          "Tono de confesión y frustración acumulada. En \"uno o dos tipos\" muestra uno y luego dos dedos. En \"llevaba años\" suspira y mira un segundo hacia abajo.",
+          "Filtro desaturado o gris, no rojizo, para respetar la temperatura fría de la marca. Íconos animados tachados, como en la referencia: \"Tipo I y III ✗\", \"Azúcar ✗\", \"Maltodextrina ✗\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Estos son péptidos bioactivos con 5 tipos de colágeno, más espirulina azul. Sí, por eso es azul.",
+          "A cámara + b-roll",
+          "Vuelve el plano limpio, sin filtro, con el frasco en la mano. En \"del I al V\" abre la mano mostrando los cinco dedos. En \"Sí, por eso es azul\" sonríe con complicidad.",
+          "Close-up del frasco en la zona de ingredientes. Texto: \"Tipos I · II · III · IV · V\" + \"Espirulina azul: antioxidante\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Llevo un mes tomándolo junto con mi rutina de skincare y mi piel se ve más firme, más suave y más luminosa que nunca.",
+          "Voz en off sobre b-roll",
+          "Manos abriendo el frasco, un scoop de polvo azul cayendo en medio vaso de agua. <strong>Toma estrella:</strong> el azul disolviéndose en el agua, en cámara lenta. Cierra con un plano de su piel al natural con glow, sin corrector.",
+          "Subtítulos completos. Water drop cuando cae el polvo. Checkmarks: \"Más firme ✓ / Más suave ✓ / Más luminosa ✓\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Tiene registro INVIMA y es de Elixir Beauty Foods, la marca en la que ya confían más de un millón de personas. Así que pruébalo hoy mismo.",
+          "A cámara",
+          "Sostiene el frasco frente a ella, sonriendo y segura. En \"pruébalo hoy mismo\" lo acerca a la cámara.",
+          "Sello circular \"Registro INVIMA\", en el lugar del sello de \"clínicamente probado\" de la referencia. Packshot final con logo de Elixir Beauty Foods y flecha al botón. Fundido a negro."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "55": {
+    "title": "REEL 55 — ELIXIR · Valeria Anaya",
+    "sub": "BOF · Selfie · \"No puedes ser tan ingenua de creer eso de que \"la que tiene buena…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "No puedes ser tan ingenua de creer eso de que \"la que tiene buena genética no envejece\". ¿Qué?",
+          "Selfie a cámara",
+          "Sentada en el borde de la cama, con el celular en la mano, seria y con una mano sosteniendo la cabeza. En \"¿Qué?\" arruga la cara con incredulidad total.",
+          "Caja de texto abajo, dentro de la zona segura: \"La buena genética no envejece 🤨\". Corte seco en \"¿Qué?\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "No solo envejecemos, mi amor, a veces nos desmoronamos.",
+          "Selfie a cámara (caminando)",
+          "Se levanta y camina hacia el tocador con los ojos muy abiertos. En \"nos desmoronamos\" deja caer la mano libre, como algo que se derrumba.",
+          "Subtítulos palabra por palabra, con énfasis en Cormorant Garamond en \"desmoronamos\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y después de ver en a dos personas discutiendo sobre quién tenía la mejor textura de piel, decidí comprármelo yo misma.",
+          "Green screen / reacción",
+          "Ella al frente, en su tocador, con el clip de fondo. En \"discutiendo\" señala el video con el pulgar por encima del hombro y pone los ojos en blanco.",
+          "Fondo: [insertar referencia visual], un clip de TikTok sin marcas de otros colágenos visibles (idealmente contenido propio de Elixir)."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Estos de aquí, los Péptidos de Colágeno de Elixir Beauty Foods, sí cumplen.",
+          "Selfie a cámara + producto",
+          "El empaque entra a cuadro en \"Estos de aquí\", derecho y con la etiqueta en español. Lo agita suave frente a la cámara con entusiasmo. En \"sí cumplen\" asiente firme.",
+          "Soft pop cuando entra el producto. Texto: \"5 tipos de colágeno ✓\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Tengo casi 50 años, ¿no crees que necesito todo el colágeno que pueda?",
+          "Selfie a cámara",
+          "Apoyada en el tocador, convencida, como quien dice algo obvio. En \"casi 50\" se señala a sí misma. En \"¿no crees?\" inclina la cabeza hacia la cámara.",
+          "Texto: \"casi 50 👀\". Mini zoom en la pregunta."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Llevo casi un mes tomándolo y mi piel se ve más firme, con un glow que no tenía. Y ni hablemos de estas uñas y cómo han crecido estas semanas. Sí, son mías.",
+          "Selfie a cámara",
+          "Con el producto en una mano, se toca la mejilla en \"más firme\". En \"estas uñas\" pone la mano frente a la cámara: uñas propias, cortas, en tono neutro y bien pintadas. En \"Sí, son mías\" hace una pausa y levanta una ceja. Mientras habla camina del tocador hacia la ventana.",
+          "<strong>Toma estrella:</strong> el close-up de las uñas en \"Sí, son mías\", con luz natural. Checkmarks: \"Piel más firme ✓ / Glow ✓ / Uñas más fuertes ✓\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y este cabello puede crecer unos centímetros más, eso sería genial.",
+          "Selfie a cámara",
+          "Junto a la ventana, enrolla un mechón entre los dedos y sonríe con picardía.",
+          "Subtítulo solo en \"unos centímetros más\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Así que créanme, este producto es buenísimo.",
+          "Selfie a cámara + b-roll",
+          "Se sienta frente a la mesita o el tocador y abre el empaque a cuadro.",
+          "Inserto: close-up de la tabla nutricional del empaque. Texto: \"0 g de azúcar añadida ✓\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Lo único que necesitas es un scoop al día, o dos si quieres ver resultados más rápido, y todo en ti va a brillar. Créanle a esta de casi 50.",
+          "Selfie a cámara + b-roll",
+          "B-roll de manos: un scoop de polvo azul cayendo en medio vaso de agua. Vuelve a cámara y en \"todo en ti va a brillar\" se recorre con las manos de la cara hacia abajo. En \"esta de casi 50\" se señala con el pulgar.",
+          "Water drop cuando cae el polvo. Texto: \"1 scoop al día 🥄\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Lo único que me da rabia es toda la plata que boté en colágenos que sabían horrible y traían azúcar. Si le das clic aquí abajo, lo encuentras.",
+          "Selfie a cámara",
+          "De pie en el tocador, con fastidio exagerado en \"boté\" (se lleva la mano a la frente). En \"aquí abajo\" señala hacia abajo con el índice.",
+          "Flechas ⬇️ hacia el botón. Packshot final con logo de Elixir Beauty Foods."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "161": {
+    "title": "REEL 161 — FITME · Valeria Anaya",
+    "sub": "TOF · Autoridad · \"Si tienes la piel grasa, seguramente has escuchado que el…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "Si tienes la piel grasa, seguramente has escuchado que el protector solar es el que te deja la cara brillante. Soy esteticista, y eso en realidad es un mito. Déjame te explico por qué.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora con la frente y la nariz brillantes, tocándose la cara con fastidio.\nClip creadora secándose la frente con una toalla de papel.\nClip creadora sacando una foto del celular y viéndose brillante.\nClip creadora tocándose la nariz grasosa frente al espejo.",
+          "Texto arriba: \"SOY ESTETICISTA: ESTO ES UN MITO\".\nSin producto en cuadro en este bloque.\nSubtítulos en amarillo, palabra por palabra, como la referencia."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Mira: el protector por sí solo no te tiene que dejar la cara como un espejo. Lo que pasa es que muchos tienen una textura pesada que se queda encima de la piel.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora frotando entre los dedos una crema espesa y grasosa (cualquier crema sin marca visible).\nClip close-up de los dedos brillantes de grasa.\nClip creadora mirando la crema espesa con cara de desagrado.",
+          "Igual que la referencia con la esponja: la creadora explica con un objeto en la mano."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y como la piel sigue sacando grasita durante el día, a las tres horas ya estás brillando y te da pereza volvértelo a poner.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora mirándose al espejo en la tarde, con la frente brillante.\nClip reloj del celular marcando las 3:00 pm.\nClip creadora en el carro o en la oficina, tocándose la frente con fastidio.",
+          "Pantalla dividida corta: mañana / tarde, con la tarde en blanco y negro."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Por eso lo que yo les digo a mis clientas es: el protector se reaplica cada tres horas, pero tiene que ser uno que te quieras volver a poner.",
+          "A cámara",
+          "Clip creadora sacando el protector de la cartera y reaplicándoselo con los dedos.\nClip creadora en el baño de la oficina reaplicándose frente al espejo.\nClip close-up de los dedos esparciendo el protector en la mejilla.",
+          "Texto: \"Reaplicar cada 3 horas\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Busquen uno con microesferas de sílice: son unas pequeñas partículas que ayudan a absorber el exceso de grasa que el rostro va generando durante el día.",
+          "A cámara + tomas de apoyo",
+          "Clip close-up de la textura del protector en el dorso de la mano.\nClip creadora difuminando el protector en la frente y la nariz con los dedos.\nClip close-up de la nariz con el protector ya difuminado, sin brillo.",
+          "Texto: \"Microesferas de sílice\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Producto</strong>",
+          "El que yo uso es el de FITME, que viene con color y sin color. Tiene FPS 60, o sea, una protección bien alta, y te deja un efecto mate, como de terciopelo.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora mostrando los dos protectores, uno en cada mano.\nClip close-up de la frente y la nariz mates, girando la cara hacia la luz.\nClip creadora caminando al sol, tranquila.\nClip creadora tomándose una selfie y viendo la foto sin brillo.",
+          "<strong>LA TOMA ESTRELLA:</strong> el close-up de la piel mate a la luz.\nPantalla dividida: frente brillante (antes) / frente mate (después).\nTexto: \"FPS 60 · Efecto mate\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Un protector solar con efecto mate, acabado Photo Finish y con activos perfeccionadores de poros sí existe, y es este.",
+          "A cámara + tomas de apoyo",
+          "Clip close-up de la mejilla con los poros menos visibles, con luz natural.\nClip creadora sonriendo frente al espejo con la piel lista.\nClip creadora acercando la cara a la cámara, segura.",
+          "Texto: \"Con activos perfeccionadores de poros\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Acuérdate: el que te deja brillante no es el protector, es la textura. Estos dos vienen juntos en el Kit Dúo, y te los dejo aquí abajo.",
+          "A cámara",
+          "Clip creadora con los dos protectores junto a la cara.\nClip creadora guardando los dos tubos en la cartera.",
+          "Texto: \"Kit Dúo · FITME\"."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "162": {
+    "title": "REEL 162 — FITME · Valeria Anaya",
+    "sub": "TOF · Storytime VO · \"Si se te notan los poros y por eso no sales sin base, te cuento…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "Si se te notan los poros y por eso no sales sin base, te cuento por qué cambié mi protector.",
+          "Voz en off + tomas de apoyo",
+          "Clip close-up de la nariz y las mejillas con los poros visibles, sin nada en la cara.\nClip creadora echándose base con cara de aburrida.\nClip creadora tapándose la nariz con la mano al tomarse una selfie.",
+          "Video flotante: el close-up de los poros.\nSin protector en cuadro en este bloque."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Como les conté, estos meses se me han notado mucho los poros, sobre todo en la nariz, y yo tapándolos con base todos los días.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora mirándose de cerca en el espejo, tocándose la nariz.\nClip de la base de maquillaje en el lavamanos.\nClip creadora echándose polvo encima de la base, cansada.\nClip creadora quitándose el maquillaje en la noche con una toallita.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Producto</strong>",
+          "Así que decidí cambiarme a un protector con color, para usar menos maquillaje. Es el de FITME, y trae activos perfeccionadores de poros.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora sacando el protector con color de la cartera.\nClip close-up de la textura en el dedo.\nClip creadora abriendo el tubo y oliendo la textura.",
+          "Texto: \"Protector solar con color · FITME\" / \"Con activos perfeccionadores de poros\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "La verdad es perfecto para mí: me lo aplico con los dedos y la piel se ve más lisita. Este protector solar parece un filtro, pero en la vida real.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora aplicándose el protector con color con los dedos.\nClip close-up de la nariz y las mejillas con el protector puesto, girando hacia la luz.\nClip creadora mirándose de cerca en el espejo, sorprendida.",
+          "<strong>LA TOMA ESTRELLA:</strong> pantalla dividida, poros sin protector / con protector, mismo encuadre."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y lo bueno es que deja un efecto mate, como de terciopelo, y no queda brillante ni pegajoso.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora tocándose la mejilla y despegando los dedos (no se pega).\nClip close-up de la mejilla mate a la luz de la ventana.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Tiene FPS 60, una protección bien alta. Termino con un poquito de rubor y salgo.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora poniéndose rubor en crema con los dedos.\nClip creadora saliendo de la casa con la piel lista, al sol.\nClip creadora poniéndose las gafas de sol al salir.\nClip creadora caminando por la calle, sonriendo.",
+          "Texto: \"FPS 60\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y el sin color lo uso los días que sí me maquillo, debajo de la base.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora aplicándose el sin color antes de maquillarse.\nClip creadora maquillándose encima del sin color.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Yo los amé. Vienen juntos en el Kit Dúo, y te los dejo aquí abajo.",
+          "Voz en off + tomas de apoyo",
+          "Clip creadora con los dos protectores, uno en cada mano, sonriendo.\nClip creadora tomándose una selfie con la piel lista.",
+          "Texto: \"Kit Dúo · FITME\"."
+        ],
+        "broll": true
+      }
+    ]
+  },
+  "163": {
+    "title": "REEL 163 — FITME · Valeria Anaya",
+    "sub": "TOF · POV · \"Si no sales sin base porque te da pena tu piel, mira esto: no…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "Si no sales sin base porque te da pena tu piel, mira esto: no cualquiera se atreve a mostrar su piel sin filtros, pues yo sí. Así se ve mi piel sin nada.",
+          "POV de aplicación",
+          "Clip close-up de la cara de la creadora lavada, sin nada, con luz natural.\nClip creadora acercando la cara a la cámara, sin nada.",
+          "Texto fijo arriba: \"PROTECTOR SOLAR SIN FILTRO\".\nSubtítulos en blanco, frase por frase, como la referencia.\nSin protector en cuadro en este bloque."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Tengo unas manchitas y el brillo de la frente, que ahorita vamos a cubrir con el protector solar con color de FITME.",
+          "POV de aplicación",
+          "Clip creadora señalando las manchitas y la frente.\nClip creadora mostrando el tubo con color a cámara.\nClip close-up de la frente brillante.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Tiene FPS 60, una protección bien alta. Lo voy regando así…",
+          "POV de aplicación",
+          "Clip creadora poniéndose puntitos de protector en frente, mejillas, nariz y mentón.\nClip close-up del dedo con la textura del protector.",
+          "Texto: \"FPS 60\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Yo sé que hay unas que se lo aplican con esponja, pero yo así, con los dedos, me siento más cómoda.",
+          "POV de aplicación",
+          "Clip creadora difuminando con los dedos, cámara muy cerca.\nClip close-up de los dedos difuminando cerca de la nariz.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y así nos va quedando: cero efecto mimo y un acabado mate, como de terciopelo.",
+          "POV de aplicación",
+          "Clip close-up de la mejilla mientras el producto se difumina, sin rastro blanco.\nClip creadora tocándose la mejilla y despegando los dedos (no se pega).",
+          "Pantalla dividida: la misma mejilla sin protector / con protector."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y no he tocado el teléfono para que digan que le puse filtro. No es un filtro: es el acabado que deja este protector solar en mi piel.",
+          "POV de aplicación",
+          "Clip creadora mostrando el celular sin filtros activados.\nClip close-up de la cara terminada girando de lado a lado.\nClip creadora saliendo al balcón con la piel lista, a la luz del sol.",
+          "<strong>LA TOMA ESTRELLA:</strong> la cara terminada girando, sin cortes.\nTexto: \"SIN FILTRO\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y si no quieres color, está el sin color, con el mismo acabado y la misma protección.",
+          "POV de aplicación",
+          "Clip creadora mostrando los dos protectores, uno en cada mano.\nClip close-up de los dos tubos sobre el tocador.",
+          ""
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Así que aprovechen y llévense los dos en el Kit Dúo. Les dejo el link aquí abajo.",
+          "POV de aplicación",
+          "Clip creadora sonriendo con los dos tubos junto a la cara.\nClip creadora metiendo los dos tubos en la cartera.",
+          "Texto: \"Kit Dúo · FITME\"."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "164": {
+    "title": "REEL 164 — FITME · Valeria Anaya",
+    "sub": "MOF · Pantalla verde · \"El video que les hice del protector con color de FITME se llenó de…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "El video que les hice del protector con color de FITME se llenó de comentarios, y muchas me preguntan si no deja la cara blanca o de otro tono.",
+          "Pantalla verde hablando a cámara",
+          "Clip creadora mostrando el protector con color a cámara.\nClip de la pantalla del celular con comentarios llegando (sin nombres visibles).",
+          "Fondo: captura de un comentario que diga \"¿Y el de color no te deja la cara blanca o de otro tono? 😕\".\nTexto arriba: \"Respuesta a sus comentarios\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Entonces, como pueden ver, aquí tengo mi cara limpiecita, y lo vamos a usar de nuevo para que vean.",
+          "A cámara + tomas de apoyo",
+          "Clip close-up de la cara sin nada, con luz natural.\nClip creadora lavándose la cara antes de empezar.",
+          "Video flotante: la cara sin nada (el \"antes\")."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Lo más fácil es aplicarlo con los dedos. Y vean cómo se difumina: cero efecto mimo, nada de cara blanca.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora poniéndose el protector en la mejilla y difuminándolo con los dedos.\nClip close-up de la mejilla ya difuminada, del mismo tono de su piel.\nClip close-up del dorso de la mano con una línea de protector difuminándose.",
+          "<strong>LA TOMA ESTRELLA:</strong> la mejilla mientras se difumina, sin rastro blanco."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Ayer lo anduve todo el día y siguió mate, porque tiene microesferas de sílice, que ayudan a absorber el exceso de grasa que el rostro va generando.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora en la tarde, en la calle, tocándose la frente mate.\nClip creadora en la tarde tomándose un café, con la piel mate.\nClip creadora caminando al sol en la calle.",
+          "Texto: \"Microesferas de sílice\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Filtro o protector solar: miren cómo deja la piel. Mate, como de terciopelo, y con FPS 60, una protección bien alta.",
+          "A cámara + tomas de apoyo",
+          "Clip close-up de la cara terminada, girando hacia la luz.\nClip creadora mirándose al espejo, contenta.",
+          "Pantalla dividida: cara sin nada / con protector.\nTexto: \"FPS 60 · Efecto mate\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y si alguna lo quiere sin tono, el sin color tiene la misma protección y el mismo efecto mate.",
+          "A cámara + tomas de apoyo",
+          "Clip creadora mostrando el sin color y aplicándoselo en la otra mejilla.\nClip close-up de las dos mejillas: con color y sin color.",
+          ""
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Abajito les dejo el link para que armen su Kit Dúo como quieran.",
+          "Pantalla verde hablando a cámara",
+          "Clip creadora con los dos protectores junto a la cara.\nClip creadora tocando la pantalla del celular en la página del Kit Dúo.",
+          "Fondo: https://drive.google.com/file/d/1YoN0BGlYHCJ9XzzfofQ4jcnqzVtuguHx/view (grabación de la página del Kit Dúo)."
+        ],
+        "broll": false
+      }
+    ]
+  },
+  "165": {
+    "title": "REEL 165 — FITME · Valeria Anaya",
+    "sub": "BOF · Comparativo · \"No uso protectores solares que me dejen la cara blanca o…\"",
+    "cols": [
+      "Estructura",
+      "Texto",
+      "Formato",
+      "Audiovisual",
+      "Edición"
+    ],
+    "rows": [
+      {
+        "cells": [
+          "<strong>Hook</strong>",
+          "No uso protectores solares que me dejen la cara blanca o brillante, y no pienso dar explicaciones. Si sabes, sabes.",
+          "A cámara",
+          "Clip creadora pasándose el protector con los dedos, mirando a cámara con actitud.\nClip creadora tirando a la basura un protector cualquiera (sin marca visible).",
+          "Texto arriba: \"🚫 Protectores que dejan la cara blanca\".\nVideo flotante en blanco y negro: cara blanca con un protector cualquiera (sin marca visible)."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Producto</strong>",
+          "No acepto menos que los de FITME, que me dan este acabado: cero efecto mimo, cero grasa y mate, como de terciopelo.",
+          "Comparativo lado a lado",
+          "Izquierda: clip creadora aplicándose el con color.\nDerecha: clip creadora aplicándose el sin color, mismo encuadre y misma luz.\nClip close-up de la textura de cada protector en el dorso de la mano.",
+          "Texto: \"Con color\" / \"Sin color\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Desarrollo</strong>",
+          "Y tienen FPS 60, una protección bien alta. Un protector solar que parece un filtro sí existe, y es el con color.",
+          "Comparativo lado a lado",
+          "Izquierda: close-up de la piel con el con color, girando hacia la luz.\nDerecha: close-up de la piel con el sin color.\nClip creadora girando la cara al sol, mate.",
+          "<strong>LA TOMA ESTRELLA:</strong> los dos lados al mismo tiempo, los dos mates.\nTexto: \"FPS 60\"."
+        ],
+        "broll": false
+      },
+      {
+        "cells": [
+          "<strong>Promo</strong>",
+          "Otra vez están disponibles los dos, y llevándolos juntos en el Kit Dúo te salen con superdescuento. Lo armas como quieras: con color y sin color, o dos iguales.",
+          "Voz en off + grabación de pantalla",
+          "Clip creadora recibiendo la caja de FITME en la puerta.\nClip creadora abriendo la caja y sacando los dos tubos.",
+          "Fondo: https://drive.google.com/file/d/1YoN0BGlYHCJ9XzzfofQ4jcnqzVtuguHx/view (grabación de la página del Kit Dúo).\nTexto: \"Kit Dúo $145.000 (antes $163.000) — 11% OFF\"."
+        ],
+        "broll": true
+      },
+      {
+        "cells": [
+          "<strong>CTA</strong>",
+          "Revisa ya, que el precio es solo llevando los dos.",
+          "A cámara",
+          "Clip creadora con los dos protectores junto a la cara.\nClip creadora metiéndolos en la cartera.\nClip creadora señalando hacia abajo, al link.",
+          "Texto: \"Arma tu Kit Dúo · FITME\"."
+        ],
+        "broll": false
+      }
+    ]
+  }
+};
+
+  function fmtClass(fmt) {
+    const f = (fmt || '').toLowerCase();
+    if (/verde|croma/.test(f)) return 'verde';
+    if (f.includes('podcast')) return 'podcast';
+    if (/voz|off|apoyo|b-?roll|demo/.test(f)) return 'voz';
+    return '';
+  }
+
+  function openGuion(reelNum) {
+    const data = GUIONES[reelNum];
+    if (!data) return;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalSub').textContent = data.sub;
+    const cols = data.cols || ['Estructura', 'Texto', 'Formato', 'Audiovisual', 'Edición'];
+    const head = cols.map(c => `<th>${c}</th>`).join('');
+    const fmtCol = cols.findIndex(c => String(c).trim().toLowerCase().startsWith('formato'));
+    const rows = data.rows.map(r => {
+      const cells = Array.isArray(r) ? r : r.cells;
+      const broll = Array.isArray(r) ? false : !!r.broll;
+      const tds = cells.map((cell, i) => {
+        // data-col alimenta el rótulo de cada campo cuando la tabla colapsa a fichas en móvil.
+        const col = ` data-col="${String(cols[i] || '').replace(/"/g, '&quot;')}"`;
+        const v = (cell || '').trim();   // celdas con solo "\n" deben quedar vacías (se ocultan en móvil)
+        if (i === 0 && fmtCol !== 0) return `<td class="g-est"${col}>${v}</td>`;
+        if (i === 1 && fmtCol !== 1) return `<td class="g-texto"${col}>${v}</td>`;
+        if (i === fmtCol) return `<td${col}>${v ? `<span class="guion-fmt ${fmtClass(v)}">${v}</span>` : ''}</td>`;
+        return `<td${col}>${v}</td>`;
+      }).join('');
+      return `<tr class="${broll ? 'is-broll' : ''}">${tds}</tr>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML =
+      `<div class="guion-hint"><span>⇄</span>Desliza la tabla de lado para ver todas las columnas</div>` +
+      `<div class="guion-table-wrap"><table class="guion-table">` +
+      `<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div class="guion-legend"><span class="swatch"></span>Filas resaltadas = tienen tomas de apoyo (b-roll) y son las que alimentan el checklist. El resto va hablado a cámara.</div>`;
+    document.getElementById('guionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuion(event) {
+    document.getElementById('guionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGuion();
+  });
+</script>
+</body>
+</html>
